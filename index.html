@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-    <title>Flamingo Inventory Master</title>
+    <title>Order Form</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -285,11 +285,11 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Inventory Table Container - Formatted strictly to 5 visible content rows max (Header 40px + 5 * 36px rows = 220px) */
+        /* Inventory Table Container - Formatted strictly to 10 visible content rows max (Header 40px + 10 * 36px rows = 400px) */
         .inventory-table-container {
             overflow-x: auto;
-            max-height: 220px; 
-            height: 220px;
+            max-height: 400px; 
+            height: 400px;
             overflow-y: auto;
             border-radius: 12px;
             border: 1px solid var(--md-sys-color-surface-variant);
@@ -415,20 +415,17 @@
 <div class="container">
     <div class="header">
         <div class="header-left">
-            <img src="Logo_transparent.png" alt="Flamingo Logo" class="logo">
-            <h2>Inventory & Order Manager</h2>
+            <h2>ORDER FORM</h2>
         </div>
-        <a href="invoice.html" class="btn btn-invoice">📄 Invoice Generator</a>
     </div>
 
-    <!-- Inventory Display Section Block (Top priority layout position above tabs) -->
     <div class="workspace-row">
         <div class="bottom-full">
             <div class="card">
                 <h3>
                     <div class="inventory-head-flex">
                         <div class="header-controls-left">
-                            <label class="btn btn-excel">
+                            <label class="btn btn-excel" title="Expected Columns: ID, Code, Barcode, Description, Price, RSP, Stock, Status">
                                 📊 Import CSV
                                 <input type="file" id="csvInput" accept=".csv" style="display:none;" onchange="importCSV(event)">
                             </label>
@@ -466,18 +463,15 @@
         </div>
     </div>
 
-    <!-- Tabs Container Workspace Module Row -->
     <div class="workspace-row">
         <div class="top-full">
             <div class="card" style="padding-bottom: 16px;">
-                <!-- Tab Switching Headers Container -->
                 <div class="tab-container">
                     <button class="tab-btn active" id="tabOrderBtn" onclick="switchWorkspaceTab('order')">📦 Active Order List</button>
                     <button class="tab-btn" id="tabEntryBtn" onclick="switchWorkspaceTab('entry')">📝 Item Entry</button>
                     <button class="tab-btn" id="tabCalcBtn" onclick="switchWorkspaceTab('calc')">🧮 Profit Calculator</button>
                 </div>
                 
-                <!-- Tab Panel 1: Active Order List Workspace Module (Unrestricted Dynamic Height View) -->
                 <div id="orderTabPanel" class="tab-panel active">
                     <div class="order-tab-header">
                         <div class="order-tab-title">Active Items Procurement Worksheet</div>
@@ -519,7 +513,6 @@
                     </div>
                 </div>
 
-                <!-- Tab Panel 2: Main Application Item Entry Form Workspace -->
                 <div id="entryTabPanel" class="tab-panel">
                     <div class="form-grid">
                         <div class="form-unit half-unit"><div class="form-group"><label>ID</label><input type="text" id="itemID"></div></div>
@@ -541,10 +534,8 @@
                     </div>
                 </div>
 
-                <!-- Tab Panel 3: Integrated Standalone Profit Calculator Workspace Module -->
                 <div id="calcTabPanel" class="tab-panel">
                     <div class="calc-grid">
-                        <!-- Purchasing Parameters -->
                         <div class="calc-section calc-purchasing">
                             <label class="label" style="color:var(--purchasing-text); margin-bottom:8px;">Purchasing</label>
                             <div class="calc-row">
@@ -568,7 +559,6 @@
                             </div>
                         </div>
 
-                        <!-- Sales Configuration -->
                         <div class="calc-section calc-sales">
                             <label class="label" style="color:var(--sales-text); margin-bottom:8px;">Sales</label>
                             <div class="calc-row">
@@ -583,7 +573,6 @@
                             </div>
                         </div>
 
-                        <!-- Profitability Yield Metrics -->
                         <div class="calc-section calc-profit">
                             <label class="label" style="color:var(--profit-text); margin-bottom:8px;">Profitability</label>
                             <div>
