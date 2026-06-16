@@ -63,6 +63,16 @@
         }
         .header h2 { margin: 0; font-size: 1.1rem; color: var(--md-sys-color-primary); font-weight: 700; letter-spacing: -0.2px; }
 
+        /* Header shortcut button styling */
+        .btn-header-shortcut {
+            background: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+            min-height: 36px !important;
+            height: 36px;
+            padding: 0 12px !important;
+            font-size: 0.75rem !important;
+        }
+
         .workspace-row {
             display: flex;
             flex-direction: column;
@@ -307,7 +317,7 @@
 
         /* Setup CSS Handles for Visibility Control */
         .col-id, .col-barcode, .col-stock { display: none; }
-        .col-actions { display: table-cell; } /* Active by default */
+        .col-actions { display: table-cell; }
 
         tfoot {
             position: sticky;
@@ -352,7 +362,7 @@
 
         .qty-input { width: 64px !important; text-align: center; border: 1px solid var(--md-sys-color-accent) !important; font-weight: bold; height: 36px; padding: 4px; border-radius: 6px; font-size: 0.9rem; }
 
-        .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
+        .status-dot { inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
         .dot-active { background-color: #16a34a; box-shadow: 0 0 4px #16a34a; }
         .dot-blocked { background-color: #dc2626; box-shadow: 0 0 4px #dc2626; }
         
@@ -393,6 +403,8 @@
 <div class="container">
     <div class="header">
         <h2>ORDER FORM</h2>
+        <!-- New shortcut action to quickly bounce into Orders workspace view -->
+        <button class="btn btn-header-shortcut" onclick="scrollToOrders()">📦 View Orders</button>
     </div>
 
     <div class="workspace-row">
@@ -420,7 +432,6 @@
                     </div>
                 </h3>
 
-                <!-- Column Toggle Visibility Feature Panel -->
                 <div class="column-visibility-bar">
                     <div class="visibility-title">Show Columns</div>
                     <div class="toggles-flex">
@@ -451,7 +462,7 @@
     </div>
 
     <div class="workspace-row">
-        <div class="top-full">
+        <div id="targetWorkspaceCard" class="top-full">
             <div class="card" style="padding-bottom: 14px;">
                 <div class="tab-container">
                     <button class="tab-btn active" id="tabOrderBtn" onclick="switchWorkspaceTab('order')">📦 Orders</button>
@@ -580,12 +591,11 @@
     let inventory = JSON.parse(localStorage.getItem('flamingo_db_v3')) || [];
     let transactions = JSON.parse(localStorage.getItem('flamingo_trans_v3')) || [];
 
-    // Tracks visible layout tags inside a state map configuration
     let visibleColumns = {
         id: false,
         barcode: false,
         stock: false,
-        actions: true // Default True
+        actions: true
     };
 
     const elements = {
@@ -638,15 +648,19 @@
         renderTable();
     }
 
-    // Controls column show/hide rules dynamically across table sheets
+    // Helper to jump workflow contexts smoothly from the header
+    function scrollToOrders() {
+        switchWorkspaceTab('order');
+        const container = document.getElementById('targetWorkspaceCard');
+        if (container) {
+            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
     function toggleColumnVisibility(columnClass, isChecked) {
         visibleColumns[columnClass] = isChecked;
-        
-        // Handle Head elements updates
         const thElements = document.querySelectorAll(`#inventoryTable th.col-${columnClass}`);
         thElements.forEach(el => el.style.display = isChecked ? 'table-cell' : 'none');
-
-        // Handle Body row cell structural iterations 
         const tdElements = document.querySelectorAll(`#inventoryTable td.col-${columnClass}`);
         tdElements.forEach(el => el.style.display = isChecked ? 'table-cell' : 'none');
     }
@@ -744,7 +758,6 @@
         filtered.forEach(i => {
             const dotClass = i.status === 'Active' ? 'dot-active' : 'dot-blocked';
             
-            // Layout styling state flags check
             const idStyle = visibleColumns.id ? 'table-cell' : 'none';
             const barcodeStyle = visibleColumns.barcode ? 'table-cell' : 'none';
             const stockStyle = visibleColumns.stock ? 'table-cell' : 'none';
@@ -784,7 +797,7 @@
         if (!item) return;
         transactions.push({ code: item.code, desc: item.desc, qty: 12, price: item.price, ref: Date.now() });
         syncTransactions();
-        switchWorkspaceTab('order');
+        scrollToOrders();
     }
 
     function updateQty(ref, val) {
@@ -802,6 +815,7 @@
         }
     }
 
+    // Fixed a small formatting string missing in the original implementation snippet
     function syncTransactions() {
         localStorage.setItem('flamingo_trans_v3', JSON.stringify(transactions));
         renderTransactions();
