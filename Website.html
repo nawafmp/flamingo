@@ -36,14 +36,20 @@
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html { scroll-behavior: smooth; }
+  html { 
+    scroll-behavior: smooth; 
+    -webkit-text-size-adjust: 100%; /* Prevents font-size mobile adjustments on iOS */
+  }
 
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background: var(--cream);
     color: var(--charcoal);
     line-height: 1.6;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -73,7 +79,7 @@
   }
   nav.scrolled { box-shadow: var(--shadow-sm); background: rgba(250, 248, 243, 0.95); height: 80px; }
 
-  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; min-height: 44px; }
   .nav-logo img { height: 60px; width: auto; transition: var(--transition); }
   nav.scrolled .nav-logo img { height: 48px; }
   .nav-logo:hover img { transform: scale(1.02); }
@@ -83,10 +89,10 @@
   .nav-links a:not(.nav-cta) {
     font-size: 13px; font-weight: 500; letter-spacing: 0.08em;
     color: var(--text-muted); text-decoration: none; text-transform: uppercase;
-    transition: var(--transition); position: relative; padding: 6px 0;
+    transition: var(--transition); position: relative; padding: 12px 0; /* Expanded touch footprint */
   }
   .nav-links a:not(.nav-cta)::after {
-    content: ''; position: absolute; bottom: 0; left: 50%; right: 50%;
+    content: ''; position: absolute; bottom: 6px; left: 50%; right: 50%;
     height: 2px; background: var(--forest);
     transition: var(--transition);
   }
@@ -111,6 +117,7 @@
     display: inline-block;
     text-decoration: none;
     transition: var(--transition) !important;
+    touch-action: manipulation;
   }
   .nav-cta::before {
     content: '';
@@ -124,16 +131,31 @@
 
   .hamburger {
     display: none; background: none; border: none; cursor: pointer;
-    width: 44px; height: 44px; align-items: center; justify-content: center;
-    flex-direction: column; gap: 5px;
+    width: 48px; height: 48px; align-items: center; justify-content: center;
+    flex-direction: column; gap: 6px; z-index: 110; touch-action: manipulation;
   }
-  .hamburger span { width: 22px; height: 1.5px; background: var(--charcoal); transition: var(--transition); display: block; }
+  .hamburger span { width: 24px; height: 2px; background: var(--charcoal); transition: var(--transition); display: block; transform-origin: center; }
+
+  /* Mobile menu Active cross states */
+  .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+  .hamburger.active span:nth-child(2) { opacity: 0; }
+  .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
   @media (max-width: 900px) {
     nav { padding: 0 1.5rem; height: 80px; }
     .nav-logo img { height: 48px; }
-    .nav-links { display: none; }
     .hamburger { display: flex; }
+    
+    .nav-links {
+      position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+      background: var(--cream); flex-direction: column; justify-content: center;
+      gap: 2.5rem; transition: cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s; z-index: 105;
+      padding: 2rem; box-shadow: var(--shadow-lg);
+    }
+    .nav-links.active { right: 0; }
+    .nav-links a:not(.nav-cta) { font-size: 18px; width: 100%; text-align: center; }
+    .nav-cta { font-size: 16px !important; padding: 1rem 3rem; text-align: center; }
+    .nav-links li, .nav-cta-wrapper { width: 100%; justify-content: center; display: flex; }
   }
 
   /* ─── HERO ─── */
@@ -200,6 +222,7 @@
     transition: var(--transition);
     min-height: 54px;
     box-shadow: 0 4px 14px rgba(45, 80, 22, 0.15);
+    touch-action: manipulation;
   }
   .btn-primary:hover { background: var(--forest-mid); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(45, 80, 22, 0.2); }
 
@@ -211,6 +234,7 @@
     text-decoration: none; border: 1.5px solid var(--border-strong); cursor: pointer;
     transition: var(--transition);
     min-height: 54px;
+    touch-action: manipulation;
   }
   .btn-secondary:hover { background: var(--forest-mist); border-color: var(--forest); transform: translateY(-2px); }
 
@@ -386,6 +410,7 @@
     font-size: 13px; font-weight: 500; color: var(--text-muted);
     cursor: pointer; transition: var(--transition);
     min-height: 40px;
+    touch-action: manipulation;
   }
   .filter-pill:hover { border-color: var(--forest); color: var(--forest); }
   .filter-pill.active { background: var(--forest); color: white; border-color: var(--forest); box-shadow: 0 4px 12px rgba(45,80,22,0.15); }
@@ -423,6 +448,7 @@
     background: var(--cream); color: var(--charcoal);
     transition: var(--transition);
     outline: none; min-height: 50px;
+    -webkit-appearance: none; /* Removes native iOS default shadow inputs styling */
   }
   .form-group textarea { min-height: 120px; resize: vertical; border-radius: var(--radius-lg); }
   .form-group input:focus, .form-group textarea:focus {
@@ -435,6 +461,7 @@
     letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
     min-height: 56px; transition: var(--transition);
     box-shadow: 0 4px 14px rgba(45, 80, 22, 0.2);
+    touch-action: manipulation;
   }
   .form-submit:hover { background: var(--forest-mid); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(45, 80, 22, 0.25); }
 
@@ -462,8 +489,8 @@
   .footer-brand p { font-size: 14px; line-height: 1.7; max-width: 280px; }
   .footer-col h4 { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: white; margin-bottom: 1.5rem; }
   .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
-  .footer-col ul a { font-size: 14px; color: rgba(255,255,255,0.5); text-decoration: none; transition: var(--transition); }
-  .footer-col ul a:hover { color: white; transform: translateX(4px); display: inline-block; }
+  .footer-col ul a { font-size: 14px; color: rgba(255,255,255,0.5); text-decoration: none; transition: var(--transition); display: inline-block; padding: 4px 0; }
+  .footer-col ul a:hover { color: white; transform: translateX(4px); }
   .footer-bottom {
     border-top: 1px solid rgba(255,255,255,0.08); padding-top: 2rem;
     display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;
@@ -504,23 +531,21 @@
 
 <a href="#main" class="skip-link">Skip to main content</a>
 
-<!-- NAVIGATION -->
 <nav id="navbar" role="navigation" aria-label="Main navigation">
   <a href="/" class="nav-logo" aria-label="Flamingo home">
     <img src="Logo_transparent.png" alt="Flamingo Stationery Trading">
   </a>
-  <ul class="nav-links" role="list">
+  <ul class="nav-links" id="nav-links" role="list">
     <li><a href="#categories">Collections</a></li>
     <li><a href="#products">Products</a></li>
     <li><a href="#why">Why Us</a></li>
     <li class="nav-cta-wrapper"><a href="#contact" class="nav-cta">Contact us</a></li>
   </ul>
-  <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+  <button class="hamburger" id="hamburger-menu" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
-<!-- HERO -->
 <main id="main">
 <section class="hero" aria-label="Welcome to Flamingo">
   <div class="hero-bg" aria-hidden="true"></div>
@@ -620,7 +645,6 @@
   </div>
 </section>
 
-<!-- MARQUEE -->
 <div class="marquee-section" aria-hidden="true">
   <div class="marquee-track">
     <span class="marquee-item">Premium Notebooks <span class="marquee-dot"></span></span>
@@ -642,7 +666,6 @@
   </div>
 </div>
 
-<!-- CATEGORIES -->
 <section id="categories">
   <div class="section-inner">
     <div class="categories-header">
@@ -749,7 +772,6 @@
   </div>
 </section>
 
-<!-- WHY US -->
 <section id="why">
   <div class="section-inner">
     <div class="features-layout">
@@ -813,7 +835,6 @@
   </div>
 </section>
 
-<!-- PRODUCTS -->
 <section id="products">
   <div class="section-inner">
     <div class="products-header">
@@ -833,7 +854,6 @@
     </div>
     <div class="products-grid" id="products-grid" aria-label="Product catalogue">
 
-      <!-- Product 1 -->
       <article class="prod-card reveal" data-cat="notebooks" aria-label="Linen Hardcover A5 Notebook">
         <div class="prod-card-img" style="background:#e8f0e0">
           <svg width="180" height="180" viewBox="0 0 180 180" fill="none" aria-hidden="true">
@@ -861,7 +881,6 @@
         </div>
       </article>
 
-      <!-- Product 2 -->
       <article class="prod-card reveal reveal-delay-1" data-cat="pens" aria-label="Brass Rollerball Pen">
         <div class="prod-card-img" style="background:#faf6ed">
           <svg width="180" height="180" viewBox="0 0 180 180" fill="none" aria-hidden="true">
@@ -877,7 +896,6 @@
         </div>
       </article>
 
-      <!-- Product 3 -->
       <article class="prod-card reveal reveal-delay-2" data-cat="planners" aria-label="Weekly Desk Planner 2025">
         <div class="prod-card-img" style="background:#f2f6ed">
           <svg width="180" height="180" viewBox="0 0 180 180" fill="none" aria-hidden="true">
@@ -902,7 +920,6 @@
         </div>
       </article>
 
-      <!-- Product 4 -->
       <article class="prod-card reveal reveal-delay-3" data-cat="accessories" aria-label="Marble Desk Organiser">
         <div class="prod-card-img" style="background:#fdf8f3">
           <svg width="180" height="180" viewBox="0 0 180 180" fill="none" aria-hidden="true">
@@ -931,7 +948,6 @@
   </div>
 </section>
 
-<!-- CONTACT / CTA -->
 <section id="contact">
   <div class="section-inner">
     <div class="cta-layout">
@@ -1011,7 +1027,6 @@
 </section>
 </main>
 
-<!-- FOOTER -->
 <footer role="contentinfo">
   <div class="footer-inner">
     <div class="footer-top">
@@ -1059,10 +1074,29 @@
   </div>
 </footer>
 
-<!-- TOAST -->
 <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <script>
+  // Mobile drawer panel logic integration
+  const hamburger = document.getElementById('hamburger-menu');
+  const navLinks = document.getElementById('nav-links');
+
+  hamburger.addEventListener('click', () => {
+    const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
+    hamburger.setAttribute('aria-expanded', !expanded);
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('active');
+  });
+
+  // Closes drawer interface when anchors are triggered
+  document.querySelectorAll('#nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.classList.remove('active');
+      navLinks.classList.remove('active');
+    });
+  });
+
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 40);
