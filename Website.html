@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flamingo Stationery Trading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #2d5016;
+    --forest-deep: #1a3009;
+    --forest-mid: #3d6b20;
+    --forest-light: #4a7a26;
+    --forest-pale: #e8f0e0;
+    --forest-mist: #f2f6ed;
+    --cream: #faf8f3;
+    --cream-warm: #f5f0e8;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --charcoal: #1c1c1a;
+    --text-muted: #6b6b62;
+    --text-light: #9a9a8e;
+    --white: #ffffff;
+    --border: rgba(45, 80, 22, 0.12);
+    --border-strong: rgba(45, 80, 22, 0.25);
+    --shadow-sm: 0 2px 12px rgba(45, 80, 22, 0.08);
+    --shadow-md: 0 8px 40px rgba(45, 80, 22, 0.12);
+    --shadow-lg: 0 24px 80px rgba(45, 80, 22, 0.16);
+    --radius: 2px;
+    --radius-md: 6px;
+    --radius-lg: 12px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  /* ─── SKIP LINK ─── */
+  .skip-link {
+    position: absolute; top: -100%; left: 1rem;
+    background: var(--forest); color: white;
+    padding: 0.5rem 1rem; border-radius: var(--radius-md);
+    font-size: 14px; text-decoration: none; z-index: 9999;
+  }
+  .skip-link:focus { top: 1rem; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 96px; /* Increased height to structural support bigger logo footprint */
+    background: rgba(250, 248, 243, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.3s ease;
+  }
+  nav.scrolled { box-shadow: var(--shadow-sm); }
+
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo img { height: 64px; width: auto; transition: transform 0.2s ease; } /* Maximized logo size profile */
+  .nav-logo:hover img { transform: scale(1.03); }
+
+  .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 13px; font-weight: 500; letter-spacing: 0.06em;
+    color: var(--text-muted); text-decoration: none; text-transform: uppercase;
+    transition: color 0.2s ease; position: relative; padding-bottom: 2px;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -2px; left: 0; right: 100%;
+    height: 1px; background: var(--forest);
+    transition: right 0.25s ease;
+  }
+  .nav-links a:hover { color: var(--forest); }
+  .nav-links a:hover::after { right: 0; }
+  .nav-links a:focus-visible { outline: 2px solid var(--forest); outline-offset: 4px; border-radius: 2px; }
+
+  .nav-cta {
+    background: var(--forest); color: white !important;
+    padding: 0.6rem 1.4rem; border-radius: var(--radius) !important;
+    font-size: 13px !important; font-weight: 500 !important;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    transition: background 0.2s ease, transform 0.15s ease !important;
+    cursor: pointer;
+  }
+  .nav-cta::after { display: none !important; }
+  .nav-cta:hover { background: var(--forest-mid) !important; color: white !important; transform: translateY(-1px); }
+
+  .hamburger {
+    display: none; background: none; border: none; cursor: pointer;
+    width: 44px; height: 44px; align-items: center; justify-content: center;
+    flex-direction: column; gap: 5px;
+  }
+  .hamburger span { width: 22px; height: 1.5px; background: var(--charcoal); transition: all 0.25s ease; display: block; }
+
+  @media (max-width: 768px) {
+    nav { height: 80px; }
+    .nav-logo img { height: 50px; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100dvh;
+    display: flex; align-items: center;
+    padding: 140px 2rem 80px;
+    position: relative; overflow: hidden;
+    background: var(--cream);
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 30%, rgba(45,80,22,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(201,168,76,0.05) 0%, transparent 60%);
+  }
+
+  .hero-grid-lines {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.35;
+    background-image:
+      linear-gradient(to right, rgba(45,80,22,0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(45,80,22,0.06) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+
+  .hero-inner {
+    max-width: 1280px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--forest-pale); border: 1px solid var(--border-strong);
+    padding: 6px 14px; border-radius: 100px; margin-bottom: 2rem;
+    font-size: 12px; font-weight: 500; color: var(--forest); letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--forest); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5vw, 5.5rem);
+    font-weight: 300; line-height: 1.05;
+    color: var(--charcoal); margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+  .hero-title em { font-style: italic; color: var(--forest); }
+  .hero-title strong { font-weight: 600; display: block; }
+
+  .hero-desc {
+    font-size: 17px; color: var(--text-muted);
+    line-height: 1.75; max-width: 480px; margin-bottom: 2.5rem;
+  }
+
+  .hero-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--forest); color: white;
+    padding: 1rem 2rem; border-radius: var(--radius);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    min-height: 52px;
+  }
+  .btn-primary:hover { background: var(--forest-mid); transform: translateY(-2px); }
+  .btn-primary:focus-visible { outline: 2px solid var(--forest); outline-offset: 3px; border-radius: var(--radius-md); }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--forest);
+    padding: 1rem 2rem; border-radius: var(--radius);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
+    text-decoration: none; border: 1px solid var(--border-strong); cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    min-height: 52px;
+  }
+  .btn-secondary:hover { background: var(--forest-mist); transform: translateY(-2px); }
+  .btn-secondary:focus-visible { outline: 2px solid var(--forest); outline-offset: 3px; border-radius: var(--radius-md); }
+
+  .hero-stats {
+    display: flex; gap: 2.5rem; margin-top: 3rem; padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem; font-weight: 500; color: var(--charcoal); line-height: 1;
+  }
+  .stat-label { font-size: 12px; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px; }
+
+  /* Hero Visual */
+  .hero-visual {
+    position: relative; display: flex; align-items: center; justify-content: center;
+  }
+
+  .hero-card-stack { position: relative; width: 100%; max-width: 480px; margin: 0 auto; }
+
+  .product-card-bg {
+    position: absolute; top: 24px; left: 16px; right: -16px; bottom: -24px;
+    background: var(--forest-pale); border-radius: var(--radius-lg);
+    border: 1px solid var(--border-strong);
+  }
+  .product-card-bg2 {
+    position: absolute; top: 12px; left: 8px; right: -8px; bottom: -12px;
+    background: var(--forest-mist); border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+  }
+
+  .product-card-main {
+    position: relative; background: white;
+    border-radius: var(--radius-lg); border: 1px solid var(--border);
+    overflow: hidden; box-shadow: var(--shadow-md);
+  }
+
+  .product-card-img {
+    height: 280px; background: var(--forest-mist);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+
+  .product-card-body { padding: 1.5rem; }
+  .product-card-tag {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--forest); background: var(--forest-pale);
+    padding: 3px 10px; border-radius: 100px; display: inline-block; margin-bottom: 0.75rem;
+  }
+  .product-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 500; margin-bottom: 0.5rem;
+  }
+  .product-card-meta {
+    display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;
+  }
+
+  /* Floating badges */
+  .float-badge {
+    position: absolute; background: white; border-radius: var(--radius-md);
+    border: 1px solid var(--border); padding: 10px 14px;
+    box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 500; white-space: nowrap;
+    animation: floatBadge 3s ease-in-out infinite;
+  }
+  .float-badge-1 { top: -20px; right: -20px; animation-delay: 0s; }
+  .float-badge-2 { bottom: 60px; left: -30px; animation-delay: 1.5s; }
+  .float-badge-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  @keyframes floatBadge { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
+  @media (max-width: 1024px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .hero-visual { order: -1; }
+    .hero-card-stack { max-width: 380px; }
+  }
+  @media (max-width: 768px) {
+    .hero { padding: 120px 1.25rem 60px; }
+    .hero-stats { gap: 1.5rem; }
+    .hero-card-stack { max-width: 320px; }
+    .product-card-img { height: 200px; }
+  }
+
+  /* ─── MARQUEE ─── */
+  .marquee-section {
+    background: var(--forest); overflow: hidden;
+    padding: 1rem 0;
+  }
+  .marquee-track {
+    display: flex; gap: 3rem; width: max-content;
+    animation: marquee 28s linear infinite;
+  }
+  .marquee-item {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-weight: 400; font-style: italic;
+    color: rgba(255,255,255,0.75); white-space: nowrap;
+    display: flex; align-items: center; gap: 1.5rem;
+  }
+  .marquee-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); display: inline-block; }
+  @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+  /* ─── SECTIONS SHARED ─── */
+  section { padding: 7rem 2rem; }
+  .section-inner { max-width: 1280px; margin: 0 auto; }
+  .section-label {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--forest); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::before { content: ''; width: 24px; height: 1px; background: var(--forest); }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 300; line-height: 1.1;
+    color: var(--charcoal); margin-bottom: 1.25rem; letter-spacing: -0.02em;
+  }
+  .section-title em { font-style: italic; color: var(--forest); }
+  .section-desc { font-size: 16px; color: var(--text-muted); max-width: 520px; line-height: 1.75; }
+
+  /* ─── CATEGORIES ─── */
+  #categories { background: var(--white); }
+  .categories-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 3.5rem; gap: 2rem; flex-wrap: wrap;
+  }
+  .categories-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .cat-card {
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; cursor: pointer; text-decoration: none;
+    background: var(--cream); position: relative;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    display: block;
+  }
+  .cat-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: var(--border-strong); }
+  .cat-card:focus-visible { outline: 2px solid var(--forest); outline-offset: 3px; }
+
+  .cat-card-img {
+    height: 200px; overflow: hidden; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cat-card-body { padding: 1.25rem; }
+  .cat-card-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 500; margin-bottom: 4px; }
+  .cat-card-count { font-size: 12px; color: var(--text-muted); }
+  .cat-card-arrow {
+    position: absolute; top: 1rem; right: 1rem;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: white; border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: scale(0.8);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .cat-card:hover .cat-card-arrow { opacity: 1; transform: scale(1); }
+
+  /* ─── FEATURES ─── */
+  #why { background: var(--cream); }
+  .features-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+  }
+  .features-list { display: flex; flex-direction: column; gap: 2.5rem; margin-top: 2.5rem; }
+  .feature-item { display: flex; gap: 1.25rem; }
+  .feature-icon {
+    width: 48px; height: 48px; border-radius: var(--radius-md);
+    background: var(--forest-pale); border: 1px solid var(--border-strong);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .feature-text h3 {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 500;
+    margin-bottom: 6px; color: var(--charcoal);
+  }
+  .feature-text p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+
+  .features-visual { position: relative; }
+  .features-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .feat-stat-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.75rem;
+    transition: box-shadow 0.25s ease;
+  }
+  .feat-stat-card:hover { box-shadow: var(--shadow-sm); }
+  .feat-stat-card.accent { background: var(--forest); border-color: var(--forest-deep); }
+  .feat-stat-num {
+    font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300;
+    color: var(--charcoal); line-height: 1;
+  }
+  .feat-stat-card.accent .feat-stat-num { color: white; }
+  .feat-stat-label { font-size: 13px; color: var(--text-muted); margin-top: 6px; line-height: 1.4; }
+  .feat-stat-card.accent .feat-stat-label { color: rgba(255,255,255,0.7); }
+  .feat-stat-card.tall { grid-row: span 2; display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem; }
+  .feat-stat-card.tall .feat-stat-num { font-size: 4rem; }
+
+  @media (max-width: 1024px) {
+    .features-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .features-visual { order: -1; }
+  }
+
+  /* ─── PRODUCTS ─── */
+  #products { background: var(--white); }
+  .products-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 3.5rem; gap: 2rem; flex-wrap: wrap;
+  }
+  .filter-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .filter-pill {
+    padding: 6px 16px; border-radius: 100px;
+    border: 1px solid var(--border); background: transparent;
+    font-size: 13px; font-weight: 400; color: var(--text-muted);
+    cursor: pointer; transition: all 0.2s ease;
+    min-height: 36px;
+  }
+  .filter-pill:hover { border-color: var(--forest); color: var(--forest); }
+  .filter-pill.active { background: var(--forest); color: white; border-color: var(--forest); }
+  .filter-pill:focus-visible { outline: 2px solid var(--forest); outline-offset: 2px; }
+
+  .products-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .prod-card {
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    background: var(--cream); overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+  }
+  .prod-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+  .prod-card-img {
+    height: 220px; overflow: hidden; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .prod-card-img:hover svg { transform: scale(1.04); }
+  .prod-card-img svg { transition: transform 0.4s ease; }
+  .prod-new-badge {
+    position: absolute; top: 12px; left: 12px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    background: var(--gold); color: var(--forest-deep);
+    padding: 3px 8px; border-radius: 3px;
+  }
+  .prod-card-body { padding: 1.25rem; }
+  .prod-cat { font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .prod-name { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 500; margin-bottom: 8px; }
+  .prod-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; }
+  .prod-add {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--forest); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s ease, transform 0.15s ease;
+    flex-shrink: 0;
+  }
+  .prod-add:hover { background: var(--forest-mid); transform: scale(1.08); }
+  .prod-add:focus-visible { outline: 2px solid var(--forest); outline-offset: 3px; }
+
+  /* ─── CTA SECTION ─── */
+  #contact { background: var(--cream-warm); }
+  .cta-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+  }
+  .cta-form { background: white; border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 2.5rem; }
+  .cta-form h3 {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .cta-form p { font-size: 14px; color: var(--text-muted); margin-bottom: 2rem; }
+
+  .form-group { margin-bottom: 1.25rem; }
+  .form-group label {
+    display: block; font-size: 13px; font-weight: 500; color: var(--charcoal);
+    margin-bottom: 6px;
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 0.75rem 1rem;
+    border: 1px solid var(--border-strong); border-radius: var(--radius-md);
+    font-size: 14px; font-family: 'Inter', sans-serif;
+    background: var(--cream); color: var(--charcoal);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none; min-height: 44px;
+  }
+  .form-group textarea { min-height: 100px; resize: vertical; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--forest); box-shadow: 0 0 0 3px rgba(45,80,22,0.1);
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-submit {
+    width: 100%; padding: 1rem; background: var(--forest); color: white;
+    border: none; border-radius: var(--radius); font-size: 14px; font-weight: 500;
+    letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer;
+    min-height: 52px; transition: background 0.2s ease, transform 0.15s ease;
+  }
+  .form-submit:hover { background: var(--forest-mid); transform: translateY(-1px); }
+  .form-submit:focus-visible { outline: 2px solid var(--forest); outline-offset: 3px; border-radius: var(--radius-md); }
+
+  .cta-info { padding-top: 1rem; }
+  .cta-info-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2.5rem; }
+  .cta-info-item { display: flex; gap: 1rem; align-items: flex-start; }
+  .cta-info-icon {
+    width: 44px; height: 44px; border-radius: var(--radius-md);
+    background: var(--forest-pale); border: 1px solid var(--border-strong);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .cta-info-item h4 { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+  .cta-info-item p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+  @media (max-width: 1024px) {
+    .cta-layout { grid-template-columns: 1fr; gap: 3rem; }
+  }
+  @media (max-width: 640px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--charcoal); color: rgba(255,255,255,0.7);
+    padding: 4rem 2rem 2rem;
+  }
+  .footer-inner { max-width: 1280px; margin: 0 auto; }
+  .footer-top {
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 3rem; margin-bottom: 3rem;
+  }
+  .footer-brand img { height: 52px; filter: brightness(0) invert(1); margin-bottom: 1.25rem; } /* Expanded base size footprint in footer */
+  .footer-brand p { font-size: 13px; line-height: 1.7; max-width: 260px; }
+  .footer-col h4 { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: white; margin-bottom: 1.25rem; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .footer-col ul a { font-size: 13px; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.2s ease; }
+  .footer-col ul a:hover { color: white; }
+  .footer-col ul a:focus-visible { outline: 1px solid rgba(255,255,255,0.4); outline-offset: 2px; border-radius: 2px; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-bottom p { font-size: 12px; }
+  .footer-socials { display: flex; gap: 1rem; }
+  .footer-social {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.6); text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease;
+    font-size: 14px;
+  }
+  .footer-social:hover { border-color: rgba(255,255,255,0.4); color: white; }
+  .footer-social:focus-visible { outline: 1px solid white; outline-offset: 3px; }
+
+  @media (max-width: 1024px) { .footer-top { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .footer-top { grid-template-columns: 1fr; } section { padding: 5rem 1.25rem; } }
+
+  /* ─── SCROLL ANIMATIONS ─── */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+    background: var(--forest); color: white;
+    padding: 0.875rem 1.5rem; border-radius: var(--radius-md);
+    font-size: 14px; font-weight: 500;
+    transform: translateY(100px); opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    pointer-events: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- NAVIGATION -->
+<nav id="navbar" role="navigation" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="Flamingo home">
+    <img src="Logo_transparent.png" alt="Flamingo Stationery Trading">
+  </a>
+  <ul class="nav-links" role="list">
+    <li><a href="#categories">Collections</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+  <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<main id="main">
+<section class="hero" aria-label="Welcome to Flamingo">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-grid-lines" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge" aria-label="Now available">
+        Catalogue 2025
+      </div>
+      <h1 class="hero-title">
+        Where <em>craft</em><br>meets<br><strong>commerce.</strong>
+      </h1>
+      <p class="hero-desc">
+        Premium stationery, curated for retailers and businesses who believe the right paper changes everything. Trusted by 2,400+ stockists worldwide.
+      </p>
+      <div class="hero-actions">
+        <a href="#products" class="btn-primary" aria-label="Browse our catalogue">
+          Browse Catalogue
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="#contact" class="btn-secondary">Request Samples</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number">2,400<span style="font-size:1.5rem">+</span></div>
+          <div class="stat-label">Active Stockists</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">680<span style="font-size:1.5rem">+</span></div>
+          <div class="stat-label">SKUs Available</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">42</div>
+          <div class="stat-label">Countries</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-card-stack">
+        <div class="product-card-bg2"></div>
+        <div class="product-card-bg"></div>
+        <div class="product-card-main">
+          <div class="product-card-img">
+            <svg width="340" height="280" viewBox="0 0 340 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="340" height="280" fill="#f2f6ed"/>
+              <rect x="80" y="80" width="110" height="148" rx="4" fill="#2d5016" opacity="0.9"/>
+              <rect x="84" y="84" width="102" height="140" rx="2" fill="#3d6b20"/>
+              <line x1="84" y1="110" x2="186" y2="110" stroke="#2d5016" stroke-width="1" opacity="0.4"/>
+              <line x1="84" y1="120" x2="186" y2="120" stroke="#2d5016" stroke-width="1" opacity="0.4"/>
+              <line x1="84" y1="130" x2="186" y2="130" stroke="#2d5016" stroke-width="1" opacity="0.4"/>
+              <text x="135" y="106" font-family="Georgia, serif" font-style="italic" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle">Flamingo</text>
+              <circle cx="80" cy="95" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+              <circle cx="80" cy="111" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+              <circle cx="80" cy="127" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+              <circle cx="80" cy="143" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+              <circle cx="80" cy="159" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+              <circle cx="80" cy="175" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+              <circle cx="80" cy="191" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+              <circle cx="80" cy="207" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+              <rect x="204" y="70" width="14" height="160" rx="7" fill="#1a3009"/>
+              <polygon points="204,230 218,230 211,248" fill="#f5f0e8"/>
+              <rect x="204" y="70" width="14" height="18" rx="7" fill="#c9a84c"/>
+              <rect x="224" y="80" width="12" height="148" rx="6" fill="#4a7a26"/>
+              <polygon points="224,228 236,228 230,244" fill="#f5f0e8"/>
+              <rect x="224" y="80" width="12" height="15" rx="6" fill="#e8c97a"/>
+              <rect x="50" y="160" width="140" height="18" rx="2" fill="#c9a84c" opacity="0.85"/>
+              <line x1="60" y1="160" x2="60" y2="168" stroke="#1a3009" stroke-width="1"/>
+              <line x1="75" y1="160" x2="75" y2="165" stroke="#1a3009" stroke-width="0.8"/>
+              <line x1="90" y1="160" x2="90" y2="168" stroke="#1a3009" stroke-width="1"/>
+              <line x1="105" y1="160" x2="105" y2="165" stroke="#1a3009" stroke-width="0.8"/>
+              <line x1="120" y1="160" x2="120" y2="168" stroke="#1a3009" stroke-width="1"/>
+              <line x1="135" y1="160" x2="135" y2="165" stroke="#1a3009" stroke-width="0.8"/>
+              <line x1="150" y1="160" x2="150" y2="168" stroke="#1a3009" stroke-width="1"/>
+              <line x1="165" y1="160" x2="165" y2="165" stroke="#1a3009" stroke-width="0.8"/>
+              <line x1="180" y1="160" x2="180" y2="168" stroke="#1a3009" stroke-width="1"/>
+              <path d="M256 120 C256 110 264 110 264 120 L264 150 C264 162 252 162 252 150 L252 118 C252 104 268 104 268 118 L268 152" stroke="#888" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <rect x="40" y="50" width="55" height="55" fill="#e8f0e0" rx="2"/>
+              <line x1="48" y1="68" x2="87" y2="68" stroke="#4a7a26" stroke-width="1" opacity="0.5"/>
+              <line x1="48" y1="76" x2="87" y2="76" stroke="#4a7a26" stroke-width="1" opacity="0.5"/>
+              <line x1="48" y1="84" x2="87" y2="84" stroke="#4a7a26" stroke-width="1" opacity="0.5"/>
+              <line x1="48" y1="92" x2="87" y2="92" stroke="#4a7a26" stroke-width="1" opacity="0.5"/>
+              <rect x="50" y="50" width="55" height="55" fill="#fef9c3" rx="2" transform="rotate(-6 50 50)" opacity="0.8"/>
+            </svg>
+          </div>
+          <div class="product-card-body">
+            <span class="product-card-tag">Bestseller</span>
+            <div class="product-card-name">Classic A5 Notebook Collection</div>
+            <div class="product-card-meta">
+              <button class="prod-add" onclick="showToast('Added to inquiry list!')" aria-label="Add to inquiry">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M8 2v12M2 8h12" stroke="white" stroke-width="1.75" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="float-badge float-badge-1">
+          <div class="float-badge-icon" style="background:#e8f0e0">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M7 1l1.5 4H13l-3.5 2.5 1.5 4L7 9 3 11.5l1.5-4L1 5h4.5L7 1z" fill="#2d5016"/>
+            </svg>
+          </div>
+          <span style="color:#2d5016;font-size:13px">Top Rated</span>
+        </div>
+        <div class="float-badge float-badge-2">
+          <div class="float-badge-icon" style="background:#fef3cd">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <rect x="1" y="3" width="12" height="8" rx="1" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
+              <path d="M5 3V2a2 2 0 014 0v1" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:500;color:#1a3009">Samples Available</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">Premium Notebooks <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Luxury Pens &amp; Pencils <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Gift Wrapping Solutions <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Eco-Friendly Options <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Custom Branding <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Desk Accessories <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Art Supplies <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Planners &amp; Journals <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Premium Notebooks <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Luxury Pens &amp; Pencils <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Gift Wrapping Solutions <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Eco-Friendly Options <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Custom Branding <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Desk Accessories <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Art Supplies <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Planners &amp; Journals <span class="marquee-dot"></span></span>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section id="categories">
+  <div class="section-inner">
+    <div class="categories-header">
+      <div>
+        <div class="section-label reveal">Collections</div>
+        <h2 class="section-title reveal reveal-delay-1">Shop by <em>category</em></h2>
+        <p class="section-desc reveal reveal-delay-2">From classic notebooks to bespoke gift solutions, every product crafted with intention.</p>
+      </div>
+      <a href="#products" class="btn-secondary reveal reveal-delay-2" style="white-space:nowrap">View all products</a>
+    </div>
+    <div class="categories-grid">
+      <a href="#products" class="cat-card reveal" aria-label="Notebooks & Journals collection">
+        <div class="cat-card-img" style="background:#e8f0e0">
+          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+            <rect x="25" y="10" width="70" height="95" rx="3" fill="#2d5016"/>
+            <rect x="29" y="14" width="62" height="87" rx="1" fill="#3d6b20"/>
+            <line x1="29" y1="35" x2="91" y2="35" stroke="#2d5016" stroke-width="0.8" opacity="0.5"/>
+            <line x1="29" y1="46" x2="91" y2="46" stroke="#2d5016" stroke-width="0.8" opacity="0.5"/>
+            <line x1="29" y1="57" x2="91" y2="57" stroke="#2d5016" stroke-width="0.8" opacity="0.5"/>
+            <circle cx="25" cy="30" r="3.5" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+            <circle cx="25" cy="50" r="3.5" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+            <circle cx="25" cy="70" r="3.5" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+            <circle cx="25" cy="90" r="3.5" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="cat-card-body">
+          <div class="cat-card-name">Notebooks &amp; Journals</div>
+          <div class="cat-card-count">142 products</div>
+        </div>
+        <div class="cat-card-arrow" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </a>
+
+      <a href="#products" class="cat-card reveal reveal-delay-1" aria-label="Pens & Writing collection">
+        <div class="cat-card-img" style="background:#faf6ed">
+          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+            <rect x="54" y="10" width="12" height="90" rx="6" fill="#1a3009"/>
+            <polygon points="54,100 66,100 60,116" fill="#f5f0e8"/>
+            <rect x="54" y="10" width="12" height="18" rx="6" fill="#c9a84c"/>
+            <rect x="34" y="18" width="10" height="82" rx="5" fill="#4a7a26"/>
+            <polygon points="34,100 44,100 39,114" fill="#f5f0e8"/>
+            <rect x="76" y="15" width="10" height="80" rx="5" fill="#888"/>
+            <polygon points="76,95 86,95 81,108" fill="#f5f0e8"/>
+            <rect x="76" y="15" width="10" height="12" rx="5" fill="#e8c97a"/>
+          </svg>
+        </div>
+        <div class="cat-card-body">
+          <div class="cat-card-name">Pens &amp; Writing</div>
+          <div class="cat-card-count">98 products</div>
+        </div>
+        <div class="cat-card-arrow" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </a>
+
+      <a href="#products" class="cat-card reveal reveal-delay-2" aria-label="Planners & Calendars collection">
+        <div class="cat-card-img" style="background:#f2f6ed">
+          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+            <rect x="20" y="22" width="80" height="82" rx="4" fill="white" stroke="#2d5016" stroke-width="1.5"/>
+            <rect x="20" y="22" width="80" height="22" rx="4" fill="#2d5016"/>
+            <rect x="20" y="34" width="80" height="10" fill="#2d5016"/>
+            <line x1="40" y1="22" x2="40" y2="14" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="80" y1="22" x2="80" y2="14" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+            <rect x="30" y="55" width="12" height="12" rx="1" fill="#e8f0e0"/>
+            <rect x="48" y="55" width="12" height="12" rx="1" fill="#e8f0e0"/>
+            <rect x="66" y="55" width="12" height="12" rx="1" fill="#2d5016"/>
+            <rect x="84" y="55" width="12" height="12" rx="1" fill="#e8f0e0"/>
+            <rect x="30" y="73" width="12" height="12" rx="1" fill="#e8f0e0"/>
+            <rect x="48" y="73" width="12" height="12" rx="1" fill="#e8f0e0"/>
+            <rect x="66" y="73" width="12" height="12" rx="1" fill="#e8f0e0"/>
+            <rect x="84" y="73" width="12" height="12" rx="1" fill="#e8f0e0"/>
+          </svg>
+        </div>
+        <div class="cat-card-body">
+          <div class="cat-card-name">Planners &amp; Calendars</div>
+          <div class="cat-card-count">76 products</div>
+        </div>
+        <div class="cat-card-arrow" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </a>
+
+      <a href="#products" class="cat-card reveal reveal-delay-3" aria-label="Desk Accessories collection">
+        <div class="cat-card-img" style="background:#fdf8f3">
+          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+            <rect x="30" y="50" width="60" height="60" rx="2" fill="none" stroke="#2d5016" stroke-width="1.5"/>
+            <rect x="30" y="50" width="60" height="60" rx="2" fill="#fdf8f3"/>
+            <rect x="38" y="20" width="44" height="35" rx="2" fill="#c9a84c" opacity="0.7"/>
+            <rect x="44" y="55" width="8" height="40" rx="1" fill="#2d5016"/>
+            <rect x="57" y="62" width="8" height="33" rx="1" fill="#3d6b20"/>
+            <rect x="70" y="50" width="8" height="45" rx="1" fill="#4a7a26"/>
+          </svg>
+        </div>
+        <div class="cat-card-body">
+          <div class="cat-card-name">Desk Accessories</div>
+          <div class="cat-card-count">203 products</div>
+        </div>
+        <div class="cat-card-arrow" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="section-inner">
+    <div class="features-layout">
+      <div>
+        <div class="section-label reveal">Why Flamingo</div>
+        <h2 class="section-title reveal reveal-delay-1">Built for<br><em>discerning</em> partners</h2>
+        <p class="section-desc reveal reveal-delay-2">We've spent years perfecting our stationery lines — from sourcing to your dynamic spaces.</p>
+        <div class="features-list">
+          <div class="feature-item reveal reveal-delay-1">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <path d="M11 2L13.5 8.5H20L14.5 12.5L16.5 19L11 15L5.5 19L7.5 12.5L2 8.5H8.5L11 2Z" stroke="#2d5016" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h3>Curated Quality Standards</h3>
+              <p>Every product undergoes a 14-point quality review. Only 22% of submissions make it to our final catalogue.</p>
+            </div>
+          </div>
+          <div class="feature-item reveal reveal-delay-2">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <rect x="2" y="6" width="18" height="13" rx="2" stroke="#2d5016" stroke-width="1.5" fill="none"/>
+                <path d="M6 6V4a5 5 0 0110 0v2" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                <circle cx="11" cy="12.5" r="1.5" fill="#2d5016"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h3>Flexible Account Management</h3>
+              <p>Streamlined corporate onboarding and fast digital processing setup within 48 hours.</p>
+            </div>
+          </div>
+          <div class="feature-item reveal reveal-delay-3">
+            <div class="feature-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <path d="M3 11l4 4 8-8" stroke="#2d5016" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M11 2a9 9 0 100 18A9 9 0 0011 2z" stroke="#2d5016" stroke-width="1.5" fill="none"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <h3>Dedicated Support</h3>
+              <p>Every client benefits from a specialized team lead providing real assistance and timely order updates.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="features-visual reveal reveal-delay-1">
+        <div class="features-stat-grid">
+          <div class="feat-stat-card">
+            <div class="feat-stat-num">12</div>
+            <div class="feat-stat-label">Years of curation experience</div>
+          </div>
+          <div class="feat-stat-card accent">
+            <div class="feat-stat-num">99.1%</div>
+            <div class="feat-stat-label">Order accuracy rate</div>
+          </div>
+          <div class="feat-stat-card accent tall">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:rgba(255,255,255,0.6);font-style:italic;margin-bottom:0.5rem">Fulfillment cycle</div>
+            <div class="feat-stat-num" style="font-size:3.5rem">Rapid</div>
+            <div class="feat-stat-label">dispatch metrics optimized</div>
+          </div>
+          <div class="feat-stat-card">
+            <div class="feat-stat-num">4.8★</div>
+            <div class="feat-stat-label">Average product rating</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="section-inner">
+    <div class="products-header">
+      <div>
+        <div class="section-label reveal">Featured Products</div>
+        <h2 class="section-title reveal reveal-delay-1">Current <em>bestsellers</em></h2>
+      </div>
+      <div>
+        <div class="filter-pills reveal" role="group" aria-label="Filter products">
+          <button class="filter-pill active" onclick="filterProducts('all', this)" aria-pressed="true">All</button>
+          <button class="filter-pill" onclick="filterProducts('notebooks', this)" aria-pressed="false">Notebooks</button>
+          <button class="filter-pill" onclick="filterProducts('pens', this)" aria-pressed="false">Pens</button>
+          <button class="filter-pill" onclick="filterProducts('planners', this)" aria-pressed="false">Planners</button>
+          <button class="filter-pill" onclick="filterProducts('accessories', this)" aria-pressed="false">Accessories</button>
+        </div>
+      </div>
+    </div>
+    <div class="products-grid" id="products-grid" aria-label="Product catalogue">
+
+      <!-- Product 1 -->
+      <article class="prod-card reveal" data-cat="notebooks" aria-label="Linen Hardcover A5 Notebook">
+        <div class="prod-card-img" style="background:#e8f0e0">
+          <svg width="180" height="180" viewBox="0 0 180 180" fill="none" aria-hidden="true">
+            <rect x="40" y="20" width="100" height="135" rx="4" fill="#2d5016"/>
+            <rect x="44" y="24" width="92" height="127" rx="2" fill="white"/>
+            <rect x="44" y="24" width="92" height="30" fill="#f2f6ed"/>
+            <text x="90" y="43" font-family="Georgia,serif" font-style="italic" font-size="11" fill="#2d5016" text-anchor="middle">Flamingo</text>
+            <line x1="54" y1="70" x2="126" y2="70" stroke="#e0e0d8" stroke-width="0.8"/>
+            <line x1="54" y1="82" x2="126" y2="82" stroke="#e0e0d8" stroke-width="0.8"/>
+            <line x1="54" y1="94" x2="126" y2="94" stroke="#e0e0d8" stroke-width="0.8"/>
+            <line x1="54" y1="106" x2="126" y2="106" stroke="#e0e0d8" stroke-width="0.8"/>
+            <line x1="54" y1="118" x2="126" y2="118" stroke="#e0e0d8" stroke-width="0.8"/>
+            <circle cx="40" cy="45" r="3" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+            <circle cx="40" cy="65" r="3" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+            <circle cx="40" cy="85" r="3" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+            <circle cx="40" cy="105" r="3" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+            <circle cx="40" cy="125" r="3" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+            <circle cx="40" cy="145" r="3" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+          </svg>
+          <div class="prod-new-badge">New</div>
+        </div>
+        <div class="prod-card-body">
+          <div class="prod-cat">Notebooks</div>
+          <div class="prod-name">Linen Hardcover A5</div>
+          <div class="prod-footer">
+            <button class="prod-add" onclick="showToast('Added to inquiry!')" aria-label="Add Linen Hardcover A5 to inquiry">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 2v10M2 7h10" stroke="white" stroke-width="1.75" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Product 2 -->
+      <article class="prod-card reveal reveal-delay-1" data-cat="pens" aria-label="Brass Rollerball Pen">
+        <div class="prod-card-img" style="background:#faf6ed">
+          <svg width="180" height="180" viewBox="0 0 180 180" fill="none" aria-hidden="true">
+            <rect x="84" y="15" width="12" height="130" rx="6" fill="#c9a84c"/>
+            <polygon points="84,145 96,145 90,165" fill="#1a3009"/>
+            <rect x="84" y="15" width="12" height="22" rx="6" fill="#888"/>
+            <rect x="82" y="33" width="16" height="4" fill="#aaa"/>
+          </svg>
+        </div>
+        <div class="prod-card-body">
+          <div class="prod-cat">Pens</div>
+          <div class="prod-name">Brass Rollerball Pen</div>
+          <div class="prod-footer">
+            <button class="prod-add" onclick="showToast('Added to inquiry!')" aria-label="Add Brass Rollerball to inquiry">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 2v10M2 7h10" stroke="white" stroke-width="1.75" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Product 3 -->
+      <article class="prod-card reveal reveal-delay-2" data-cat="planners" aria-label="Weekly Desk Planner 2025">
+        <div class="prod-card-img" style="background:#f2f6ed">
+          <svg width="180" height="180" viewBox="0 0 180 180" fill="none" aria-hidden="true">
+            <rect x="30" y="35" width="120" height="115" rx="4" fill="white" stroke="#2d5016" stroke-width="1.5"/>
+            <rect x="30" y="35" width="120" height="28" rx="4" fill="#2d5016"/>
+            <rect x="30" y="50" width="120" height="13" fill="#2d5016"/>
+            <text x="90" y="52" font-family="Georgia,serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">2025 Planner</text>
+            <line x1="30" y1="84" x2="150" y2="84" stroke="#e8f0e0" stroke-width="0.8"/>
+            <line x1="30" y1="100" x2="150" y2="100" stroke="#e8f0e0" stroke-width="0.8"/>
+            <line x1="30" y1="116" x2="150" y2="116" stroke="#e8f0e0" stroke-width="0.8"/>
+            <line x1="30" y1="132" x2="150" y2="132" stroke="#e8f0e0" stroke-width="0.8"/>
+            <line x1="60" y1="63" x2="60" y2="150" stroke="#e8f0e0" stroke-width="0.8"/>
+            <line x1="90" y1="63" x2="90" y2="150" stroke="#e8f0e0" stroke-width="0.8"/>
+            <line x1="120" y1="63" x2="120" y2="150" stroke="#e8f0e0" stroke-width="0.8"/>
+            <circle cx="70" cy="92" r="5" fill="#2d5016" opacity="0.15"/>
+            <circle cx="100" cy="108" r="5" fill="#c9a84c" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="prod-card-body">
+          <div class="prod-cat">Planners</div>
+          <div class="prod-name">Weekly Desk Planner 2025</div>
+          <div class="prod-footer">
+            <button class="prod-add" onclick="showToast('Added to inquiry!')" aria-label="Add Weekly Planner to inquiry">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 2v10M2 7h10" stroke="white" stroke-width="1.75" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Product 4 -->
+      <article class="prod-card reveal reveal-delay-3" data-cat="accessories" aria-label="Marble Desk Organiser">
+        <div class="prod-card-img" style="background:#fdf8f3">
+          <svg width="180" height="180" viewBox="0 0 180 180" fill="none" aria-hidden="true">
+            <rect x="40" y="80" width="100" height="80" rx="3" fill="#f5f0e8" stroke="#d0c8b8" stroke-width="1"/>
+            <rect x="50" y="50" width="28" height="115" rx="2" fill="#e8e0d0" stroke="#d0c8b8" stroke-width="1"/>
+            <rect x="86" y="60" width="28" height="105" rx="2" fill="#ddd5c5" stroke="#d0c8b8" stroke-width="1"/>
+            <rect x="122" y="45" width="20" height="120" rx="2" fill="#e8e0d0" stroke="#d0c8b8" stroke-width="1"/>
+            <rect x="54" y="55" width="8" height="80" rx="1" fill="#2d5016" opacity="0.7"/>
+            <rect x="64" y="65" width="8" height="70" rx="1" fill="#4a7a26" opacity="0.7"/>
+            <rect x="90" y="68" width="8" height="67" rx="1" fill="#2d5016" opacity="0.5"/>
+            <rect x="100" y="72" width="8" height="63" rx="1" fill="#c9a84c" opacity="0.6"/>
+            <rect x="125" y="50" width="8" height="85" rx="1" fill="#3d6b20" opacity="0.7"/>
+          </svg>
+          <div class="prod-new-badge">Popular</div>
+        </div>
+        <div class="prod-card-body">
+          <div class="prod-cat">Accessories</div>
+          <div class="prod-name">Marble Desk Organiser</div>
+          <div class="prod-footer">
+            <button class="prod-add" onclick="showToast('Added to inquiry!')" aria-label="Add Marble Organiser to inquiry">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 2v10M2 7h10" stroke="white" stroke-width="1.75" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+    <div style="text-align:center;margin-top:3rem" class="reveal">
+      <a href="#contact" class="btn-secondary">Request Full Catalogue PDF</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT / CTA -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="cta-layout">
+      <div class="cta-info">
+        <div class="section-label reveal">Get Started</div>
+        <h2 class="section-title reveal reveal-delay-1">Let's build your <em>perfect</em> collection</h2>
+        <p class="section-desc reveal reveal-delay-2">Whether you're a boutique store or an established chain, our team will help you configure the right catalog assortments.</p>
+        <ul class="cta-info-list" role="list">
+          <li class="cta-info-item reveal reveal-delay-1">
+            <div class="cta-info-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 2a6 6 0 100 12A6 6 0 0010 2z" stroke="#2d5016" stroke-width="1.5" fill="none"/>
+                <path d="M10 14c-4 0-7 1.5-7 3.5" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                <path d="M10 14c4 0 7 1.5 7 3.5" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+              </svg>
+            </div>
+            <div>
+              <h4>Dedicated Account Consultant</h4>
+              <p>An expert assigned to your brand portfolio from day one. No bots, no queues.</p>
+            </div>
+          </li>
+          <li class="cta-info-item reveal reveal-delay-2">
+            <div class="cta-info-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <rect x="2" y="4" width="16" height="12" rx="2" stroke="#2d5016" stroke-width="1.5" fill="none"/>
+                <path d="M2 8l8 5 8-5" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+              </svg>
+            </div>
+            <div>
+              <h4>Response Within 4 Hours</h4>
+              <p>hello@flamingostationery.com · Available Sun–Thu, 8am–6pm GST</p>
+            </div>
+          </li>
+          <li class="cta-info-item reveal reveal-delay-3">
+            <div class="cta-info-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M4 4h12v10a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" stroke="#2d5016" stroke-width="1.5" fill="none"/>
+                <path d="M8 4V2M12 4V2" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M8 10h4M8 13h2" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <h4>Sample Packs</h4>
+              <p>Verified account profiles receive a custom-tailored layout pack options before initial setups.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="cta-form reveal reveal-delay-2">
+        <h3>Request a Proposal</h3>
+        <p>Fill in your corporate details and we'll prepare a personalized layout choice within one business day.</p>
+        <form onsubmit="handleSubmit(event)" novalidate aria-label="Wholesale enquiry form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">First name <span aria-hidden="true" style="color:#c9a84c">*</span></label>
+              <input type="text" id="fname" name="fname" autocomplete="given-name" required placeholder="Sarah" aria-required="true">
+            </div>
+            <div class="form-group">
+              <label for="lname">Last name <span aria-hidden="true" style="color:#c9a84c">*</span></label>
+              <input type="text" id="lname" name="lname" autocomplete="family-name" required placeholder="Jones" aria-required="true">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Business email <span aria-hidden="true" style="color:#c9a84c">*</span></label>
+            <input type="email" id="email" name="email" autocomplete="email" required placeholder="sarah@yourstore.com" aria-required="true">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="company">Company name <span aria-hidden="true" style="color:#c9a84c">*</span></label>
+              <input type="text" id="company" name="company" autocomplete="organization" required placeholder="The Stationery Co." aria-required="true">
+            </div>
+            <div class="form-group">
+              <label for="country">Country</label>
+              <select id="country" name="country" autocomplete="country">
+                <option value="">Select country</option>
+                <option value="ae">United Arab Emirates</option>
+                <option value="uk">United Kingdom</option>
+                <option value="us">United States</option>
+                <option value="au">Australia</option>
+                <option value="de">Germany</option>
+                <option value="fr">France</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="interest">Product interest</label>
+            <select id="interest" name="interest">
+              <option value="">What are you looking for?</option>
+              <option value="notebooks">Notebooks &amp; Journals</option>
+              <option value="pens">Pens &amp; Writing</option>
+              <option value="planners">Planners &amp; Calendars</option>
+              <option value="accessories">Desk Accessories</option>
+              <option value="all">Full range enquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Tell us about your business</label>
+            <textarea id="message" name="message" placeholder="Store style, brand alignments, any specific requirements…"></textarea>
+          </div>
+          <button type="submit" class="form-submit" id="submit-btn">Send Enquiry</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="/mnt/user-data/uploads/Logo_transparent.png" alt="Flamingo">
+        <p>Premium stationery for partners who believe in the power of beautiful things. Supplying 42 countries since 2013.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#categories">Notebooks &amp; Journals</a></li>
+          <li><a href="#categories">Pens &amp; Writing</a></li>
+          <li><a href="#categories">Planners &amp; Calendars</a></li>
+          <li><a href="#categories">Desk Accessories</a></li>
+          <li><a href="#categories">Gift Sets</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#why">About Flamingo</a></li>
+          <li><a href="#contact">Sustainability</a></li>
+          <li><a href="#contact">Press &amp; Media</a></li>
+          <li><a href="#contact">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#contact">Apply for Account</a></li>
+          <li><a href="#contact">Shipping &amp; Delivery</a></li>
+          <li><a href="#contact">Returns Policy</a></li>
+          <li><a href="#contact">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Flamingo Trading. All rights reserved.</p>
+      <div class="footer-socials">
+        <a href="#" class="footer-social" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.25" fill="none"/><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.25" fill="none"/><circle cx="11.5" cy="4.5" r="0.75" fill="currentColor"/></svg>
+        </a>
+        <a href="#" class="footer-social" aria-label="LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.25" fill="none"/><path d="M5 7v4M5 5.5v.01M8 11V8.5a1.5 1.5 0 013 0V11" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </a>
+        <a href="#" class="footer-social" aria-label="Pinterest">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.25" fill="none"/><path d="M6 10.5c.5-1.5 1-3 1-4a2 2 0 014 0c0 2-1.5 3.5-3 3.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" fill="none"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+  // Nav scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Intersection Observer for reveal animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Product filters
+  function filterProducts(cat, btn) {
+    document.querySelectorAll('.filter-pill').forEach(p => { p.classList.remove('active'); p.setAttribute('aria-pressed','false'); });
+    btn.classList.add('active'); btn.setAttribute('aria-pressed','true');
+    document.querySelectorAll('.prod-card').forEach(card => {
+      const show = cat === 'all' || card.dataset.cat === cat;
+      card.style.opacity = show ? '1' : '0.3';
+      card.style.pointerEvents = show ? 'auto' : 'none';
+      card.style.transform = show ? '' : 'scale(0.97)';
+      card.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+    });
+  }
+
+  // Toast
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.textContent = 'Sending…'; btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = '✓ Enquiry Sent!';
+      btn.style.background = '#4a7a26';
+      showToast('Thank you! We\'ll be in touch within 4 hours.');
+      setTimeout(() => { btn.textContent = 'Send Enquiry'; btn.disabled = false; btn.style.background = ''; }, 4000);
+    }, 1200);
+  }
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+</body>
+</html>
