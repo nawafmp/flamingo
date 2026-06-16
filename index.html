@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-    <title>Order Form</title>
+    <title>Order Form (Mobile Optimized)</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     
     <style>
         :root {
@@ -43,7 +42,7 @@
             font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
             background: var(--md-sys-color-bg); 
             margin: 0; 
-            padding: 16px; 
+            padding: 8px; 
             color: var(--md-sys-color-text);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -52,35 +51,31 @@
         
         .container { max-width: 1440px; margin: 0 auto; }
         
-        /* Material Header Element Bar Layout */
         .header { 
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 16px; 
+            margin-bottom: 12px; 
             background: var(--md-sys-color-surface); 
-            padding: 12px 24px; 
-            border-radius: 16px; 
+            padding: 10px 16px; 
+            border-radius: 12px; 
             border: 1px solid var(--md-sys-color-surface-variant);
         }
-        .header-left { display: flex; align-items: center; gap: 16px; }
-        .logo { max-width: 64px; height: auto; object-fit: contain; }
-        .header h2 { margin: 0; font-size: 1.25rem; color: var(--md-sys-color-primary); font-weight: 700; letter-spacing: -0.2px; }
+        .header h2 { margin: 0; font-size: 1.1rem; color: var(--md-sys-color-primary); font-weight: 700; letter-spacing: -0.2px; }
 
         .workspace-row {
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            margin-bottom: 16px;
+            gap: 12px;
+            margin-bottom: 12px;
         }
         
         .top-full, .bottom-full { width: 100%; }
 
-        /* Material Design Card Elevation Paradigm */
         .card { 
             background: var(--md-sys-color-surface); 
-            padding: 20px; 
-            border-radius: 16px; 
+            padding: 14px; 
+            border-radius: 14px; 
             border: 1px solid var(--md-sys-color-surface-variant);
             box-sizing: border-box;
             height: 100%;
@@ -89,45 +84,86 @@
         h3 { 
             margin-top: 0; 
             color: var(--md-sys-color-primary); 
-            font-size: 0.85rem; 
+            font-size: 0.8rem; 
             border-bottom: 1px solid var(--md-sys-color-surface-variant); 
-            padding-bottom: 12px; 
+            padding-bottom: 10px; 
             text-transform: uppercase; 
-            letter-spacing: 0.08em; 
+            letter-spacing: 0.05em; 
             display: flex; 
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             font-weight: 700;
         }
 
-        /* Interactive Tab Container Layout styling */
+        /* Column Visibility Toggles Wrapper */
+        .column-visibility-bar {
+            background: var(--md-sys-color-bg);
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border: 1px solid var(--md-sys-color-surface-variant);
+        }
+        .visibility-title {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--md-sys-color-text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.04em;
+        }
+        .toggles-flex {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--md-sys-color-text);
+            cursor: pointer;
+            text-transform: none;
+            letter-spacing: normal;
+            margin-bottom: 0;
+            user-select: none;
+        }
+        .toggle-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--md-sys-color-primary);
+            cursor: pointer;
+        }
+
         .tab-container {
             display: flex;
-            gap: 6px;
+            gap: 4px;
             border-bottom: 1px solid var(--md-sys-color-surface-variant);
             padding-bottom: 0px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
+            margin-bottom: 14px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
         .tab-btn {
             background: transparent;
             border: none;
-            padding: 10px 18px;
-            font-size: 0.82rem;
+            padding: 12px 14px; 
+            font-size: 0.78rem;
             font-weight: 700;
             color: var(--md-sys-color-text-secondary);
             cursor: pointer;
             border-radius: 8px 8px 0 0;
             position: relative;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
             transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
             -webkit-tap-highlight-color: transparent;
-        }
-        .tab-btn:hover {
-            color: var(--md-sys-color-primary);
-            background: var(--md-sys-color-bg);
+            flex: 1 0 auto;
+            text-align: center;
         }
         .tab-btn.active {
             color: var(--md-sys-color-primary);
@@ -144,65 +180,42 @@
             border-radius: 3px 3px 0 0;
         }
         
-        @media (min-width: 768px) {
-            body { padding: 24px; }
-        }
-
-        /* Continuous Single-Line Entry Form Core Layout Matrix */
         .form-grid { 
             display: flex;
-            flex-direction: row;
-            gap: 10px; 
-            align-items: flex-end;
+            flex-direction: column; 
+            gap: 12px; 
             width: 100%;
-            flex-wrap: wrap;
             padding-bottom: 4px;
         }
 
         .form-unit {
-            flex: 1 1 95px;
+            width: 100%;
             display: flex;
             flex-direction: column;
         }
 
-        .form-unit.half-unit { flex: 0.6 1 65px; }
-        .form-unit.barcode-unit { flex: 1.5 1 135px; }
-        .form-unit.desc-unit { flex: 4 1 280px; }
-        .form-unit.btn-unit { flex: 1.2 1 120px; }
-
-        @media (max-width: 1280px) {
-            .form-grid { flex-wrap: wrap; }
-            .form-unit { flex: 1 1 calc(25% - 10px); min-width: 110px; }
-            .form-unit.half-unit { flex: 1 1 calc(12.5% - 10px); min-width: 65px; }
-            .form-unit.barcode-unit { flex: 1.5 1 calc(25% - 10px); min-width: 130px; }
-            .form-unit.desc-unit { flex: 1 1 100%; }
-            .form-unit.btn-unit { flex: 1 1 100%; }
-        }
-
         .form-group { width: 100%; display: flex; flex-direction: column; }
         
-        /* Material Text Label Flag specifications */
         label { 
             display: block; 
             font-size: 0.68rem; 
             font-weight: 700; 
             color: var(--md-sys-color-text-secondary); 
-            margin-bottom: 6px; 
+            margin-bottom: 4px; 
             text-transform: uppercase; 
             letter-spacing: 0.04em;
         }
         
-        /* Material Form Controls Fields Styling Architecture + Apple Native Style Overrides */
-        input, select { 
+        input[type="text"], input[type="number"], select { 
             width: 100%; 
-            padding: 8px 12px; 
+            padding: 10px 12px; 
             border: 1px solid var(--md-sys-color-outline); 
             border-radius: 8px; 
             box-sizing: border-box; 
-            font-size: 0.88rem; 
+            font-size: 0.92rem; 
             background: var(--md-sys-color-surface); 
             color: var(--md-sys-color-text);
-            height: 38px; 
+            height: 44px; 
             transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
             -webkit-appearance: none;
             appearance: none;
@@ -210,88 +223,65 @@
         select {
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2342474e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 12px center;
+            background-position: right 14px center;
             background-size: 14px;
-            padding-right: 32px;
+            padding-right: 36px;
         }
         input:focus, select:focus {
             outline: none;
             border-color: var(--md-sys-color-accent);
             border-width: 2px;
-            padding: 7px 11px; /* Balances border offset weight variance */
-        }
-        select:focus {
-            padding-right: 31px;
+            padding: 9px 11px;
         }
 
         .tab-panel {
             display: none;
             opacity: 0;
-            transition: opacity 0.25s ease-in-out;
         }
         .tab-panel.active {
             display: block;
             opacity: 1;
         }
 
-        /* Profit Calculator Embedded Workspace Sub-Layout */
         .calc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
         .calc-section {
-            padding: 14px;
+            padding: 12px;
             border-radius: 12px;
             border: 1px solid var(--md-sys-color-surface-variant);
         }
-        .calc-purchasing { grid-column: span 1; background: var(--purchasing); }
+        .calc-purchasing { background: var(--purchasing); }
         .calc-sales { background: var(--sales); }
         .calc-profit { background: var(--profit); border-color: #dcfce7; }
-        .calc-row { display: flex; gap: 10px; margin-bottom: 10px; }
+        .calc-row { display: flex; gap: 8px; margin-bottom: 8px; }
         .calc-row > div { flex: 1; }
-        .net-cost { display: block; margin-top: 8px; font-size: 0.78rem; font-weight: 600; color: var(--discount-text); }
-        .profit-amount { margin-top: 10px; font-size: 0.95rem; font-weight: 700; color: var(--profit-text); }
+        .net-cost { display: block; margin-top: 6px; font-size: 0.75rem; font-weight: 600; color: var(--discount-text); }
+        .profit-amount { margin-top: 8px; font-size: 0.9rem; font-weight: 700; color: var(--profit-text); }
         .main-result { font-weight: 700; color: var(--sales-text); border-color: var(--md-sys-color-accent); }
         .margin-result { font-weight: 700; color: var(--profit-text); }
 
-        @media (min-width: 1200px) {
-            .calc-grid { grid-template-columns: 1.2fr 1fr 1fr; }
-        }
-
-        /* Order List Header Configuration in Tab Layout */
         .order-tab-header {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 8px;
             margin-bottom: 12px;
-            padding-bottom: 8px;
+            padding-bottom: 10px;
             border-bottom: 1px dashed var(--md-sys-color-surface-variant);
         }
         .order-tab-title {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: var(--md-sys-color-primary);
         }
 
-        /* Order Table Container - Unrestricted, row expansion adapts dynamically to viewport sizes */
-        .table-container { 
+        .table-container, .inventory-table-container { 
             overflow-x: auto; 
-            max-height: none; 
-            height: auto;
-            overflow-y: visible; 
-            border-radius: 12px;
-            border: 1px solid var(--md-sys-color-surface-variant);
-            -webkit-overflow-scrolling: touch;
-        }
-
-        /* Inventory Table Container - Formatted strictly to 10 visible content rows max (Header 40px + 10 * 36px rows = 400px) */
-        .inventory-table-container {
-            overflow-x: auto;
-            max-height: 400px; 
-            height: 400px;
-            overflow-y: auto;
-            border-radius: 12px;
+            max-height: 420px; 
+            overflow-y: auto; 
+            border-radius: 10px;
             border: 1px solid var(--md-sys-color-surface-variant);
             -webkit-overflow-scrolling: touch;
         }
@@ -303,45 +293,47 @@
             top: 0; 
             background: var(--md-sys-color-bg); 
             text-align: left; 
-            padding: 10px 12px; 
-            font-size: 0.72rem; 
+            padding: 10px; 
+            font-size: 0.7rem; 
             font-weight: 700;
             color: var(--md-sys-color-text-secondary); 
             border-bottom: 2px solid var(--md-sys-color-surface-variant); 
             z-index: 10; 
             white-space: nowrap; 
         }
-        td { padding: 8px 12px; border-bottom: 1px solid var(--md-sys-color-surface-variant); font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 36px; box-sizing: border-box; }
+        td { padding: 10px; border-bottom: 1px solid var(--md-sys-color-surface-variant); font-size: 0.82rem; white-space: nowrap; height: 44px; box-sizing: border-box; }
         
-        td.wrap-cell { white-space: normal; word-break: break-word; font-size: 0.82rem; line-height: 1.3; }
+        td.wrap-cell { white-space: normal; word-break: break-word; font-size: 0.8rem; line-height: 1.25; }
+
+        /* Setup CSS Handles for Visibility Control */
+        .col-id, .col-barcode, .col-stock { display: none; }
+        .col-actions { display: table-cell; } /* Active by default */
 
         tfoot {
             position: sticky;
             bottom: 0;
             background: var(--md-sys-color-bg);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             z-index: 10;
         }
         tfoot td {
             border-top: 2px solid var(--md-sys-color-outline);
-            border-bottom: none;
-            padding: 8px 12px;
+            padding: 10px;
         }
-        .footer-metric-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--md-sys-color-text-secondary); font-weight: bold; }
-        .footer-metric-val { font-weight: 700; color: var(--md-sys-color-text); font-family: monospace; font-size: 0.9rem; }
+        .footer-metric-label { font-size: 0.68rem; text-transform: uppercase; color: var(--md-sys-color-text-secondary); font-weight: bold; }
+        .footer-metric-val { font-weight: 700; color: var(--md-sys-color-text); font-family: monospace; font-size: 0.85rem; }
         .grand-total-row td { background: var(--md-sys-color-accent-container); border-top: 1px dashed var(--md-sys-color-outline); }
-        .grand-total-row .footer-metric-val { color: var(--md-sys-color-accent); font-size: 1.05rem; }
+        .grand-total-row .footer-metric-val { color: var(--md-sys-color-accent); font-size: 0.95rem; }
 
-        /* Material M3 Styled Button Toolkit Matrix Setup */
         .btn { 
             cursor: pointer; 
             border: none; 
             border-radius: 8px; 
             font-weight: 700; 
             transition: all 0.2s cubic-bezier(0.2, 0, 0, 1); 
-            padding: 8px 14px; 
-            font-size: 0.82rem; 
-            min-height: 34px;
+            padding: 10px 14px; 
+            font-size: 0.8rem; 
+            min-height: 44px; 
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -349,74 +341,58 @@
             text-decoration: none;
             -webkit-tap-highlight-color: transparent;
         }
-        .btn:hover { filter: brightness(0.92); transform: translateY(-0.5px); }
-        .btn:active { transform: translateY(0.5px); }
+        .btn:active { filter: brightness(0.85); transform: scale(0.98); }
         
-        .btn-save { background: var(--md-sys-color-primary); color: white; width: 100%; height: 38px; font-size: 0.88rem; }
-        .btn-plus { background: #15803d; color: white; padding: 4px 8px; font-size: 0.85rem; border-radius: 6px; min-height: 26px; }
-        .btn-print { background: #4f46e5; color: white; padding: 4px 8px; font-size: 0.85rem; border-radius: 6px; min-height: 26px; }
-        .btn-edit { background: #b45309; color: white; padding: 4px 8px; font-size: 0.85rem; border-radius: 6px; min-height: 26px; }
-        .btn-delete { background: var(--md-sys-color-error-container); color: var(--md-sys-color-error); padding: 4px 8px; border-radius: 6px; font-size: 0.85rem; min-height: 26px; }
+        .btn-save { background: var(--md-sys-color-primary); color: white; width: 100%; height: 46px; font-size: 0.9rem; }
+        .btn-plus { background: #15803d; color: white; width: 36px; height: 36px; min-height: 36px; padding: 0; font-size: 0.85rem; border-radius: 8px; }
+        .btn-edit { background: #b45309; color: white; width: 36px; height: 36px; min-height: 36px; padding: 0; border-radius: 8px; }
+        .btn-delete { background: var(--md-sys-color-error-container); color: var(--md-sys-color-error); width: 36px; height: 36px; min-height: 36px; padding: 0; border-radius: 8px; }
         .btn-excel { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); }
         .btn-export-all { background: #4b5563; color: white; }
-        .btn-invoice { background: var(--md-sys-color-accent); color: white; height: 38px; padding: 0 16px; border-radius: 8px; }
 
-        .qty-input { width: 56px !important; text-align: center; border: 1px solid var(--md-sys-color-accent) !important; font-weight: bold; height: 28px; padding: 2px; border-radius: 6px; font-size: 0.85rem; -webkit-appearance: none; appearance: none; }
+        .qty-input { width: 64px !important; text-align: center; border: 1px solid var(--md-sys-color-accent) !important; font-weight: bold; height: 36px; padding: 4px; border-radius: 6px; font-size: 0.9rem; }
 
-        .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: middle; flex-shrink: 0; }
+        .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
         .dot-active { background-color: #16a34a; box-shadow: 0 0 4px #16a34a; }
         .dot-blocked { background-color: #dc2626; box-shadow: 0 0 4px #dc2626; }
         
-        .action-cell { display: flex; gap: 4px; align-items: center; }
-        .code-cell { display: flex; gap: 6px; align-items: center; justify-content: space-between; }
+        .action-cell { display: flex; gap: 6px; align-items: center; }
+        .code-cell { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
         
-        .inventory-head-flex { display: flex; width: 100%; justify-content: space-between; align-items: center; }
-        .inventory-title-centered { flex: 1; text-align: center; order: 2; font-weight: 700; font-size: 0.9rem; color: var(--md-sys-color-primary); }
-        .header-controls-left { display: flex; gap: 8px; align-items: center; justify-content: flex-start; order: 1; }
-        .header-controls-right { display: flex; gap: 8px; align-items: center; justify-content: flex-end; order: 3; }
+        .inventory-head-flex { display: flex; flex-direction: column; width: 100%; gap: 10px; }
+        .inventory-title-centered { text-align: center; font-weight: 700; font-size: 0.95rem; color: var(--md-sys-color-primary); }
+        .header-controls-left, .header-controls-right { display: flex; gap: 8px; width: 100%; align-items: center; justify-content: center; flex-wrap: wrap; }
         
-        /* Expanded Filter Input Size Paradigm to 300px (Double-sized width footprint) */
-        .inventory-head-flex input { width: 300px; height: 32px; font-size: 0.82rem; padding: 4px 10px; border-radius: 6px; -webkit-appearance: none; appearance: none; }
-        .inventory-head-flex select { width: 110px; min-width: 110px; height: 32px; padding: 0 6px; font-size: 0.82rem; border-radius: 6px; }
-        .inventory-head-flex .btn, .inventory-head-flex label { height: 32px; min-height: 32px; font-size: 0.78rem; padding: 4px 12px; border-radius: 6px; margin: 0; }
+        .inventory-head-flex input[type="text"] { width: 100%; height: 44px; font-size: 0.88rem; padding: 4px 12px; border-radius: 8px; }
+        .inventory-head-flex select { width: 100%; height: 44px; padding: 0 12px; font-size: 0.88rem; border-radius: 8px; }
+        .inventory-head-flex .btn { flex: 1; height: 44px; min-height: 44px; margin: 0; }
 
-        @media (max-width: 900px) {
-            .inventory-head-flex { flex-direction: column; gap: 10px; align-items: stretch; }
-            .inventory-title-centered { text-align: center; order: 1; }
-            .header-controls-left { justify-content: center; order: 2; flex-wrap: wrap; }
-            .header-controls-right { justify-content: center; order: 3; }
-            .inventory-head-flex input { width: 100%; }
-        }
-
-        .order-summary-wrapper { display: flex; align-items: center; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+        .order-summary-wrapper { display: flex; align-items: center; gap: 8px; width: 100%; justify-content: space-between; }
+        .order-summary-wrapper .btn { flex: 1; min-height: 38px; height: 38px; font-size: 0.75rem; padding: 2px 8px; }
         .text-right { text-align: right; }
         .text-center { text-align: center; }
 
-        #printArea { display: none; }
-
-        @media print {
-            @page { size: 42mm 29mm; margin: 0 !important; }
-            body > * { display: none !important; }
-            #printArea, #printArea * { display: block !important; }
-            #printArea { position: absolute !important; left: 0 !important; top: 0 !important; margin: 0 !important; padding: 0 !important; width: 42mm !important; height: 29mm !important; background: #fff !important; }
-            .print-label-card { width: 42mm !important; height: 29mm !important; padding: 0 !important; margin: 0 !important; box-sizing: border-box !important; display: flex !important; flex-direction: column !important; justify-content: flex-start !important; align-items: center !important; font-family: 'Courier New', Courier, monospace !important; font-size: 7pt !important; color: #000 !important; background: #fff !important; page-break-inside: avoid !important; page-break-after: always !important; overflow: hidden !important; }
-            .p-top-spacer { height: 2.9mm !important; width: 100% !important; display: block !important; margin: 0 !important; padding: 0 !important; }
-            .p-code { font-size: 7pt !important; font-weight: bold !important; text-align: center; white-space: nowrap; overflow: hidden; width: 100%; margin: 0 0 -0.5mm 0 !important; padding: 0 !important; line-height: 1.1; letter-spacing: -0.1px; }
-            .p-bar-wrapper { width: 100% !important; margin: 0 !important; padding: 0 !important; display: flex !important; justify-content: center !important; align-items: center !important; }
-            .p-bar-wrapper svg { max-width: 90% !important; height: 13.5mm !important; display: block !important; margin: 0 auto !important; padding: 0 !important; }
-            .p-desc { font-size: 7pt !important; line-height: 1.1; white-space: nowrap !important; overflow: hidden !important; text-overflow: clip !important; text-align: center; font-weight: bold !important; width: 100%; box-sizing: border-box; margin: -0.5mm 0 0 0 !important; padding: 0 1mm !important; letter-spacing: -0.1px; }
+        @media (min-width: 768px) {
+            body { padding: 16px; }
+            .inventory-head-flex { flex-direction: row; justify-content: space-between; align-items: center; }
+            .inventory-title-centered { flex: 1; text-align: center; order: 2; }
+            .header-controls-left { width: auto; justify-content: flex-start; order: 1; }
+            .header-controls-right { width: auto; justify-content: flex-end; order: 3; }
+            .inventory-head-flex input[type="text"] { width: 240px; }
+            .inventory-head-flex select { width: 130px; }
+            .form-grid { flex-direction: row; flex-wrap: wrap; }
+            .form-unit { flex: 1 1 calc(33.33% - 12px); }
+            .calc-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+            .order-tab-header { flex-direction: row; justify-content: space-between; align-items: center; }
+            .order-summary-wrapper { width: auto; }
         }
     </style>
 </head>
 <body>
 
-<div id="printArea"></div>
-
 <div class="container">
     <div class="header">
-        <div class="header-left">
-            <h2>ORDER FORM</h2>
-        </div>
+        <h2>ORDER FORM</h2>
     </div>
 
     <div class="workspace-row">
@@ -424,15 +400,15 @@
             <div class="card">
                 <h3>
                     <div class="inventory-head-flex">
+                        <div class="inventory-title-centered">Inventory List</div>
                         <div class="header-controls-left">
-                            <label class="btn btn-excel" title="Expected Columns: ID, Code, Barcode, Description, Price, RSP, Stock, Status">
-                                📊 Import CSV
+                            <label class="btn btn-excel" title="Import CSV">
+                                📊 Import
                                 <input type="file" id="csvInput" accept=".csv" style="display:none;" onchange="importCSV(event)">
                             </label>
-                            <button class="btn btn-export-all" onclick="exportInventoryCSV()">💾 Export CSV</button>
-                            <button class="btn" style="background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="clearInventory()">🗑️ Clear DB</button>
+                            <button class="btn btn-export-all" onclick="exportInventoryCSV()">💾 Export</button>
+                            <button class="btn" style="background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="clearInventory()">🗑️ Clear</button>
                         </div>
-                        <div class="inventory-title-centered">Inventory List</div>
                         <div class="header-controls-right">
                             <input type="text" id="tableFilter" placeholder="Filter..." oninput="renderTable()">
                             <select id="statusFilter" onchange="renderTable()">
@@ -443,17 +419,28 @@
                         </div>
                     </div>
                 </h3>
+
+                <!-- Column Toggle Visibility Feature Panel -->
+                <div class="column-visibility-bar">
+                    <div class="visibility-title">Show Columns</div>
+                    <div class="toggles-flex">
+                        <label class="toggle-label"><input type="checkbox" id="chkToggleId" onchange="toggleColumnVisibility('id', this.checked)"> ID</label>
+                        <label class="toggle-label"><input type="checkbox" id="chkToggleBarcode" onchange="toggleColumnVisibility('barcode', this.checked)"> Barcode</label>
+                        <label class="toggle-label"><input type="checkbox" id="chkToggleStock" onchange="toggleColumnVisibility('stock', this.checked)"> Stock</label>
+                        <label class="toggle-label"><input type="checkbox" id="chkToggleActions" checked onchange="toggleColumnVisibility('actions', this.checked)"> Actions</label>
+                    </div>
+                </div>
+
                 <div class="inventory-table-container">
                     <table id="inventoryTable">
                         <thead>
                             <tr>
-                                <th style="width: 8%;">ID</th>
-                                <th style="width: 17%;">Code</th>
-                                <th style="width: 38%;">Description</th>
-                                <th style="width: 15%;">Barcode</th>
-                                <th style="width: 17%;">Price / RSP</th>
-                                <th style="width: 5%;">Stock</th>
-                                <th style="width: 3%;">Actions</th>
+                                <th class="col-id" style="width: 10%;">ID</th>
+                                <th style="width: 30%;">Code</th>
+                                <th style="width: 50%;">Description (Price / RSP)</th>
+                                <th class="col-barcode" style="width: 20%;">Barcode</th>
+                                <th class="col-stock" style="width: 10%;">Stock</th>
+                                <th class="col-actions" style="width: 10%;">Actions</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -465,27 +452,27 @@
 
     <div class="workspace-row">
         <div class="top-full">
-            <div class="card" style="padding-bottom: 16px;">
+            <div class="card" style="padding-bottom: 14px;">
                 <div class="tab-container">
-                    <button class="tab-btn active" id="tabOrderBtn" onclick="switchWorkspaceTab('order')">📦 Active Order List</button>
-                    <button class="tab-btn" id="tabEntryBtn" onclick="switchWorkspaceTab('entry')">📝 Item Entry</button>
-                    <button class="tab-btn" id="tabCalcBtn" onclick="switchWorkspaceTab('calc')">🧮 Profit Calculator</button>
+                    <button class="tab-btn active" id="tabOrderBtn" onclick="switchWorkspaceTab('order')">📦 Orders</button>
+                    <button class="tab-btn" id="tabEntryBtn" onclick="switchWorkspaceTab('entry')">📝 Entry</button>
+                    <button class="tab-btn" id="tabCalcBtn" onclick="switchWorkspaceTab('calc')">🧮 Profit</button>
                 </div>
                 
                 <div id="orderTabPanel" class="tab-panel active">
                     <div class="order-tab-header">
-                        <div class="order-tab-title">Active Items Procurement Worksheet</div>
+                        <div class="order-tab-title">Procurement Worksheet</div>
                         <div class="order-summary-wrapper">
-                            <button class="btn btn-excel" style="padding:4px 12px; font-size:0.78rem; min-height:28px;" onclick="exportToExcel()">📈 Export Worksheet</button>
-                            <button class="btn" style="background:var(--md-sys-color-surface-variant); font-size:0.78rem; padding:4px 12px; min-height:28px; color:var(--md-sys-color-text-secondary);" onclick="clearTransactions()">Clear Current Order</button>
+                            <button class="btn btn-excel" onclick="exportToExcel()">📈 Export</button>
+                            <button class="btn" style="background:var(--md-sys-color-surface-variant); color:var(--md-sys-color-text-secondary);" onclick="clearTransactions()">Clear Active</button>
                         </div>
                     </div>
                     <div class="table-container">
                         <table id="transactionTable">
                             <thead>
                                 <tr>
-                                    <th style="width: 20%;">Code</th>
-                                    <th style="width: 45%;">Description</th>
+                                    <th style="width: 25%;">Code</th>
+                                    <th style="width: 40%;">Description</th>
                                     <th style="width: 15%;" class="text-center">Qty</th>
                                     <th style="width: 15%;" class="text-right">Total</th>
                                     <th style="width: 5%;" class="text-center">X</th>
@@ -515,20 +502,20 @@
 
                 <div id="entryTabPanel" class="tab-panel">
                     <div class="form-grid">
-                        <div class="form-unit half-unit"><div class="form-group"><label>ID</label><input type="text" id="itemID"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>ID</label><input type="text" id="itemID"></div></div>
                         <div class="form-unit"><div class="form-group"><label>Code</label><input type="text" id="itemCode"></div></div>
-                        <div class="form-unit barcode-unit"><div class="form-group"><label>Barcode</label><input type="text" id="barcode"></div></div>
-                        <div class="form-unit half-unit"><div class="form-group"><label>Stock</label><input type="number" id="stock" placeholder="0"></div></div>
-                        <div class="form-unit desc-unit"><div class="form-group"><label>Description</label><input type="text" id="description"></div></div>
-                        <div class="form-unit half-unit"><div class="form-group"><label>Price</label><input type="number" id="price" step="0.01"></div></div>
-                        <div class="form-unit half-unit"><div class="form-group"><label>RSP</label><input type="number" id="rsp" step="0.01"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>Barcode</label><input type="text" id="barcode"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>Stock</label><input type="number" id="stock" placeholder="0"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>Description</label><input type="text" id="description"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>Price</label><input type="number" id="price" step="0.01"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>RSP</label><input type="number" id="rsp" step="0.01"></div></div>
                         <div class="form-unit">
                             <div class="form-group">
                                 <label>Status</label>
                                 <select id="status"><option value="Active">Active</option><option value="Blocked">Blocked</option></select>
                             </div>
                         </div>
-                        <div class="form-unit btn-unit">
+                        <div class="form-unit" style="margin-top: 4px;">
                             <button class="btn btn-save" onclick="addItem()">Save Item</button>
                         </div>
                     </div>
@@ -537,11 +524,11 @@
                 <div id="calcTabPanel" class="tab-panel">
                     <div class="calc-grid">
                         <div class="calc-section calc-purchasing">
-                            <label class="label" style="color:var(--purchasing-text); margin-bottom:8px;">Purchasing</label>
+                            <label class="label" style="color:var(--purchasing-text); font-size:0.75rem; font-weight:700; display:block; margin-bottom:6px;">Purchasing</label>
                             <div class="calc-row">
                                 <div>
                                     <label class="label">Outer Size</label>
-                                    <input type="number" id="calcOuterSize" min="1" step="1" placeholder="e.g. 144" style="background:rgba(255,255,255,0.8);">
+                                    <input type="number" id="calcOuterSize" min="1" step="1" placeholder="144" style="background:rgba(255,255,255,0.8);">
                                 </div>
                                 <div>
                                     <label class="label">Outer Cost</label>
@@ -560,7 +547,7 @@
                         </div>
 
                         <div class="calc-section calc-sales">
-                            <label class="label" style="color:var(--sales-text); margin-bottom:8px;">Sales</label>
+                            <label class="label" style="color:var(--sales-text); font-size:0.75rem; font-weight:700; display:block; margin-bottom:6px;">Sales</label>
                             <div class="calc-row">
                                 <div>
                                     <label class="label">Selling Price</label>
@@ -574,7 +561,7 @@
                         </div>
 
                         <div class="calc-section calc-profit">
-                            <label class="label" style="color:var(--profit-text); margin-bottom:8px;">Profitability</label>
+                            <label class="label" style="color:var(--profit-text); font-size:0.75rem; font-weight:700; display:block; margin-bottom:6px;">Profitability</label>
                             <div>
                                 <label class="label">Target Margin (%)</label>
                                 <input type="number" id="calcMargin" min="0" max="100" step="0.01" value="35" class="margin-result">
@@ -593,6 +580,14 @@
     let inventory = JSON.parse(localStorage.getItem('flamingo_db_v3')) || [];
     let transactions = JSON.parse(localStorage.getItem('flamingo_trans_v3')) || [];
 
+    // Tracks visible layout tags inside a state map configuration
+    let visibleColumns = {
+        id: false,
+        barcode: false,
+        stock: false,
+        actions: true // Default True
+    };
+
     const elements = {
         itemID: document.getElementById('itemID'),
         itemCode: document.getElementById('itemCode'),
@@ -609,11 +604,9 @@
         footerTotalVal: document.getElementById('footerTotalVal'),
         footerVatVal: document.getElementById('footerVatVal'),
         footerGrandTotalVal: document.getElementById('footerGrandTotalVal'),
-        printArea: document.getElementById('printArea'),
         csvInput: document.getElementById('csvInput')
     };
 
-    // Profit Calculator and Tab Configuration DOM Registries
     const calcEl = {
         outerSize: document.getElementById("calcOuterSize"),
         outerCost: document.getElementById("calcOuterCost"),
@@ -632,30 +625,6 @@
         orderPanel: document.getElementById("orderTabPanel")
     };
 
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            const blobCode = `
-                const CACHE_NAME = 'flamingo-master-v1';
-                self.addEventListener('install', e => self.skipWaiting());
-                self.addEventListener('activate', e => e.waitUntil(clients.claim()));
-                self.addEventListener('fetch', e => {
-                    if (e.request.url.includes('cdn')) {
-                        e.respondWith(caches.open(CACHE_NAME).then(cache => {
-                            return cache.match(e.request).then(res => {
-                                return res || fetch(e.request).then(netRes => {
-                                    cache.put(e.request, netRes.clone());
-                                    return netRes;
-                                });
-                            });
-                        }));
-                    }
-                });
-            `;
-            const blob = new Blob([blobCode], { type: 'application/javascript' });
-            navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(err => console.log('Offline Engine Primed'));
-        });
-    }
-
     window.onload = () => { 
         renderTable(); 
         renderTransactions(); 
@@ -669,7 +638,19 @@
         renderTable();
     }
 
-    // Dynamic Tab Layout Controller Engine Matrix
+    // Controls column show/hide rules dynamically across table sheets
+    function toggleColumnVisibility(columnClass, isChecked) {
+        visibleColumns[columnClass] = isChecked;
+        
+        // Handle Head elements updates
+        const thElements = document.querySelectorAll(`#inventoryTable th.col-${columnClass}`);
+        thElements.forEach(el => el.style.display = isChecked ? 'table-cell' : 'none');
+
+        // Handle Body row cell structural iterations 
+        const tdElements = document.querySelectorAll(`#inventoryTable td.col-${columnClass}`);
+        tdElements.forEach(el => el.style.display = isChecked ? 'table-cell' : 'none');
+    }
+
     function switchWorkspaceTab(targetTab) {
         [calcEl.tabEntryBtn, calcEl.tabCalcBtn, calcEl.tabOrderBtn].forEach(btn => {
             if(btn) btn.classList.remove('active');
@@ -694,7 +675,6 @@
         const item = inventory.find(i => i.barcode === barcode);
         if (item) {
             switchWorkspaceTab('entry');
-            
             elements.itemID.value = item.id;
             elements.itemCode.value = item.code;
             elements.barcode.value = item.barcode;
@@ -763,9 +743,19 @@
 
         filtered.forEach(i => {
             const dotClass = i.status === 'Active' ? 'dot-active' : 'dot-blocked';
+            
+            // Layout styling state flags check
+            const idStyle = visibleColumns.id ? 'table-cell' : 'none';
+            const barcodeStyle = visibleColumns.barcode ? 'table-cell' : 'none';
+            const stockStyle = visibleColumns.stock ? 'table-cell' : 'none';
+            const actionsStyle = visibleColumns.actions ? 'table-cell' : 'none';
+
+            const priceNum = Number(i.price).toFixed(2);
+            const rspNum = Number(i.rsp).toFixed(2);
+
             htmlBuffer += `
                 <tr>
-                    <td>${i.id}</td>
+                    <td class="col-id" style="display: ${idStyle};">${i.id}</td>
                     <td>
                         <div class="code-cell">
                             <span style="font-weight:700; font-family:monospace;">${i.code}</span>
@@ -773,54 +763,20 @@
                         </div>
                     </td>
                     <td class="wrap-cell">
-                        <span class="status-dot ${dotClass}" title="${i.status}"></span>${i.desc}
+                        <span class="status-dot ${dotClass}" title="${i.status}"></span>${i.desc} <span style="font-family:monospace; font-weight:500; color:var(--md-sys-color-accent);">(${priceNum} / ${rspNum})</span>
                     </td>
-                    <td>${i.barcode}</td>
-                    <td style="font-family:monospace;">${Number(i.price).toFixed(2)} / <span style="color:var(--md-sys-color-text-secondary);">${Number(i.rsp).toFixed(2)}</span></td>
-                    <td><strong>${i.stock}</strong></td>
-                    <td class="action-cell">
-                        <button class="btn btn-print" title="Print Label" onclick="printBarcodeLabel('${i.barcode}')">🖨️</button>
-                        <button class="btn btn-edit" title="Edit Item" onclick="editItem('${i.barcode}')">✏️</button>
-                        <button class="btn btn-delete" title="Delete Item" onclick="delItem(${i.uniqueRef})">🗑️</button>
+                    <td class="col-barcode" style="display: ${barcodeStyle}; font-family:monospace;">${i.barcode}</td>
+                    <td class="col-stock" style="display: ${stockStyle};"><strong>${i.stock}</strong></td>
+                    <td class="col-actions" style="display: ${actionsStyle};">
+                        <div class="action-cell">
+                            <button class="btn btn-edit" title="Edit Item" onclick="editItem('${i.barcode}')">✏️</button>
+                            <button class="btn btn-delete" title="Delete Item" onclick="delItem(${i.uniqueRef})">🗑️</button>
+                        </div>
                     </td>
                 </tr>`;
         });
         
         elements.inventoryTbody.innerHTML = htmlBuffer;
-    }
-
-    function printBarcodeLabel(barcodeStr) {
-        const item = inventory.find(i => i.barcode === barcodeStr);
-        if(!item) return alert("Item metadata missing!");
-        
-        elements.printArea.innerHTML = `
-            <div class="print-label-card">
-                <div class="p-top-spacer"></div>
-                <div class="p-code">${item.code}</div>
-                <div class="p-bar-wrapper">
-                    <svg id="zebraBarcodeTarget"></svg>
-                </div>
-                <div class="p-desc">${item.desc}</div>
-            </div>
-        `;
-        
-        const len = String(item.barcode).length;
-        const strokeWidth = len > 14 ? 1.5 : (len < 8 ? 3 : 2);
-
-        JsBarcode("#zebraBarcodeTarget", item.barcode, {
-            format: "CODE128",
-            width: strokeWidth,
-            height: 42,         
-            displayValue: true,
-            fontSize: 7,                          
-            font: "'Courier New', Courier, monospace", 
-            fontOptions: "bold",
-            background: "#fff",
-            lineColor: "#000",
-            margin: 0
-        });
-
-        setTimeout(() => { window.print(); }, 50);
     }
 
     function addTrans(code) {
@@ -863,7 +819,7 @@
                     <td class="wrap-cell">${t.desc}</td>
                     <td class="text-center"><input type="number" class="qty-input" value="${t.qty}" min="1" oninput="updateQty(${t.ref}, this.value)"></td>
                     <td class="text-right" style="font-weight:700; color:var(--md-sys-color-text); font-family:monospace;"><span id="row-total-${t.ref}">${lineTotal.toFixed(2)}</span></td>
-                    <td class="text-center"><button class="btn btn-delete" style="padding: 2px 6px; min-height:22px;" onclick="remTrans(${t.ref})">×</button></td>
+                    <td class="text-center"><button class="btn btn-delete" style="width:28px; height:28px; min-height:28px;" onclick="remTrans(${t.ref})">×</button></td>
                 </tr>`;
         }).join('');
         
@@ -904,13 +860,11 @@
 
     function exportToExcel() {
         if (!transactions.length) return alert("No items found in the Active Order List.");
-        
         let filename = prompt("Enter Export Filename:", "Flamingo_Order");
         if (!filename) return; 
 
         let csvContent = "\uFEFF"; 
         csvContent += "Code,Description,Quantity\n"; 
-
         let sortedTransactions = [...transactions].sort((a, b) => Number(b.qty) - Number(a.qty));
 
         sortedTransactions.forEach(t => {
@@ -983,9 +937,6 @@
 
     function clearInventory() { if(confirm("Delete ALL?")) { inventory = []; sync(); renderTransactions(); } }
 
-    // ==========================================
-    // PROFIT CALCULATOR ENGINE ALGORITHMS
-    // ==========================================
     const num = value => parseFloat(value) || 0;
 
     function saveCalcData() {
@@ -1061,18 +1012,15 @@
         saveCalcData();
     }
 
-    // Outer Size / Outer Cost Calculation Link Engine
     function runOuterCalculation() {
         const oSize = num(calcEl.outerSize.value);
         const oCost = num(calcEl.outerCost.value);
-        
         if(oSize > 0 && calcEl.cost) {
             calcEl.cost.value = (oCost / oSize).toFixed(2);
         }
         updatePrice();
     }
 
-    // Calculator Event Binding Setup Matrix
     if(calcEl.outerSize) calcEl.outerSize.addEventListener("input", runOuterCalculation);
     if(calcEl.outerCost) calcEl.outerCost.addEventListener("input", runOuterCalculation);
 
