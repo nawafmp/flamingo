@@ -36,6 +36,9 @@
             --profit-text: #166534;
             --discount: #fef2f2;
             --discount-text: #991b1b;
+            
+            /* High Contrast Custom Highlights */
+            --rsp-highlight-text: #5c2d17; /* Dark Brown Highlight color */
         }
 
         body { 
@@ -63,7 +66,6 @@
         }
         .header h2 { margin: 0; font-size: 1.1rem; color: var(--md-sys-color-primary); font-weight: 700; letter-spacing: -0.2px; }
 
-        /* Header shortcut button styling */
         .btn-header-shortcut {
             background: var(--md-sys-color-primary-container);
             color: var(--md-sys-color-on-primary-container);
@@ -105,45 +107,75 @@
             font-weight: 700;
         }
 
-        /* Column Visibility Toggles Wrapper */
-        .column-visibility-bar {
-            background: var(--md-sys-color-bg);
-            padding: 10px 12px;
-            border-radius: 8px;
+        /* Re-architected Dropdown Column Settings layout specifications */
+        .column-visibility-dropdown-container {
             margin-bottom: 12px;
-            border: 1px solid var(--md-sys-color-surface-variant);
+            position: relative;
+            display: inline-block;
+            width: 100%;
         }
-        .visibility-title {
-            font-size: 0.68rem;
+        .dropdown-trigger-btn {
+            width: 100%;
+            height: 44px;
+            background: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 8px;
+            padding: 0 16px;
+            font-size: 0.88rem;
             font-weight: 700;
             color: var(--md-sys-color-text-secondary);
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            letter-spacing: 0.04em;
-        }
-        .toggles-flex {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .toggle-label {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.82rem;
+            justify-content: space-between;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        .dropdown-trigger-btn::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid var(--md-sys-color-text-secondary);
+        }
+        .dropdown-menu-panel {
+            display: none;
+            position: absolute;
+            top: 48px;
+            left: 0;
+            width: 100%;
+            background: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+            z-index: 100;
+            padding: 6px 0;
+            box-sizing: border-box;
+        }
+        .dropdown-menu-panel.show {
+            display: block;
+        }
+        .dropdown-item-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            font-size: 0.9rem;
             font-weight: 500;
             color: var(--md-sys-color-text);
             cursor: pointer;
-            text-transform: none;
-            letter-spacing: normal;
-            margin-bottom: 0;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
-        .toggle-label input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
+        .dropdown-item-label:active {
+            background-color: var(--md-sys-color-bg);
+        }
+        .dropdown-item-label input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
             accent-color: var(--md-sys-color-primary);
             cursor: pointer;
+            margin: 0;
         }
 
         .tab-container {
@@ -315,9 +347,8 @@
         
         td.wrap-cell { white-space: normal; word-break: break-word; font-size: 0.8rem; line-height: 1.25; }
 
-        /* Setup CSS Handles for Visibility Control */
-        .col-id, .col-barcode, .col-stock { display: none; }
-        .col-actions { display: table-cell; }
+        /* Sync CSS classes mapping configurations */
+        .col-id, .col-barcode, .col-stock, .col-actions { display: none; }
 
         tfoot {
             position: sticky;
@@ -362,7 +393,7 @@
 
         .qty-input { width: 64px !important; text-align: center; border: 1px solid var(--md-sys-color-accent) !important; font-weight: bold; height: 36px; padding: 4px; border-radius: 6px; font-size: 0.9rem; }
 
-        .status-dot { inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
+        .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
         .dot-active { background-color: #16a34a; box-shadow: 0 0 4px #16a34a; }
         .dot-blocked { background-color: #dc2626; box-shadow: 0 0 4px #dc2626; }
         
@@ -395,6 +426,7 @@
             .calc-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
             .order-tab-header { flex-direction: row; justify-content: space-between; align-items: center; }
             .order-summary-wrapper { width: auto; }
+            .column-visibility-dropdown-container { width: 280px; }
         }
     </style>
 </head>
@@ -403,7 +435,6 @@
 <div class="container">
     <div class="header">
         <h2>ORDER FORM</h2>
-        <!-- New shortcut action to quickly bounce into Orders workspace view -->
         <button class="btn btn-header-shortcut" onclick="scrollToOrders()">📦 View Orders</button>
     </div>
 
@@ -432,13 +463,13 @@
                     </div>
                 </h3>
 
-                <div class="column-visibility-bar">
-                    <div class="visibility-title">Show Columns</div>
-                    <div class="toggles-flex">
-                        <label class="toggle-label"><input type="checkbox" id="chkToggleId" onchange="toggleColumnVisibility('id', this.checked)"> ID</label>
-                        <label class="toggle-label"><input type="checkbox" id="chkToggleBarcode" onchange="toggleColumnVisibility('barcode', this.checked)"> Barcode</label>
-                        <label class="toggle-label"><input type="checkbox" id="chkToggleStock" onchange="toggleColumnVisibility('stock', this.checked)"> Stock</label>
-                        <label class="toggle-label"><input type="checkbox" id="chkToggleActions" checked onchange="toggleColumnVisibility('actions', this.checked)"> Actions</label>
+                <div class="column-visibility-dropdown-container">
+                    <button class="dropdown-trigger-btn" onclick="toggleVisibilityDropdown(event)">Show / Hide Columns</button>
+                    <div class="dropdown-menu-panel" id="columnVisibilityMenu">
+                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleId" onchange="toggleColumnVisibility('id', this.checked)"> ID</label>
+                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleBarcode" onchange="toggleColumnVisibility('barcode', this.checked)"> Barcode</label>
+                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleStock" onchange="toggleColumnVisibility('stock', this.checked)"> Stock</label>
+                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleActions" onchange="toggleColumnVisibility('actions', this.checked)"> Actions</label>
                     </div>
                 </div>
 
@@ -448,7 +479,7 @@
                             <tr>
                                 <th class="col-id" style="width: 10%;">ID</th>
                                 <th style="width: 30%;">Code</th>
-                                <th style="width: 50%;">Description (Price / RSP)</th>
+                                <th style="width: 70%;">Description (Price / RSP)</th>
                                 <th class="col-barcode" style="width: 20%;">Barcode</th>
                                 <th class="col-stock" style="width: 10%;">Stock</th>
                                 <th class="col-actions" style="width: 10%;">Actions</th>
@@ -591,11 +622,12 @@
     let inventory = JSON.parse(localStorage.getItem('flamingo_db_v3')) || [];
     let transactions = JSON.parse(localStorage.getItem('flamingo_trans_v3')) || [];
 
+    // State tracks layout. Actions is now hidden by default (false).
     let visibleColumns = {
         id: false,
         barcode: false,
         stock: false,
-        actions: true
+        actions: false
     };
 
     const elements = {
@@ -640,6 +672,12 @@
         renderTransactions(); 
         loadCalcData();
         updatePrice();
+        
+        // Close visibility panel dropdown when clicking out
+        document.addEventListener("click", () => {
+            const menu = document.getElementById("columnVisibilityMenu");
+            if(menu) menu.classList.remove("show");
+        });
     };
 
     function sync() {
@@ -648,7 +686,16 @@
         renderTable();
     }
 
-    // Helper to jump workflow contexts smoothly from the header
+    function toggleVisibilityDropdown(event) {
+        event.stopPropagation();
+        const menu = document.getElementById("columnVisibilityMenu");
+        if(menu) menu.classList.toggle("show");
+    }
+
+    function stopPropagation(event) {
+        event.stopPropagation();
+    }
+
     function scrollToOrders() {
         switchWorkspaceTab('order');
         const container = document.getElementById('targetWorkspaceCard');
@@ -688,6 +735,11 @@
     function editItem(barcode) {
         const item = inventory.find(i => i.barcode === barcode);
         if (item) {
+            // Unhide actions column automatically so user can save or perform updates cleanly
+            if(!visibleColumns.actions) {
+                document.getElementById('chkToggleActions').checked = true;
+                toggleColumnVisibility('actions', true);
+            }
             switchWorkspaceTab('entry');
             elements.itemID.value = item.id;
             elements.itemCode.value = item.code;
@@ -776,7 +828,7 @@
                         </div>
                     </td>
                     <td class="wrap-cell">
-                        <span class="status-dot ${dotClass}" title="${i.status}"></span>${i.desc} <span style="font-family:monospace; font-weight:500; color:var(--md-sys-color-accent);">(${priceNum} / ${rspNum})</span>
+                        <span class="status-dot ${dotClass}" title="${i.status}"></span>${i.desc} <span style="font-family:monospace; font-weight:500; color:var(--md-sys-color-accent);">(${priceNum} / <span style="color:var(--rsp-highlight-text); font-weight:700;">${rspNum}</span>)</span>
                     </td>
                     <td class="col-barcode" style="display: ${barcodeStyle}; font-family:monospace;">${i.barcode}</td>
                     <td class="col-stock" style="display: ${stockStyle};"><strong>${i.stock}</strong></td>
@@ -815,7 +867,6 @@
         }
     }
 
-    // Fixed a small formatting string missing in the original implementation snippet
     function syncTransactions() {
         localStorage.setItem('flamingo_trans_v3', JSON.stringify(transactions));
         renderTransactions();
