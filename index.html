@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
         :root {
             /* Material Design 3 Tonal Color Palette Reference Tokens */
@@ -669,7 +669,15 @@
         </div>
     </div>
 </div>
-
+<div id="scannerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; flex-direction: column; align-items: center; justify-content: center;">
+    <div style="width: 85%; max-width: 400px; background: var(--md-sys-color-surface); border-radius: 16px; padding: 16px; box-sizing: border-box; position: relative;">
+        <h4 style="margin: 0 0 12px 0; color: var(--md-sys-color-primary); font-size: 0.9rem; text-transform: uppercase;">Scan Barcode</h4>
+        
+        <div id="interactive-reader" style="width: 100%; border-radius: 8px; overflow: hidden; background: #000;"></div>
+        
+        <button class="btn" style="width: 100%; margin-top: 14px; background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="closeBarcodeScanner()">❌ Cancel</button>
+    </div>
+</div>
 <script>
     let inventory = JSON.parse(localStorage.getItem('flamingo_db_v3')) || [];
     let transactions = JSON.parse(localStorage.getItem('flamingo_trans_v3')) || [];
@@ -763,15 +771,54 @@
     }
 
     /* Mock function payload hook for custom hardware scanner or web-API integration */
+    let html5QrcodeScanner = null;
+
     function triggerBarcodeScanner() {
-        const simulatedScan = prompt("Scan or enter barcode/item string:");
-        if (simulatedScan && simulatedScan.trim() !== "") {
-            elements.tableFilter.value = simulatedScan.trim();
-            renderTable();
-            focusAndScrollSearch();
-        }
+        const modal = document.getElementById('scannerModal');
+        modal.style.display = 'flex';
+
+        // Initialize the scanner targeting the video box
+        html5QrcodeScanner = new Html5Qrcode("interactive-reader");
+
+        const config = { 
+            fps: 10, 
+            qrbox: { width: 250, height: 150 } // Shaped for standard horizontal retail barcodes
+        };
+
+        // Start local video stream
+        html5QrcodeScanner.start(
+            { facingMode: "environment" }, // Request rear camera
+            config,
+            (decodedText) => {
+                // Success Callback: Barcode detected
+                elements.tableFilter.value = decodedText.trim();
+                renderTable();
+                closeBarcodeScanner();
+                focusAndScrollSearch();
+            },
+            (errorMessage) => {
+                // Verbose parsing errors are ignored to prevent spamming the console logs
+            }
+        ).catch(err => {
+            alert("Camera initialization failed: " + err);
+            closeBarcodeScanner();
+        });
     }
 
+    function closeBarcodeScanner() {
+        const modal = document.getElementById('scannerModal');
+        modal.style.display = 'none';
+        
+        if (html5QrcodeScanner) {
+            html5QrcodeScanner.stop().then(() => {
+                html5QrcodeScanner.clear();
+                html5QrcodeScanner = null;
+            }).catch(err => {
+                console.error("Failed to safely release camera resource:", err);
+                html5QrcodeScanner = null;
+            });
+        }
+    }
     function scrollToOrders() {
         switchWorkspaceTab('order');
         const container = document.getElementById('targetWorkspaceCard');
@@ -1180,5 +1227,6 @@
 
     if(calcEl.price) calcEl.price.addEventListener("input", updateMargin);
 </script>
+
 </body>
 </html>
