@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mobile Barcode App</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 15px;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        .control-panel {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .btn-primary { background-color: #0066cc; }
+        .btn-danger { background-color: #dc3545; }
+        
+        /* Native Camera Button Styling */
+        .camera-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: #28a745;
+            color: white;
+            padding: 15px 0;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 6px rgba(40, 167, 69, 0.2);
+        }
+        .camera-btn:active { background-color: #218838; }
+        
+        #scanStatus {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            min-height: 24px;
+        }
+
+        /* UPDATED: Flex row for horizontal scrolling */
+        #output {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            overflow-x: auto;
+            gap: 20px;
+            padding-bottom: 15px; /* Adds breathing room for the scrollbar */
+        }
+        
+        /* UPDATED: Prevent shrinking and adjust margins */
+        .barcode-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            flex: 0 0 auto; /* Ensures containers don't squish */
+            min-width: fit-content;
+            box-sizing: border-box;
+        }
+        .error { color: #d32f2f; font-size: 14px; }
+        
+        /* Hidden div required by the library */
+        #dummy-reader { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="control-panel">
+        <h2 style="margin-top: 0; text-align: center;">Barcode Toolkit</h2>
+        
+        <label for="cameraInput" class="camera-btn">📷 Tap to Scan (Camera)</label>
+        <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
+
+        <div id="scanStatus"></div>
+
+        <p style="margin-bottom: 5px; font-weight: bold;">Scanned Codes:</p>
+        <textarea id="barcodeInput" rows="6" placeholder="Scan codes or type here..."></textarea>
+        
+        <div class="button-group">
+            <button class="btn-primary" onclick="generateBarcodes()">⚙️ Generate</button>
+            <button class="btn-danger" onclick="clearBox()">🗑️ Clear</button>
+        </div>
+    </div>
+
+    <div id="dummy-reader"></div>
+    
+    <div id="output"></div>
+
+    <script>
+        const fileInput = document.getElementById('cameraInput');
+        const scanStatus = document.getElementById('scanStatus');
+        const textarea = document.getElementById('barcodeInput');
+        
+        // Initialize the scanning engine
+        const html5QrCode = new Html5Qrcode("dummy-reader");
+
+        // Listen for when a picture is taken
+        fileInput.addEventListener('change', e => {
+            if (e.target.files.length == 0) {
+                return; // User canceled the camera
+            }
+            
+            const imageFile = e.target.files[0];
+            scanStatus.style.color = '#0066cc';
+            scanStatus.innerText = "⏳ Analyzing image...";
+
+            // Read the image file for barcodes
+            html5QrCode.scanFile(imageFile, true)
+                .then(decodedText => {
+                    // Success!
+                    scanStatus.style.color = '#28a745';
+                    scanStatus.innerText = "✅ Scanned successfully!";
+                    
+                    let currentValue = textarea.value;
+                    if (currentValue.length > 0 && !currentValue.endsWith('\n')) {
+                        currentValue += '\n';
+                    }
+                    // Add code and move to next line
+                    textarea.value = currentValue + decodedText + '\n';
+                })
+                .catch(err => {
+                    // Failed to find a barcode in the picture
+                    scanStatus.style.color = '#dc3545';
+                    scanStatus.innerText = "❌ No barcode found. Please try again.";
+                });
+                
+            // Clear the input so the same file can be scanned again if needed
+            fileInput.value = '';
+        });
+
+        function clearBox() {
+            textarea.value = '';
+            document.getElementById('output').innerHTML = '';
+            scanStatus.innerText = '';
+        }
+
+        function generateBarcodes() {
+            const input = textarea.value;
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '';
+
+            const lines = input.split('\n').map(line => line.trim()).filter(line => line !== '');
+
+            if (lines.length === 0) {
+                alert("Please enter or scan at least one barcode.");
+                return;
+            }
+
+            lines.forEach((code, index) => {
+                const container = document.createElement('div');
+                container.className = 'barcode-container';
+
+                const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                svg.id = 'barcode-' + index;
+                
+                container.appendChild(svg);
+                outputDiv.appendChild(container);
+
+                try {
+                    JsBarcode("#barcode-" + index, code, {
+                        format: "CODE128",
+                        lineColor: "#000",
+                        width: 2,
+                        height: 80,
+                        displayValue: true,
+                        fontSize: 20,
+                        margin: 10
+                    });
+                } catch (error) {
+                    const errorMsg = document.createElement('p');
+                    errorMsg.className = 'error';
+                    errorMsg.innerText = `Invalid format for "${code}"`;
+                    container.innerHTML = '';
+                    container.appendChild(errorMsg);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
