@@ -9,36 +9,37 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <style>
         :root {
-            /* Material Design 3 Tonal Color Palette Reference Tokens */
-            --md-sys-color-bg: #f7f9fc;
+            /* Extracted Color Palette Reference Tokens from image_cab4fc.png */
+            --md-sys-color-bg: #e5f1f6; 
             --md-sys-color-surface: #ffffff;
-            --md-sys-color-surface-variant: #e1e7ed;
-            --md-sys-color-primary: #2d4622;
-            --md-sys-color-primary-container: #d2ebd0;
-            --md-sys-color-on-primary-container: #0b2009;
-            --md-sys-color-accent: #0a58ca;
-            --md-sys-color-accent-container: #e0ebff;
+            --md-sys-color-surface-variant: #cedee5;
+            --md-sys-color-primary: #023047; /* Dark Navy Blue */
+            --md-sys-color-primary-container: #8ecae6; /* Light Blue */
+            --md-sys-color-on-primary-container: #011621;
+            --md-sys-color-accent: #fb8500; /* Vibrant Orange */
+            --md-sys-color-accent-container: #ffb703; /* Bright Yellow */
             --md-sys-color-error: #ba1a1a;
             --md-sys-color-error-container: #ffdad6;
             --md-sys-color-on-error-container: #410002;
-            --md-sys-color-outline: #72787e;
-            --md-sys-color-text: #1a1c1e;
-            --md-sys-color-text-secondary: #42474e;
+            --md-sys-color-outline: #219ebc; /* Teal/Cyan */
+            --md-sys-color-text: #023047;
+            --md-sys-color-text-secondary: #219ebc;
 
-            /* Profit Calculator Specific Colors */
-            --purchasing: #fff7ed;
-            --sales: #eff6ff;
-            --profit: #f0fdf4;
-            --purchasing-text: #9a3412;
-            --sales-text: #1e40af;
-            --profit-text: #166534;
-            --discount: #fef2f2;
+            /* Profit Calculator Specific Colors mapped to Palette */
+            --purchasing: #fff1cc; 
+            --sales: #e5f6fc; 
+            --profit: #ffe9d1; 
+            --purchasing-text: #b27f00;
+            --sales-text: #166b80;
+            --profit-text: #b25e00;
+            --discount: #fde8e4;
             --discount-text: #991b1b;
             
             /* High Contrast Custom Highlights */
-            --rsp-highlight-text: #5c2d17; /* Dark Brown Highlight color */
+            --rsp-highlight-text: #fb8500;
         }
 
         body { 
@@ -67,8 +68,8 @@
         .header h2 { margin: 0; font-size: 1.1rem; color: var(--md-sys-color-primary); font-weight: 700; letter-spacing: -0.2px; }
 
         .btn-header-shortcut {
-            background: var(--md-sys-color-primary-container);
-            color: var(--md-sys-color-on-primary-container);
+            background: var(--md-sys-color-primary);
+            color: #ffffff;
             min-height: 36px !important;
             height: 36px;
             padding: 0 12px !important;
@@ -107,7 +108,6 @@
             font-weight: 700;
         }
 
-        /* Repositioned Dropdown Column Layout Adjustments */
         .column-visibility-dropdown-container {
             position: relative;
             display: inline-block;
@@ -123,7 +123,7 @@
             padding: 0 12px;
             font-size: 0.82rem;
             font-weight: 700;
-            color: var(--md-sys-color-text-secondary);
+            color: var(--md-sys-color-primary);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -137,7 +137,7 @@
             height: 0;
             border-left: 4px solid transparent;
             border-right: 4px solid transparent;
-            border-top: 5px solid var(--md-sys-color-text-secondary);
+            border-top: 5px solid var(--md-sys-color-primary);
             margin-left: 6px;
         }
         .dropdown-menu-panel {
@@ -164,7 +164,7 @@
             padding: 10px 16px;
             font-size: 0.88rem;
             font-weight: 500;
-            color: var(--md-sys-color-text);
+            color: var(--md-sys-color-primary);
             cursor: pointer;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
@@ -180,7 +180,6 @@
             margin: 0;
         }
 
-        /* Full Width Filter Field Box styling rules */
         .filter-search-wrapper {
             margin-bottom: 12px;
             width: 100%;
@@ -195,7 +194,29 @@
         }
         .filter-search-container input[type="text"] {
             width: 100%;
-            padding-right: 46px; /* Space for the scanner button inside input */
+            padding-right: 82px;
+        }
+        .btn-clear-search {
+            position: absolute;
+            right: 42px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 34px;
+            height: 34px;
+            background: transparent;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--md-sys-color-primary);
+            font-size: 1.1rem;
+            font-weight: bold;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-clear-search:active {
+            background: var(--md-sys-color-surface-variant);
         }
         .btn-scan-barcode {
             position: absolute;
@@ -219,7 +240,7 @@
         .btn-scan-barcode svg {
             width: 22px;
             height: 22px;
-            fill: var(--md-sys-color-text-secondary);
+            fill: var(--md-sys-color-primary);
         }
 
         .tab-container {
@@ -239,7 +260,7 @@
             padding: 12px 14px; 
             font-size: 0.78rem;
             font-weight: 700;
-            color: var(--md-sys-color-text-secondary);
+            color: var(--md-sys-color-primary);
             cursor: pointer;
             border-radius: 8px 8px 0 0;
             position: relative;
@@ -250,10 +271,12 @@
             -webkit-tap-highlight-color: transparent;
             flex: 1 0 auto;
             text-align: center;
+            opacity: 0.7;
         }
         .tab-btn.active {
             color: var(--md-sys-color-primary);
             background: transparent;
+            opacity: 1;
         }
         .tab-btn.active::after {
             content: '';
@@ -262,7 +285,7 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background: var(--md-sys-color-primary);
+            background: var(--md-sys-color-accent);
             border-radius: 3px 3px 0 0;
         }
         
@@ -286,13 +309,13 @@
             display: block; 
             font-size: 0.68rem; 
             font-weight: 700; 
-            color: var(--md-sys-color-text-secondary); 
+            color: var(--md-sys-color-primary); 
             margin-bottom: 4px; 
             text-transform: uppercase; 
             letter-spacing: 0.04em;
         }
         
-        input[type="text"], input[type="number"], select { 
+        input[type="text"], input[type="number"], select, textarea { 
             width: 100%; 
             padding: 10px 12px; 
             border: 1px solid var(--md-sys-color-outline); 
@@ -300,22 +323,24 @@
             box-sizing: border-box; 
             font-size: 0.92rem; 
             background: var(--md-sys-color-surface); 
-            color: var(--md-sys-color-text);
-            height: 44px; 
+            color: var(--md-sys-color-primary);
             transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
             -webkit-appearance: none;
             appearance: none;
         }
+        input[type="text"], input[type="number"], select { height: 44px; }
+        textarea { resize: vertical; padding: 12px; font-family: monospace; }
+        
         select {
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2342474e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23023047' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-position: right 14px center;
             background-size: 14px;
             padding-right: 36px;
         }
-        input:focus, select:focus {
+        input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: var(--md-sys-color-accent);
+            border-color: var(--md-sys-color-outline);
             border-width: 2px;
             padding: 9px 11px;
         }
@@ -341,13 +366,73 @@
         }
         .calc-purchasing { background: var(--purchasing); }
         .calc-sales { background: var(--sales); }
-        .calc-profit { background: var(--profit); border-color: #dcfce7; }
+        .calc-profit { background: var(--profit); border-color: #ffd6b3; }
         .calc-row { display: flex; gap: 8px; margin-bottom: 8px; }
         .calc-row > div { flex: 1; }
         .net-cost { display: block; margin-top: 6px; font-size: 0.75rem; font-weight: 600; color: var(--discount-text); }
         .profit-amount { margin-top: 8px; font-size: 0.9rem; font-weight: 700; color: var(--profit-text); }
-        .main-result { font-weight: 700; color: var(--sales-text); border-color: var(--md-sys-color-accent); }
+        .main-result { font-weight: 700; color: var(--sales-text); border-color: var(--md-sys-color-outline); }
         .margin-result { font-weight: 700; color: var(--profit-text); }
+
+        /* Continuous Barcode Scanning UI Elements */
+        .camera-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: var(--md-sys-color-outline);
+            color: white;
+            padding: 14px 0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-sizing: border-box;
+            margin-bottom: 12px;
+            border: none;
+            transition: background 0.2s;
+        }
+        .camera-btn:active { opacity: 0.85; }
+        
+        #scanStatus {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 12px;
+            min-height: 20px;
+            font-size: 0.85rem;
+        }
+
+        #toolkitLiveReader {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto 12px auto;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            display: none; 
+            border: 2px solid var(--md-sys-color-outline);
+        }
+
+        #toolkitOutput {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            overflow-x: auto;
+            gap: 16px;
+            padding: 8px 4px 16px 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .barcode-container {
+            background: #fff;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid var(--md-sys-color-surface-variant);
+            text-align: center;
+            flex: 0 0 auto;
+            min-width: fit-content;
+            box-sizing: border-box;
+        }
+        .barcode-error { color: var(--md-sys-color-error); font-size: 13px; font-weight: 500; }
 
         .order-tab-header {
             display: flex;
@@ -382,7 +467,7 @@
             padding: 10px; 
             font-size: 0.7rem; 
             font-weight: 700;
-            color: var(--md-sys-color-text-secondary); 
+            color: var(--md-sys-color-primary); 
             border-bottom: 2px solid var(--md-sys-color-surface-variant); 
             z-index: 10; 
             white-space: nowrap; 
@@ -391,7 +476,6 @@
         
         td.wrap-cell { white-space: normal; word-break: break-word; font-size: 0.8rem; line-height: 1.25; }
 
-        /* Sync CSS classes mapping configurations */
         .col-id, .col-barcode, .col-stock, .col-actions { display: none; }
 
         tfoot {
@@ -402,13 +486,13 @@
             z-index: 10;
         }
         tfoot td {
-            border-top: 2px solid var(--md-sys-color-outline);
+            border-top: 2px solid var(--md-sys-color-surface-variant);
             padding: 10px;
         }
-        .footer-metric-label { font-size: 0.68rem; text-transform: uppercase; color: var(--md-sys-color-text-secondary); font-weight: bold; }
-        .footer-metric-val { font-weight: 700; color: var(--md-sys-color-text); font-family: monospace; font-size: 0.85rem; }
+        .footer-metric-label { font-size: 0.68rem; text-transform: uppercase; color: var(--md-sys-color-primary); font-weight: bold; }
+        .footer-metric-val { font-weight: 700; color: var(--md-sys-color-primary); font-family: monospace; font-size: 0.85rem; }
         .grand-total-row td { background: var(--md-sys-color-accent-container); border-top: 1px dashed var(--md-sys-color-outline); }
-        .grand-total-row .footer-metric-val { color: var(--md-sys-color-accent); font-size: 0.95rem; }
+        .grand-total-row .footer-metric-val { color: var(--md-sys-color-primary); font-size: 0.95rem; }
 
         .btn { 
             cursor: pointer; 
@@ -429,13 +513,13 @@
         .btn:active { filter: brightness(0.85); transform: scale(0.98); }
         
         .btn-save { background: var(--md-sys-color-primary); color: white; width: 100%; height: 46px; font-size: 0.9rem; }
-        .btn-plus { background: #15803d; color: white; width: 36px; height: 36px; min-height: 36px; padding: 0; font-size: 0.85rem; border-radius: 8px; }
+        .btn-plus { background: var(--md-sys-color-outline); color: white; width: 36px; height: 36px; min-height: 36px; padding: 0; font-size: 0.85rem; border-radius: 8px; }
         .btn-edit { background: #b45309; color: white; width: 36px; height: 36px; min-height: 36px; padding: 0; border-radius: 8px; }
         .btn-delete { background: var(--md-sys-color-error-container); color: var(--md-sys-color-error); width: 36px; height: 36px; min-height: 36px; padding: 0; border-radius: 8px; }
-        .btn-excel { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); }
-        .btn-export-all { background: #4b5563; color: white; }
+        .btn-excel { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-primary); }
+        .btn-export-all { background: var(--md-sys-color-primary); color: white; }
 
-        .qty-input { width: 64px !important; text-align: center; border: 1px solid var(--md-sys-color-accent) !important; font-weight: bold; height: 36px; padding: 4px; border-radius: 6px; font-size: 0.9rem; }
+        .qty-input { width: 64px !important; text-align: center; border: 1px solid var(--md-sys-color-outline) !important; font-weight: bold; height: 36px; padding: 4px; border-radius: 6px; font-size: 0.9rem; }
 
         .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
         .dot-active { background-color: #16a34a; box-shadow: 0 0 4px #16a34a; }
@@ -465,7 +549,7 @@
             .header-controls-right select { width: 130px; flex-grow: 0; }
             .column-visibility-dropdown-container { width: 160px; flex-grow: 0; }
             .form-grid { flex-direction: row; flex-wrap: wrap; }
-            .form-unit { flex: 1 1 calc(33.33% - 12px); }
+            .form-unit { flex: 1 1 calc(25% - 12px); }
             .calc-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
             .order-tab-header { flex-direction: row; justify-content: space-between; align-items: center; }
             .order-summary-wrapper { width: auto; }
@@ -517,6 +601,7 @@
                 <div class="filter-search-wrapper" id="searchFieldWrapper">
                     <div class="filter-search-container">
                         <input type="text" id="tableFilter" placeholder="Search" oninput="renderTable()" onfocus="focusAndScrollSearch()">
+                        <button class="btn-clear-search" onclick="clearSearchField()" title="Clear Search">✕</button>
                         <button class="btn-scan-barcode" onclick="triggerBarcodeScanner()" title="Scan Barcode">
                             <svg viewBox="0 0 24 24">
                                 <path d="M4 4h3V2H4c-1.1.0-2 .9-2 2v3h2V4zm16-2h-3v2h3v3h2V4c0-1.1-.9-2-2-2zm2 16h-2v3h-3v2h4c1.1 0 2-.9 2-2v-3zM4 17H2v4c0 1.1.9 2 2 2h3v-2H4v-3zM6 6h2v12H6zm3 0h1v12H9zm3 0h2v12h-2zm3 0h3v12h-3zm4 0h1v12h-1z"/>
@@ -551,6 +636,7 @@
                     <button class="tab-btn active" id="tabOrderBtn" onclick="switchWorkspaceTab('order')">📦 Orders</button>
                     <button class="tab-btn" id="tabEntryBtn" onclick="switchWorkspaceTab('entry')">📝 Entry</button>
                     <button class="tab-btn" id="tabCalcBtn" onclick="switchWorkspaceTab('calc')">🧮 Profit</button>
+                    <button class="tab-btn" id="tabToolkitBtn" onclick="switchWorkspaceTab('toolkit')">🖨️ Print</button>
                 </div>
                 
                 <div id="orderTabPanel" class="tab-panel active">
@@ -558,7 +644,7 @@
                         <div class="order-tab-title">Procurement Worksheet</div>
                         <div class="order-summary-wrapper">
                             <button class="btn btn-excel" onclick="exportToExcel()">📈 Export</button>
-                            <button class="btn" style="background:var(--md-sys-color-surface-variant); color:var(--md-sys-color-text-secondary);" onclick="clearTransactions()">Clear Active</button>
+                            <button class="btn" style="background:var(--md-sys-color-surface-variant); color:var(--md-sys-color-primary);" onclick="clearTransactions()">Clear Active</button>
                         </div>
                     </div>
                     <div class="table-container">
@@ -665,10 +751,39 @@
                     </div>
                 </div>
 
+                <div id="toolkitTabPanel" class="tab-panel">
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        
+                        <div class="header-controls-left" style="gap: 12px; width:100%;">
+                            <button id="btnToggleToolkitScanner" class="camera-btn" style="flex: 2; margin-bottom:0;" onclick="toggleToolkitScanner()">📷 Live Scan</button>
+                            <label class="btn btn-excel" style="flex: 1; height:46px; min-height:46px; background:var(--md-sys-color-primary-container); color:var(--md-sys-color-primary);" title="Import 6th Column (Column F) From File">
+                                📊 Import Column F
+                                <input type="file" id="toolkitExcelInput" accept=".csv,.txt" style="display:none;" onchange="importToolkitFile(event)">
+                            </label>
+                        </div>
+                        
+                        <div id="toolkitLiveReader"></div>
+                        <div id="scanStatus"></div>
+
+                        <div class="form-group">
+                            <label style="margin-bottom: 6px;">Scanned Code Matrix Queue:</label>
+                            <textarea id="barcodeInput" rows="5" placeholder="Scanned or imported items appear here automatically..."></textarea>
+                        </div>
+                        
+                        <div class="header-controls-left" style="margin-top: 4px; gap: 12px;">
+                            <button class="btn btn-save" style="flex: 2; height: 44px; background: var(--md-sys-color-accent);" onclick="generateBarcodes()">⚙️ Generate Batch</button>
+                            <button class="btn" style="flex: 1; height: 44px; background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="clearToolkitBox()">🗑️ Reset</button>
+                        </div>
+
+                        <div id="toolkitOutput"></div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
+
 <div id="scannerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; flex-direction: column; align-items: center; justify-content: center;">
     <div style="width: 85%; max-width: 400px; background: var(--md-sys-color-surface); border-radius: 16px; padding: 16px; box-sizing: border-box; position: relative;">
         <h4 style="margin: 0 0 12px 0; color: var(--md-sys-color-primary); font-size: 0.9rem; text-transform: uppercase;">Scan Barcode</h4>
@@ -682,7 +797,6 @@
     let inventory = JSON.parse(localStorage.getItem('flamingo_db_v3')) || [];
     let transactions = JSON.parse(localStorage.getItem('flamingo_trans_v3')) || [];
 
-    // State tracks layout. Actions is now hidden by default (false).
     let visibleColumns = {
         id: false,
         barcode: false,
@@ -706,7 +820,8 @@
         footerTotalVal: document.getElementById('footerTotalVal'),
         footerVatVal: document.getElementById('footerVatVal'),
         footerGrandTotalVal: document.getElementById('footerGrandTotalVal'),
-        csvInput: document.getElementById('csvInput')
+        csvInput: document.getElementById('csvInput'),
+        toolkitExcelInput: document.getElementById('toolkitExcelInput')
     };
 
     const calcEl = {
@@ -722,13 +837,21 @@
         tabEntryBtn: document.getElementById("tabEntryBtn"),
         tabCalcBtn: document.getElementById("tabCalcBtn"),
         tabOrderBtn: document.getElementById("tabOrderBtn"),
+        tabToolkitBtn: document.getElementById("tabToolkitBtn"),
         entryPanel: document.getElementById("entryTabPanel"),
         calcPanel: document.getElementById("calcTabPanel"),
-        orderPanel: document.getElementById("orderTabPanel")
+        orderPanel: document.getElementById("orderTabPanel"),
+        toolkitPanel: document.getElementById("toolkitTabPanel")
     };
 
+    // Global toolkit references
+    const scanStatus = document.getElementById('scanStatus');
+    const toolkitTextarea = document.getElementById('barcodeInput');
+    let toolkitLiveScanner = null;
+    let lastScannedCode = "";
+    let throttleTimeout = null;
+
     window.onload = () => { 
-        // Set the status filter dropdown to "Active" by default on load
         if (elements.statusFilter) {
             elements.statusFilter.value = "Active";
         }
@@ -738,12 +861,173 @@
         loadCalcData();
         updatePrice();
         
-        // Close visibility panel dropdown when clicking out
         document.addEventListener("click", () => {
             const menu = document.getElementById("columnVisibilityMenu");
             if(menu) menu.classList.remove("show");
         });
     };
+
+    // Corrected File Parsing loop structure maps column indexes reliably
+    function importToolkitFile(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const lines = e.target.result.split(/\r?\n/);
+            if (lines.length <= 0) return alert("The selected file structure is completely empty.");
+
+            let parsedCodes = [];
+            const targetColumnIndex = 5; // 6th position index parameter matching Column F
+
+            for (let i = 0; i < lines.length; i++) {
+                const lineClean = lines[i].trim();
+                if (!lineClean) continue; 
+
+                const segments = parseCSVLine(lineClean);
+                // Dynamic layout length verification fallback logic protection rules
+                if (segments.length > targetColumnIndex) {
+                    const targetCodeValue = segments[targetColumnIndex].replace(/^["']|["']$/g, '').trim();
+                    if (targetCodeValue !== "") { 
+                        parsedCodes.push(targetCodeValue);
+                    }
+                }
+            }
+
+            if (parsedCodes.length === 0) {
+                alert("Import Finished: Found no structural non-blank items inside the 6th column (F).");
+            } else {
+                let currentVal = toolkitTextarea.value.trim();
+                if (currentVal.length > 0) {
+                    currentVal += "\n";
+                }
+                toolkitTextarea.value = currentVal + parsedCodes.join("\n") + "\n";
+                scanStatus.style.color = "#16a34a";
+                scanStatus.innerText = `📊 Successfully imported ${parsedCodes.length} barcode inputs from Column F.`;
+                
+                generateBarcodes();
+            }
+
+            if (elements.toolkitExcelInput) elements.toolkitExcelInput.value = "";
+        };
+        reader.readAsText(file);
+    }
+
+    // Live continuous video stream framework logic inside Toolkit Tab
+    function toggleToolkitScanner() {
+        const readerElement = document.getElementById('toolkitLiveReader');
+        const btn = document.getElementById('btnToggleToolkitScanner');
+
+        if (toolkitLiveScanner) {
+            stopToolkitScanner();
+            return;
+        }
+
+        readerElement.style.display = "block";
+        btn.innerText = "🛑 Stop Scanner";
+        btn.style.backgroundColor = "var(--md-sys-color-error)";
+        scanStatus.style.color = "var(--md-sys-color-primary)";
+        scanStatus.innerText = "🎥 Camera active. Positioning barcode...";
+
+        toolkitLiveScanner = new Html5Qrcode("toolkitLiveReader");
+        const config = { fps: 15, qrbox: { width: 260, height: 140 } };
+
+        toolkitLiveScanner.start(
+            { facingMode: "environment" },
+            config,
+            (decodedText) => {
+                const scannedClean = decodedText.trim();
+                
+                if (scannedClean === lastScannedCode) return;
+                lastScannedCode = scannedClean;
+
+                clearTimeout(throttleTimeout);
+                throttleTimeout = setTimeout(() => { lastScannedCode = ""; }, 2500);
+
+                scanStatus.style.color = "#16a34a";
+                scanStatus.innerText = `✅ Added: ${scannedClean}`;
+
+                let currentValue = toolkitTextarea.value;
+                if (currentValue.length > 0 && !currentValue.endsWith('\n')) {
+                    currentValue += '\n';
+                }
+                toolkitTextarea.value = currentValue + scannedClean + '\n';
+                
+                generateBarcodes();
+            },
+            (errorMessage) => { }
+        ).catch(err => {
+            alert("Camera access denied or failed: " + err);
+            stopToolkitScanner();
+        });
+    }
+
+    function stopToolkitScanner() {
+        const readerElement = document.getElementById('toolkitLiveReader');
+        const btn = document.getElementById('btnToggleToolkitScanner');
+        
+        btn.innerText = "📷 Live Scan";
+        btn.style.backgroundColor = "var(--md-sys-color-outline)";
+        scanStatus.innerText = "";
+        readerElement.style.display = "none";
+
+        if (toolkitLiveScanner) {
+            toolkitLiveScanner.stop().then(() => {
+                toolkitLiveScanner.clear();
+                toolkitLiveScanner = null;
+            }).catch(err => {
+                console.error("Scanner dynamic release fault:", err);
+                toolkitLiveScanner = null;
+            });
+        }
+    }
+
+    function clearToolkitBox() {
+        stopToolkitScanner();
+        toolkitTextarea.value = '';
+        document.getElementById('toolkitOutput').innerHTML = '';
+        scanStatus.innerText = '';
+    }
+
+    function generateBarcodes() {
+        const input = toolkitTextarea.value;
+        const outputDiv = document.getElementById('toolkitOutput');
+        outputDiv.innerHTML = '';
+
+        const lines = input.split('\n').map(line => line.trim()).filter(line => line !== '');
+
+        if (lines.length === 0) return;
+
+        lines.forEach((code, index) => {
+            const container = document.createElement('div');
+            container.className = 'barcode-container';
+
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.id = 'barcode-render-' + index;
+            
+            container.appendChild(svg);
+            outputDiv.appendChild(container);
+
+            try {
+                JsBarcode("#barcode-render-" + index, code, {
+                    format: "CODE128",
+                    lineColor: "#023047",
+                    width: 2,
+                    height: 70,
+                    displayValue: true,
+                    fontSize: 16,
+                    margin: 8
+                });
+            } catch (error) {
+                const errorMsg = document.createElement('p');
+                errorMsg.className = 'barcode-error';
+                errorMsg.innerText = `Format Error "${code}"`;
+                container.innerHTML = '';
+                container.appendChild(errorMsg);
+            }
+        });
+    }
+
     function sync() {
         localStorage.setItem('flamingo_db_v3', JSON.stringify(inventory));
         localStorage.setItem('flamingo_trans_v3', JSON.stringify(transactions));
@@ -760,44 +1044,46 @@
         event.stopPropagation();
     }
 
-    /* Automated scroll setting on search activation for maximized real-estate */
+    function clearSearchField() {
+        if (elements.tableFilter) {
+            elements.tableFilter.value = "";
+            renderTable();
+            elements.tableFilter.focus();
+        }
+    }
+
     function focusAndScrollSearch() {
         const target = document.getElementById('searchFieldWrapper');
         if (target) {
             setTimeout(() => {
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 300); // 300ms delay matches native virtual-keyboard expansion timeframes
+            }, 300);
         }
     }
 
-    /* Mock function payload hook for custom hardware scanner or web-API integration */
     let html5QrcodeScanner = null;
 
     function triggerBarcodeScanner() {
         const modal = document.getElementById('scannerModal');
         modal.style.display = 'flex';
 
-        // Initialize the scanner targeting the video box
         html5QrcodeScanner = new Html5Qrcode("interactive-reader");
 
         const config = { 
             fps: 10, 
-            qrbox: { width: 250, height: 150 } // Shaped for standard horizontal retail barcodes
+            qrbox: { width: 250, height: 150 }
         };
 
-        // Start local video stream
         html5QrcodeScanner.start(
-            { facingMode: "environment" }, // Request rear camera
+            { facingMode: "environment" }, 
             config,
             (decodedText) => {
-                // Success Callback: Barcode detected
                 elements.tableFilter.value = decodedText.trim();
                 renderTable();
                 closeBarcodeScanner();
                 focusAndScrollSearch();
             },
             (errorMessage) => {
-                // Verbose parsing errors are ignored to prevent spamming the console logs
             }
         ).catch(err => {
             alert("Camera initialization failed: " + err);
@@ -836,10 +1122,14 @@
     }
 
     function switchWorkspaceTab(targetTab) {
-        [calcEl.tabEntryBtn, calcEl.tabCalcBtn, calcEl.tabOrderBtn].forEach(btn => {
+        if(targetTab !== 'toolkit') {
+            stopToolkitScanner();
+        }
+
+        [calcEl.tabEntryBtn, calcEl.tabCalcBtn, calcEl.tabOrderBtn, calcEl.tabToolkitBtn].forEach(btn => {
             if(btn) btn.classList.remove('active');
         });
-        [calcEl.entryPanel, calcEl.calcPanel, calcEl.orderPanel].forEach(panel => {
+        [calcEl.entryPanel, calcEl.calcPanel, calcEl.orderPanel, calcEl.toolkitPanel].forEach(panel => {
             if(panel) panel.classList.remove('active');
         });
 
@@ -852,13 +1142,15 @@
         } else if (targetTab === 'order' && calcEl.tabOrderBtn && calcEl.orderPanel) {
             calcEl.tabOrderBtn.classList.add('active');
             calcEl.orderPanel.classList.add('active');
+        } else if (targetTab === 'toolkit' && calcEl.tabToolkitBtn && calcEl.toolkitPanel) {
+            calcEl.tabToolkitBtn.classList.add('active');
+            calcEl.toolkitPanel.classList.add('active');
         }
     }
 
     function editItem(barcode) {
         const item = inventory.find(i => i.barcode === barcode);
         if (item) {
-            // Unhide actions column automatically so user can save or perform updates cleanly
             if(!visibleColumns.actions) {
                 const chk = document.getElementById('chkToggleActions');
                 if(chk) chk.checked = true;
@@ -952,7 +1244,7 @@
                         </div>
                     </td>
                     <td class="wrap-cell">
-                        <span class="status-dot ${dotClass}" title="${i.status}"></span>${i.desc} <span style="font-family:monospace; font-weight:500; color:var(--md-sys-color-accent);">(${priceNum} / <span style="color:var(--rsp-highlight-text); font-weight:700;">${rspNum}</span>)</span>
+                        <span class="status-dot ${dotClass}" title="${i.status}"></span>${i.desc} <span style="font-family:monospace; font-weight:500; color:var(--md-sys-color-primary);">(${priceNum} / <span style="color:var(--rsp-highlight-text); font-weight:700;">${rspNum}</span>)</span>
                     </td>
                     <td class="col-barcode" style="display: ${barcodeStyle}; font-family:monospace;">${i.barcode}</td>
                     <td class="col-stock" style="display: ${stockStyle};"><strong>${i.stock}</strong></td>
@@ -1007,7 +1299,7 @@
                     <td style="font-weight:700; font-family:monospace;">${t.code}</td>
                     <td class="wrap-cell">${t.desc}</td>
                     <td class="text-center"><input type="number" class="qty-input" value="${t.qty}" min="1" oninput="updateQty(${t.ref}, this.value)"></td>
-                    <td class="text-right" style="font-weight:700; color:var(--md-sys-color-text); font-family:monospace;"><span id="row-total-${t.ref}">${lineTotal.toFixed(2)}</span></td>
+                    <td class="text-right" style="font-weight:700; color:var(--md-sys-color-primary); font-family:monospace;"><span id="row-total-${t.ref}">${lineTotal.toFixed(2)}</span></td>
                     <td class="text-center"><button class="btn btn-delete" style="width:28px; height:28px; min-height:28px;" onclick="remTrans(${t.ref})">×</button></td>
                 </tr>`;
         }).join('');
