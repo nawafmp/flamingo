@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <style>
         :root {
-            /* Extracted Color Palette Reference Tokens from image_cab4fc.png */
+            /* Extracted Color Palette Reference Tokens - Default Theme (Ocean Blue) */
             --md-sys-color-bg: #e5f1f6; 
             --md-sys-color-surface: #ffffff;
             --md-sys-color-surface-variant: #cedee5;
@@ -27,19 +27,41 @@
             --md-sys-color-outline: #219ebc; /* Teal/Cyan */
             --md-sys-color-text: #023047;
             --md-sys-color-text-secondary: #219ebc;
-
-            /* Profit Calculator Specific Colors mapped to Palette */
-            --purchasing: #fff1cc; 
-            --sales: #e5f6fc; 
-            --profit: #ffe9d1; 
-            --purchasing-text: #b27f00;
-            --sales-text: #166b80;
-            --profit-text: #b25e00;
-            --discount: #fde8e4;
-            --discount-text: #991b1b;
             
             /* High Contrast Custom Highlights */
-            --rsp-highlight-text: #fb8500;
+            --price-highlight-text: #fb8500;
+        }
+
+        /* Sunset Bronze Theme Variables */
+        body.theme-sunset {
+            --md-sys-color-bg: #fdf6f0; 
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-variant: #f1e4dc;
+            --md-sys-color-primary: #5c2504; 
+            --md-sys-color-primary-container: #ffdfcb; 
+            --md-sys-color-on-primary-container: #260c00;
+            --md-sys-color-accent: #d97706; 
+            --md-sys-color-accent-container: #fef3c7; 
+            --md-sys-color-outline: #b45309; 
+            --md-sys-color-text: #5c2504;
+            --md-sys-color-text-secondary: #b45309;
+            --price-highlight-text: #d97706;
+        }
+
+        /* Forest Mint Theme Variables */
+        body.theme-forest {
+            --md-sys-color-bg: #f2f7f4; 
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-variant: #dee7e2;
+            --md-sys-color-primary: #113f26; 
+            --md-sys-color-primary-container: #c6ebd7; 
+            --md-sys-color-on-primary-container: #041a0e;
+            --md-sys-color-accent: #16a34a; 
+            --md-sys-color-accent-container: #dcfce7; 
+            --md-sys-color-outline: #15803d; 
+            --md-sys-color-text: #113f26;
+            --md-sys-color-text-secondary: #15803d;
+            --price-highlight-text: #16a34a;
         }
 
         body { 
@@ -51,6 +73,7 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             -webkit-text-size-adjust: 100%;
+            transition: background 0.3s ease, color 0.3s ease;
         }
         
         .container { max-width: 1440px; margin: 0 auto; }
@@ -64,8 +87,40 @@
             padding: 10px 16px; 
             border-radius: 12px; 
             border: 1px solid var(--md-sys-color-surface-variant);
+            flex-wrap: wrap;
+            gap: 10px;
         }
         .header h2 { margin: 0; font-size: 1.1rem; color: var(--md-sys-color-primary); font-weight: 700; letter-spacing: -0.2px; }
+
+        /* Theme Radio Buttons Container Styles */
+        .theme-selector-group {
+            display: inline-flex;
+            background: var(--md-sys-color-bg);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--md-sys-color-surface-variant);
+        }
+        .theme-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--md-sys-color-primary);
+            user-select: none;
+            gap: 4px;
+        }
+        .theme-option input[type="radio"] {
+            margin: 0;
+            accent-color: var(--md-sys-color-primary);
+            cursor: pointer;
+        }
+        .theme-option:has(input:checked) {
+            background: var(--md-sys-color-surface);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
 
         .btn-header-shortcut {
             background: var(--md-sys-color-primary);
@@ -354,26 +409,6 @@
             opacity: 1;
         }
 
-        .calc-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .calc-section {
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid var(--md-sys-color-surface-variant);
-        }
-        .calc-purchasing { background: var(--purchasing); }
-        .calc-sales { background: var(--sales); }
-        .calc-profit { background: var(--profit); border-color: #ffd6b3; }
-        .calc-row { display: flex; gap: 8px; margin-bottom: 8px; }
-        .calc-row > div { flex: 1; }
-        .net-cost { display: block; margin-top: 6px; font-size: 0.75rem; font-weight: 600; color: var(--discount-text); }
-        .profit-amount { margin-top: 8px; font-size: 0.9rem; font-weight: 700; color: var(--profit-text); }
-        .main-result { font-weight: 700; color: var(--sales-text); border-color: var(--md-sys-color-outline); }
-        .margin-result { font-weight: 700; color: var(--profit-text); }
-
         /* Continuous Barcode Scanning UI Elements */
         .camera-btn {
             display: block;
@@ -519,6 +554,28 @@
         .btn-excel { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-primary); }
         .btn-export-all { background: var(--md-sys-color-primary); color: white; }
 
+        /* Interactive row contextual inline layout styles */
+        .btn-inline-delete {
+            background: var(--md-sys-color-error);
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            height: 28px;
+            min-height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.15s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
         .qty-input { width: 64px !important; text-align: center; border: 1px solid var(--md-sys-color-outline) !important; font-weight: bold; height: 36px; padding: 4px; border-radius: 6px; font-size: 0.9rem; }
 
         .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
@@ -550,7 +607,6 @@
             .column-visibility-dropdown-container { width: 160px; flex-grow: 0; }
             .form-grid { flex-direction: row; flex-wrap: wrap; }
             .form-unit { flex: 1 1 calc(25% - 12px); }
-            .calc-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
             .order-tab-header { flex-direction: row; justify-content: space-between; align-items: center; }
             .order-summary-wrapper { width: auto; }
         }
@@ -561,6 +617,19 @@
 <div class="container">
     <div class="header">
         <h2>ORDER FORM</h2>
+        
+        <div class="theme-selector-group">
+            <label class="theme-option">
+                <input type="radio" name="appTheme" value="default" checked onchange="setTheme('default')"> Ocean
+            </label>
+            <label class="theme-option">
+                <input type="radio" name="appTheme" value="sunset" onchange="setTheme('sunset')"> Sunset
+            </label>
+            <label class="theme-option">
+                <input type="radio" name="appTheme" value="forest" onchange="setTheme('forest')"> Forest
+            </label>
+        </div>
+
         <button class="btn btn-header-shortcut" onclick="scrollToOrders()">📦 View Orders</button>
     </div>
 
@@ -615,8 +684,8 @@
                         <thead>
                             <tr>
                                 <th class="col-id" style="width: 10%;">ID</th>
-                                <th style="width: 30%;">Code</th>
-                                <th style="width: 70%;">Description (Price / RSP)</th>
+                                <th style="width: 35%;">Code</th>
+                                <th style="width: 65%;">Description (Price / RSP)</th>
                                 <th class="col-barcode" style="width: 20%;">Barcode</th>
                                 <th class="col-stock" style="width: 10%;">Stock</th>
                                 <th class="col-actions" style="width: 10%;">Actions</th>
@@ -635,7 +704,6 @@
                 <div class="tab-container">
                     <button class="tab-btn active" id="tabOrderBtn" onclick="switchWorkspaceTab('order')">📦 Orders</button>
                     <button class="tab-btn" id="tabEntryBtn" onclick="switchWorkspaceTab('entry')">📝 Entry</button>
-                    <button class="tab-btn" id="tabCalcBtn" onclick="switchWorkspaceTab('calc')">🧮 Profit</button>
                     <button class="tab-btn" id="tabToolkitBtn" onclick="switchWorkspaceTab('toolkit')">🖨️ Print</button>
                 </div>
                 
@@ -651,11 +719,10 @@
                         <table id="transactionTable">
                             <thead>
                                 <tr>
-                                    <th style="width: 25%;">Code</th>
-                                    <th style="width: 40%;">Description</th>
+                                    <th style="width: 30%;">Code</th>
+                                    <th style="width: 45%;">Description</th>
                                     <th style="width: 15%;" class="text-center">Qty</th>
-                                    <th style="width: 15%;" class="text-right">Total</th>
-                                    <th style="width: 5%;" class="text-center">X</th>
+                                    <th style="width: 10%;" class="text-right">Total</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -663,17 +730,14 @@
                                 <tr>
                                     <td colspan="3" class="text-right footer-metric-label">Total:</td>
                                     <td class="text-right footer-metric-val" id="footerTotalVal">0.00</td>
-                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="text-right footer-metric-label">VAT (5%):</td>
                                     <td class="text-right footer-metric-val" id="footerVatVal">0.00</td>
-                                    <td></td>
                                 </tr>
                                 <tr class="grand-total-row">
                                     <td colspan="3" class="text-right footer-metric-label">Grand Total:</td>
                                     <td class="text-right footer-metric-val" id="footerGrandTotalVal">0.00</td>
-                                    <td></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -697,56 +761,6 @@
                         </div>
                         <div class="form-unit" style="margin-top: 4px;">
                             <button class="btn btn-save" onclick="addItem()">Save Item</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="calcTabPanel" class="tab-panel">
-                    <div class="calc-grid">
-                        <div class="calc-section calc-purchasing">
-                            <label class="label" style="color:var(--purchasing-text); font-size:0.75rem; font-weight:700; display:block; margin-bottom:6px;">Purchasing</label>
-                            <div class="calc-row">
-                                <div>
-                                    <label class="label">Outer Size</label>
-                                    <input type="number" id="calcOuterSize" min="1" step="1" placeholder="144" style="background:rgba(255,255,255,0.8);">
-                                </div>
-                                <div>
-                                    <label class="label">Outer Cost</label>
-                                    <input type="number" id="calcOuterCost" min="0" step="0.01" placeholder="0.00" style="background:rgba(255,255,255,0.8);">
-                                </div>
-                                <div>
-                                    <label class="label">Unit Cost</label>
-                                    <input type="number" id="calcCost" min="0" step="0.01" value="20" style="background:rgba(255,255,255,0.8);">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="label">Supplier Discount (%)</label>
-                                <input type="number" id="calcCostDiscount" min="0" max="100" step="0.01" value="0" style="background:var(--discount); border-color:#fee2e2;">
-                                <span id="calcNetCostLabel" class="net-cost">Net Unit Cost: 20.00</span>
-                            </div>
-                        </div>
-
-                        <div class="calc-section calc-sales">
-                            <label class="label" style="color:var(--sales-text); font-size:0.75rem; font-weight:700; display:block; margin-bottom:6px;">Sales</label>
-                            <div class="calc-row">
-                                <div>
-                                    <label class="label">Selling Price</label>
-                                    <input type="number" id="calcPrice" min="0" step="0.01" value="30.77" class="main-result">
-                                </div>
-                                <div>
-                                    <label class="label">Deduction (%)</label>
-                                    <input type="number" id="calcDeduction" min="0" max="100" step="0.01" value="18">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="calc-section calc-profit">
-                            <label class="label" style="color:var(--profit-text); font-size:0.75rem; font-weight:700; display:block; margin-bottom:6px;">Profitability</label>
-                            <div>
-                                <label class="label">Target Margin (%)</label>
-                                <input type="number" id="calcMargin" min="0" max="100" step="0.01" value="35" class="margin-result">
-                            </div>
-                            <div id="calcProfitAmount" class="profit-amount">Profit per Unit: 0.00</div>
                         </div>
                     </div>
                 </div>
@@ -825,21 +839,10 @@
     };
 
     const calcEl = {
-        outerSize: document.getElementById("calcOuterSize"),
-        outerCost: document.getElementById("calcOuterCost"),
-        cost: document.getElementById("calcCost"),
-        costDiscount: document.getElementById("calcCostDiscount"),
-        price: document.getElementById("calcPrice"),
-        margin: document.getElementById("calcMargin"),
-        deduction: document.getElementById("calcDeduction"),
-        netLabel: document.getElementById("calcNetCostLabel"),
-        profitLabel: document.getElementById("calcProfitAmount"),
         tabEntryBtn: document.getElementById("tabEntryBtn"),
-        tabCalcBtn: document.getElementById("tabCalcBtn"),
         tabOrderBtn: document.getElementById("tabOrderBtn"),
         tabToolkitBtn: document.getElementById("tabToolkitBtn"),
         entryPanel: document.getElementById("entryTabPanel"),
-        calcPanel: document.getElementById("calcTabPanel"),
         orderPanel: document.getElementById("orderTabPanel"),
         toolkitPanel: document.getElementById("toolkitTabPanel")
     };
@@ -856,10 +859,12 @@
             elements.statusFilter.value = "Active";
         }
 
+        // Initialize theme configurations
+        const savedTheme = localStorage.getItem('flamingo_app_theme') || 'default';
+        setTheme(savedTheme);
+
         renderTable(); 
         renderTransactions(); 
-        loadCalcData();
-        updatePrice();
         
         document.addEventListener("click", () => {
             const menu = document.getElementById("columnVisibilityMenu");
@@ -867,7 +872,18 @@
         });
     };
 
-    // Corrected File Parsing loop structure maps column indexes reliably
+    // Global Theme Switcher Engine logic
+    function setTheme(themeName) {
+        document.body.classList.remove('theme-sunset', 'theme-forest');
+        if (themeName !== 'default') {
+            document.body.classList.add('theme-' + themeName);
+        }
+        localStorage.setItem('flamingo_app_theme', themeName);
+        
+        const radioInput = document.querySelector(`input[name="appTheme"][value="${themeName}"]`);
+        if (radioInput) radioInput.checked = true;
+    }
+
     function importToolkitFile(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -878,14 +894,13 @@
             if (lines.length <= 0) return alert("The selected file structure is completely empty.");
 
             let parsedCodes = [];
-            const targetColumnIndex = 5; // 6th position index parameter matching Column F
+            const targetColumnIndex = 5; 
 
             for (let i = 0; i < lines.length; i++) {
                 const lineClean = lines[i].trim();
                 if (!lineClean) continue; 
 
                 const segments = parseCSVLine(lineClean);
-                // Dynamic layout length verification fallback logic protection rules
                 if (segments.length > targetColumnIndex) {
                     const targetCodeValue = segments[targetColumnIndex].replace(/^["']|["']$/g, '').trim();
                     if (targetCodeValue !== "") { 
@@ -913,7 +928,6 @@
         reader.readAsText(file);
     }
 
-    // Live continuous video stream framework logic inside Toolkit Tab
     function toggleToolkitScanner() {
         const readerElement = document.getElementById('toolkitLiveReader');
         const btn = document.getElementById('btnToggleToolkitScanner');
@@ -1105,12 +1119,21 @@
             });
         }
     }
+    
     function scrollToOrders() {
         switchWorkspaceTab('order');
         const container = document.getElementById('targetWorkspaceCard');
         if (container) {
             container.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+    }
+
+    // Handles row element conversion to a transient delete action layout state
+    function prepareRowDeletion(elementId, referenceId) {
+        const container = document.getElementById(elementId);
+        if(!container) return;
+        
+        container.innerHTML = `<button class="btn-inline-delete" onclick="event.stopPropagation(); remTrans(${referenceId});">🗑️ Delete</button>`;
     }
 
     function toggleColumnVisibility(columnClass, isChecked) {
@@ -1126,19 +1149,16 @@
             stopToolkitScanner();
         }
 
-        [calcEl.tabEntryBtn, calcEl.tabCalcBtn, calcEl.tabOrderBtn, calcEl.tabToolkitBtn].forEach(btn => {
+        [calcEl.tabEntryBtn, calcEl.tabOrderBtn, calcEl.tabToolkitBtn].forEach(btn => {
             if(btn) btn.classList.remove('active');
         });
-        [calcEl.entryPanel, calcEl.calcPanel, calcEl.orderPanel, calcEl.toolkitPanel].forEach(panel => {
+        [calcEl.entryPanel, calcEl.orderPanel, calcEl.toolkitPanel].forEach(panel => {
             if(panel) panel.classList.remove('active');
         });
 
         if (targetTab === 'entry' && calcEl.tabEntryBtn && calcEl.entryPanel) {
             calcEl.tabEntryBtn.classList.add('active');
             calcEl.entryPanel.classList.add('active');
-        } else if (targetTab === 'calc' && calcEl.tabCalcBtn && calcEl.calcPanel) {
-            calcEl.tabCalcBtn.classList.add('active');
-            calcEl.calcPanel.classList.add('active');
         } else if (targetTab === 'order' && calcEl.tabOrderBtn && calcEl.orderPanel) {
             calcEl.tabOrderBtn.classList.add('active');
             calcEl.orderPanel.classList.add('active');
@@ -1169,6 +1189,7 @@
         }
     }
 
+    // Business Logic context item structures 
     function addItem() {
         const codeVal = elements.itemCode.value.toUpperCase().trim();
         const barcodeVal = elements.barcode.value.trim();
@@ -1239,12 +1260,12 @@
                     <td class="col-id" style="display: ${idStyle};">${i.id}</td>
                     <td>
                         <div class="code-cell">
-                            <span style="font-weight:700; font-family:monospace;">${i.code}</span>
+                            <span style="font-weight:700; font-family:monospace; white-space: normal; word-break: break-all;">${i.code} (${i.barcode})</span>
                             <button class="btn btn-plus" title="Add to Order" onclick="addTrans('${i.code}')">➕</button>
                         </div>
                     </td>
                     <td class="wrap-cell">
-                        <span class="status-dot ${dotClass}" title="${i.status}"></span>${i.desc} <span style="font-family:monospace; font-weight:500; color:var(--md-sys-color-primary);">(${priceNum} / <span style="color:var(--rsp-highlight-text); font-weight:700;">${rspNum}</span>)</span>
+                        <span class="status-dot ${dotClass}" title="${i.status}"></span>${i.desc} <span style="font-family:monospace; font-weight:500; color:var(--md-sys-color-primary);">(<span style="color:var(--price-highlight-text); font-weight:700;">${priceNum}</span> / ${rspNum})</span>
                     </td>
                     <td class="col-barcode" style="display: ${barcodeStyle}; font-family:monospace;">${i.barcode}</td>
                     <td class="col-stock" style="display: ${stockStyle};"><strong>${i.stock}</strong></td>
@@ -1293,14 +1314,16 @@
             const currentItem = inventory.find(i => i.code === t.code);
             const unitPrice = currentItem ? Number(currentItem.price) : (Number(t.price) || 0);
             const lineTotal = unitPrice * Number(t.qty);
+            const inlineCellId = `code-container-${t.ref}`;
             
             return `
                 <tr>
-                    <td style="font-weight:700; font-family:monospace;">${t.code}</td>
+                    <td style="font-weight:700; font-family:monospace; cursor:pointer; user-select:none; height:44px;" id="${inlineCellId}" onclick="prepareRowDeletion('${inlineCellId}', ${t.ref})">
+                        ${t.code}
+                    </td>
                     <td class="wrap-cell">${t.desc}</td>
                     <td class="text-center"><input type="number" class="qty-input" value="${t.qty}" min="1" oninput="updateQty(${t.ref}, this.value)"></td>
                     <td class="text-right" style="font-weight:700; color:var(--md-sys-color-primary); font-family:monospace;"><span id="row-total-${t.ref}">${lineTotal.toFixed(2)}</span></td>
-                    <td class="text-center"><button class="btn btn-delete" style="width:28px; height:28px; min-height:28px;" onclick="remTrans(${t.ref})">×</button></td>
                 </tr>`;
         }).join('');
         
@@ -1417,107 +1440,6 @@
     }
 
     function clearInventory() { if(confirm("Delete ALL?")) { inventory = []; sync(); renderTransactions(); } }
-
-    const num = value => parseFloat(value) || 0;
-
-    function saveCalcData() {
-        localStorage.setItem("flamingo-calculator",
-            JSON.stringify({
-                outerSize: calcEl.outerSize.value,
-                outerCost: calcEl.outerCost.value,
-                cost: calcEl.cost.value,
-                costDiscount: calcEl.costDiscount.value,
-                price: calcEl.price.value,
-                margin: calcEl.margin.value,
-                deduction: calcEl.deduction.value
-            })
-        );
-    }
-
-    function loadCalcData() {
-        const saved = JSON.parse(localStorage.getItem("flamingo-calculator") || "{}");
-        Object.keys(saved).forEach(key => {
-            if(calcEl[key]) {
-                calcEl[key].value = saved[key];
-            }
-        });
-    }
-
-    function getNetCost() {
-        return num(calcEl.cost.value) * (1 - num(calcEl.costDiscount.value) / 100);
-    }
-
-    function updateNetLabel(cost) {
-        if(calcEl.netLabel) calcEl.netLabel.textContent = `Net Unit Cost: ${cost.toFixed(2)}`;
-    }
-
-    function updateProfitDisplay(price, deduction, cost) {
-        const profit = price - (price * deduction) - cost;
-        if(calcEl.profitLabel) calcEl.profitLabel.textContent = `Profit per Unit: ${profit.toFixed(2)}`;
-    }
-
-    function updatePrice() {
-        const cost = getNetCost();
-        const margin = num(calcEl.margin.value) / 100;
-        const deduction = num(calcEl.deduction.value) / 100;
-
-        updateNetLabel(cost);
-        const divisor = 1 - deduction - margin;
-
-        if(divisor <= 0){
-            if(calcEl.price) calcEl.price.value = "";
-            if(calcEl.profitLabel) calcEl.profitLabel.textContent = "Invalid Margin/Deduction";
-            return;
-        }
-
-        const price = cost / divisor;
-        if(calcEl.price) calcEl.price.value = price.toFixed(2);
-        updateProfitDisplay(price, deduction, cost);
-        saveCalcData();
-    }
-
-    function updateMargin() {
-        const price = num(calcEl.price.value);
-        const cost = getNetCost();
-        const deduction = num(calcEl.deduction.value) / 100;
-
-        updateNetLabel(cost);
-        if(price <= 0){
-            if(calcEl.margin) calcEl.margin.value = 0;
-            return;
-        }
-
-        const margin = ((price - (price * deduction) - cost) / price) * 100;
-        if(calcEl.margin) calcEl.margin.value = margin.toFixed(2);
-        updateProfitDisplay(price, deduction, cost);
-        saveCalcData();
-    }
-
-    function runOuterCalculation() {
-        const oSize = num(calcEl.outerSize.value);
-        const oCost = num(calcEl.outerCost.value);
-        if(oSize > 0 && calcEl.cost) {
-            calcEl.cost.value = (oCost / oSize).toFixed(2);
-        }
-        updatePrice();
-    }
-
-    if(calcEl.outerSize) calcEl.outerSize.addEventListener("input", runOuterCalculation);
-    if(calcEl.outerCost) calcEl.outerCost.addEventListener("input", runOuterCalculation);
-
-    if(calcEl.cost) {
-        calcEl.cost.addEventListener("input", () => {
-            if(calcEl.outerSize) calcEl.outerSize.value = "";
-            if(calcEl.outerCost) calcEl.outerCost.value = "";
-            updatePrice();
-        });
-    }
-
-    ["costDiscount", "margin", "deduction"].forEach(id => {
-        if(calcEl[id]) calcEl[id].addEventListener("input", updatePrice);
-    });
-
-    if(calcEl.price) calcEl.price.addEventListener("input", updateMargin);
 </script>
 
 </body>
