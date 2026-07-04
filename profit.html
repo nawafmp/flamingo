@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profit & Rebate Intelligence Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,14 +25,6 @@
             --brand-danger: #f87171;
             
             --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
-
-            /* Base fluid scaling variables */
-            --app-padding: 24px;
-            --card-padding: 28px;
-            --input-height: 46px;
-            --font-size-title: 2rem;
-            --font-size-value: 1.8rem;
-            --gap-main: 24px;
         }
 
         /* Light Mode Variant Overrides */
@@ -63,53 +55,6 @@
             --brand-success-glow: rgba(74, 222, 128, 0.15);
         }
 
-        /* Highly Compact Responsive Compressing Rules when "Fit Viewport" is activated */
-        body.fit-viewport {
-            --app-padding: 8px;
-            --card-padding: 12px;
-            --input-height: 36px;
-            --font-size-title: 1.25rem;
-            --font-size-value: 1.2rem;
-            --gap-main: 10px;
-        }
-        body.fit-viewport label {
-            font-size: 0.65rem;
-            margin-bottom: 2px;
-        }
-        body.fit-viewport .card-title, 
-        body.fit-viewport .metric-label {
-            margin-bottom: 8px;
-            font-size: 0.85rem;
-        }
-        body.fit-viewport .section-divider {
-            margin: 10px 0;
-        }
-        body.fit-viewport input[type="number"] {
-            height: 34px;
-            font-size: 0.85rem;
-        }
-        body.fit-viewport .slider-control {
-            margin-top: 4px;
-        }
-        body.fit-viewport .metric-tile {
-            padding: 10px 14px;
-            gap: 2px;
-        }
-        body.fit-viewport header {
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-        }
-        body.fit-viewport #sellingPrice {
-            height: 38px !important;
-            font-size: 0.95rem !important;
-        }
-        body.fit-viewport .chart-container {
-            gap: 4px;
-        }
-        body.fit-viewport .chart-bar-wrapper {
-            gap: 2px;
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
@@ -121,75 +66,69 @@
             background: radial-gradient(circle at 50% 0%, var(--surface-border) 0%, var(--bg-app) 80%);
             color: var(--text-main);
             min-height: 100vh;
-            height: 100vh;
-            padding: var(--app-padding);
+            padding: 24px 16px;
             -webkit-font-smoothing: antialiased;
-            transition: background 0.3s ease, color 0.3s ease, padding 0.2s ease;
-            overflow: hidden; /* Lock the viewport frame container securely */
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         .dashboard-container {
-            max-width: 1440px;
+            max-width: 1200px;
             margin: 0 auto;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
         }
 
         header {
-            margin-bottom: 16px;
+            margin-bottom: 32px;
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
             border-bottom: 1px solid var(--surface-border);
-            padding-bottom: 12px;
-            flex-shrink: 0;
+            padding-bottom: 20px;
+        }
+
+        @media (min-width: 768px) {
+            header {
+                flex-direction: row;
+                text-align: left;
+            }
         }
 
         .header-title-block h1 {
-            font-size: var(--font-size-title);
+            font-size: 2rem;
             font-weight: 800;
             letter-spacing: -0.03em;
             background: linear-gradient(135deg, var(--text-main) 0%, var(--brand-primary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            transition: font-size 0.2s ease;
+            margin-bottom: 4px;
         }
 
         .header-title-block p {
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             font-weight: 500;
         }
 
-        .controls-strip {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        /* Theme Selector Group */
+        /* Dynamic Theme Switcher Component */
         .theme-selector-group {
             display: inline-flex;
             background: var(--input-bg);
-            padding: 3px;
-            border-radius: 10px;
+            padding: 4px;
+            border-radius: 12px;
             border: 1px solid var(--surface-border);
         }
         .theme-option {
             display: flex;
             align-items: center;
             cursor: pointer;
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 0.75rem;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
             font-weight: 700;
             color: var(--text-muted);
             user-select: none;
-            gap: 4px;
+            gap: 6px;
             transition: all 0.2s ease;
         }
         .theme-option input[type="radio"] {
@@ -200,43 +139,13 @@
         .theme-option:has(input:checked) {
             background: var(--surface);
             color: var(--text-main);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-
-        /* Compressing Mode Hardware Switch Layout */
-        .fit-mode-wrapper {
-            display: inline-flex;
-            align-items: center;
-            background: var(--input-bg);
-            padding: 6px 12px;
-            border-radius: 10px;
-            border: 1px solid var(--surface-border);
-            cursor: pointer;
-            gap: 8px;
-            user-select: none;
-        }
-        .fit-mode-wrapper span {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text-muted);
-        }
-        .fit-mode-wrapper input[type="checkbox"] {
-            width: 15px;
-            height: 15px;
-            accent-color: var(--brand-danger);
-            cursor: pointer;
-        }
-        .fit-mode-wrapper:has(input:checked) span {
-            color: var(--brand-danger);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         .main-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: var(--gap-main);
-            flex-grow: 1;
-            min-height: 0; /* Vital structural property enabling inner row scrolling if required */
-            transition: gap 0.2s ease;
+            gap: 24px;
         }
 
         @media (min-width: 900px) {
@@ -250,92 +159,94 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--surface-border);
-            border-radius: 20px;
-            padding: var(--card-padding);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            overflow-y: auto; /* Fallback safe scroll just inside target card if viewport gets critically tiny */
-            transition: padding 0.2s ease;
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
 
         .card-title {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 700;
             letter-spacing: -0.01em;
-            margin-bottom: 16px;
+            margin-bottom: 24px;
             display: flex;
             align-items: center;
             gap: 10px;
             color: var(--text-main);
-            flex-shrink: 0;
         }
 
         .section-divider {
             height: 1px;
             background: linear-gradient(90deg, var(--surface-border) 0%, transparent 100%);
-            margin: 16px 0;
+            margin: 24px 0;
             border: none;
-            flex-shrink: 0;
         }
 
         .input-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
         }
 
         .control-group {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 8px;
             position: relative;
         }
 
         label {
-            font-size: 0.72rem;
+            font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: var(--text-muted);
         }
 
+        /* Fixed prefix/suffix stacking layout bug */
         .input-wrapper {
             display: flex;
             align-items: center;
             background: var(--input-bg);
             border: 1px solid var(--surface-border);
-            border-radius: 10px;
+            border-radius: 12px;
             transition: all 0.2s ease;
             width: 100%;
         }
 
         .input-wrapper:focus-within {
             border-color: var(--brand-primary);
-            box-shadow: 0 0 0 3px var(--brand-primary-glow);
+            box-shadow: 0 0 0 4px var(--brand-primary-glow);
         }
 
-        .input-prefix, .input-suffix {
-            font-size: 0.85rem;
+        .input-prefix {
+            padding-left: 16px;
+            padding-right: 4px;
+            font-size: 0.9rem;
             font-weight: 700;
             color: var(--text-muted);
             user-select: none;
         }
-        .input-prefix { padding-left: 12px; padding-right: 2px; }
-        .input-suffix { padding-right: 12px; padding-left: 2px; }
+
+        .input-suffix {
+            padding-right: 16px;
+            padding-left: 4px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            user-select: none;
+        }
 
         input[type="number"] {
             width: 100%;
-            height: var(--input-height);
+            height: 46px;
             background: transparent;
             border: none;
             color: var(--text-main);
-            padding: 0 10px;
+            padding: 0 14px;
             font-family: var(--font-sans);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
-            transition: height 0.2s ease;
         }
 
         input[type="number"]:focus {
@@ -343,11 +254,11 @@
         }
 
         .slider-control {
-            margin-top: 6px;
+            margin-top: 10px;
             width: 100%;
-            height: 4px;
+            height: 6px;
             background: var(--input-bg);
-            border-radius: 2px;
+            border-radius: 3px;
             outline: none;
             -webkit-appearance: none;
             appearance: none;
@@ -355,33 +266,36 @@
 
         .slider-control::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             background: var(--brand-primary);
             cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            transition: transform 0.1s ease;
+        }
+
+        .slider-control::-webkit-slider-thumb:active {
+            transform: scale(1.2);
         }
 
         /* Results Display Layout Cards */
         .results-panel {
             display: flex;
             flex-direction: column;
-            gap: var(--gap-main);
-            min-height: 0;
-            transition: gap 0.2s ease;
+            gap: 20px;
         }
 
         .metric-tile {
             background: var(--input-bg);
             border: 1px solid var(--surface-border);
-            border-radius: 14px;
-            padding: 16px;
+            border-radius: 16px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
             position: relative;
             overflow: hidden;
-            flex: 1; /* Maximizes fluid space consumption inside the right row layout stack */
         }
 
         .metric-tile::before {
@@ -398,7 +312,7 @@
         .metric-tile.warning::before { background: var(--brand-warning); }
 
         .metric-label {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -406,47 +320,46 @@
         }
 
         .metric-value {
-            font-size: var(--font-size-value);
+            font-size: 1.8rem;
             font-weight: 800;
             letter-spacing: -0.02em;
             color: var(--text-main);
-            transition: font-size 0.2s ease;
         }
 
         .chart-container {
-            margin-top: 4px;
+            margin-top: 12px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
 
         .chart-bar-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
 
         .chart-bar-label-row {
             display: flex;
             justify-content: space-between;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-muted);
         }
 
         .chart-bar-bg {
-            height: 6px;
+            height: 8px;
             background: var(--input-bg);
-            border-radius: 3px;
+            border-radius: 4px;
             overflow: hidden;
             position: relative;
         }
 
         .chart-bar-fill {
             height: 100%;
-            border-radius: 3px;
+            border-radius: 4px;
             width: 0%;
-            transition: width 0.3s ease;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .chart-bar-fill.cost { background: var(--brand-warning); }
@@ -472,112 +385,99 @@
             <p>Advanced B2B Revenue & Rebate Strategy Engine</p>
         </div>
         
-        <div class="controls-strip">
-            <!-- Compress Page Mode Toggle Switch -->
-            <label class="fit-mode-wrapper" title="Compresses sizes so all elements sit inside one screen layout framework without scrolling">
-                <input type="checkbox" id="chkFitViewport" onchange="toggleFitViewport(this.checked)">
-                <span>Fit Viewport</span>
+        <div class="theme-selector-group">
+            <label class="theme-option">
+                <input type="radio" name="appTheme" value="dark" checked onchange="setTheme('dark')"> Dark
             </label>
-
-            <!-- Multi-Theme Selector Radios -->
-            <div class="theme-selector-group">
-                <label class="theme-option">
-                    <input type="radio" name="appTheme" value="dark" checked onchange="setTheme('dark')"> Dark
-                </label>
-                <label class="theme-option">
-                    <input type="radio" name="appTheme" value="light" onchange="setTheme('light')"> Light
-                </label>
-                <label class="theme-option">
-                    <input type="radio" name="appTheme" value="forest" onchange="setTheme('forest')"> Forest
-                </label>
-            </div>
+            <label class="theme-option">
+                <input type="radio" name="appTheme" value="light" onchange="setTheme('light')"> Light
+            </label>
+            <label class="theme-option">
+                <input type="radio" name="appTheme" value="forest" onchange="setTheme('forest')"> Forest
+            </label>
         </div>
     </header>
 
     <main class="main-grid">
         <div class="card">
-            <div>
-                <div class="card-title">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-primary)" stroke-width="2.5"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M12 2v2M12 20v2M4 12H2M20 12h2"/></svg>
-                    Cost Configuration
-                </div>
-                
-                <div class="input-row">
-                    <div class="control-group">
-                        <label>Outer Casing Size</label>
-                        <div class="input-wrapper">
-                            <input type="number" id="outerSize" min="1" step="1" placeholder="0">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label>Outer Casing Cost</label>
-                        <div class="input-wrapper">
-                            <span class="input-prefix">AED</span>
-                            <input type="number" id="outerCost" min="0" step="0.01" placeholder="0.00">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label>Base Unit Cost</label>
-                        <div class="input-wrapper">
-                            <span class="input-prefix">AED</span>
-                            <input type="number" id="unitCost" min="0" step="0.01" placeholder="0.00">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="section-divider"></div>
-
-                <div class="control-group" style="margin-bottom: 12px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <label>Supplier Discount</label>
-                        <span style="font-size:0.8rem; font-weight:700; color:var(--brand-primary);" id="txtCostDiscount">0.0%</span>
-                    </div>
+            <div class="card-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-primary)" stroke-width="2.5"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M12 2v2M12 20v2M4 12H2M20 12h2"/></svg>
+                Cost Configuration
+            </div>
+            
+            <div class="input-row">
+                <div class="control-group">
+                    <label>Outer Casing Size</label>
                     <div class="input-wrapper">
-                        <input type="number" id="costDiscount" min="0" max="100" step="0.1" placeholder="0.0">
-                        <span class="input-suffix">%</span>
+                        <input type="number" id="outerSize" min="1" step="1" placeholder="0">
                     </div>
-                    <input type="range" id="rngCostDiscount" class="slider-control" min="0" max="100" step="0.5" value="0">
+                </div>
+                <div class="control-group">
+                    <label>Outer Casing Cost</label>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">AED</span>
+                        <input type="number" id="outerCost" min="0" step="0.01" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>Base Unit Cost</label>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">AED</span>
+                        <input type="number" id="unitCost" min="0" step="0.01" placeholder="0.00">
+                    </div>
                 </div>
             </div>
 
-            <div>
-                <div class="card-title" style="margin-top: 4px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-success)" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                    Revenue Metrics Optimization
+            <div class="section-divider"></div>
+
+            <div class="control-group" style="margin-bottom: 24px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <label>Supplier Discount</label>
+                    <span style="font-size:0.85rem; font-weight:700; color:var(--brand-primary);" id="txtCostDiscount">0.0%</span>
                 </div>
+                <div class="input-wrapper">
+                    <input type="number" id="costDiscount" min="0" max="100" step="0.1" placeholder="0.0">
+                    <span class="input-suffix">%</span>
+                </div>
+                <input type="range" id="rngCostDiscount" class="slider-control" min="0" max="100" step="0.5" value="0">
+            </div>
 
-                <div class="input-row" style="margin-bottom: 12px;">
-                    <div class="control-group">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <label>Target Margin</label>
-                            <span style="font-size:0.8rem; font-weight:700; color:var(--brand-success);" id="txtMargin">0.0%</span>
-                        </div>
-                        <div class="input-wrapper">
-                            <input type="number" id="targetMargin" min="0" max="100" step="0.1" placeholder="0.0">
-                            <span class="input-suffix">%</span>
-                        </div>
-                        <input type="range" id="rngMargin" class="slider-control" min="0" max="90" step="0.5" value="0">
-                    </div>
+            <div class="card-title" style="margin-top: 12px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-success)" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Revenue Metrics Optimization
+            </div>
 
-                    <div class="control-group">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <label>Sales Rebate / Deduction</label>
-                            <span style="font-size:0.8rem; font-weight:700; color:var(--brand-warning);" id="txtDeduction">0.0%</span>
-                        </div>
-                        <div class="input-wrapper">
-                            <input type="number" id="salesDeduction" min="0" max="100" step="0.1" placeholder="0.0">
-                            <span class="input-suffix">%</span>
-                        </div>
-                        <input type="range" id="rngDeduction" class="slider-control" min="0" max="50" step="0.5" value="0">
+            <div class="input-row" style="margin-bottom: 24px;">
+                <div class="control-group">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <label>Target Margin</label>
+                        <span style="font-size:0.85rem; font-weight:700; color:var(--brand-success);" id="txtMargin">0.0%</span>
                     </div>
+                    <div class="input-wrapper">
+                        <input type="number" id="targetMargin" min="0" max="100" step="0.1" placeholder="0.0">
+                        <span class="input-suffix">%</span>
+                    </div>
+                    <input type="range" id="rngMargin" class="slider-control" min="0" max="90" step="0.5" value="0">
                 </div>
 
                 <div class="control-group">
-                    <label style="color:var(--text-main);">Custom Overriding Selling Price</label>
-                    <div class="input-wrapper" style="margin-top:2px;">
-                        <span class="input-prefix">AED</span>
-                        <input type="number" id="sellingPrice" min="0" step="0.01" placeholder="0.00" style="font-size:1rem; height:44px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <label>Sales Rebate / Deduction</label>
+                        <span style="font-size:0.85rem; font-weight:700; color:var(--brand-warning);" id="txtDeduction">0.0%</span>
                     </div>
+                    <div class="input-wrapper">
+                        <input type="number" id="salesDeduction" min="0" max="100" step="0.1" placeholder="0.0">
+                        <span class="input-suffix">%</span>
+                    </div>
+                    <input type="range" id="rngDeduction" class="slider-control" min="0" max="50" step="0.5" value="0">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label style="color:var(--text-main);">Custom Overriding Selling Price</label>
+                <div class="input-wrapper" style="margin-top:4px;">
+                    <span class="input-prefix">AED</span>
+                    <input type="number" id="sellingPrice" min="0" step="0.01" placeholder="0.00" style="font-size:1.1rem; height:54px;">
                 </div>
             </div>
         </div>
@@ -598,8 +498,8 @@
                 <span class="metric-value" id="valProfitAmount" style="color:var(--brand-success);">AED 0.00</span>
             </div>
 
-            <div class="card" style="padding:16px; background:var(--input-bg); flex: 1.2;">
-                <span class="metric-label" style="margin-bottom:8px; display:block;">Revenue Allocation Matrix</span>
+            <div class="card" style="padding:24px; background:var(--input-bg);">
+                <span class="metric-label" style="margin-bottom:16px; display:block;">Revenue Allocation Matrix</span>
                 <div class="chart-container">
                     <div class="chart-bar-wrapper">
                         <div class="chart-bar-label-row">
@@ -667,16 +567,6 @@
         localStorage.setItem('flamingo_calc_ui_theme', themeName);
         const radio = document.querySelector(`input[name="appTheme"][value="${themeName}"]`);
         if (radio) radio.checked = true;
-    }
-
-    // "Fit Viewport" Viewport Compression Logic Engine
-    function toggleFitViewport(isFitActive) {
-        if (isFitActive) {
-            document.body.classList.add('fit-viewport');
-        } else {
-            document.body.classList.remove('fit-viewport');
-        }
-        localStorage.setItem('flamingo_calc_fit_viewport', isFitActive ? 'true' : 'false');
     }
 
     function getNetUnitCost() {
@@ -783,7 +673,7 @@
         runEngineFromCoreParameters();
     });
 
-    // Synchronize parameter slider changes
+    // Synchronize parameter changes
     [['costDiscount', 'rngCostDiscount', 'txtCostDiscount'],
      ['targetMargin', 'rngMargin', 'txtMargin'],
      ['salesDeduction', 'rngDeduction', 'txtDeduction']].forEach(([inputID, sliderID, textID]) => {
@@ -809,11 +699,6 @@
     window.onload = () => {
         const savedTheme = localStorage.getItem('flamingo_calc_ui_theme') || 'dark';
         setTheme(savedTheme);
-
-        const savedFit = localStorage.getItem('flamingo_calc_fit_viewport') === 'true';
-        document.getElementById('chkFitViewport').checked = savedFit;
-        toggleFitViewport(savedFit);
-
         runEngineFromCoreParameters();
     };
 </script>
