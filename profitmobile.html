@@ -296,7 +296,6 @@
     </header>
 
     <div class="card">
-        <!-- Row 1: Fixed Overlaps & Custom Mobile Native Keypads Added -->
         <div class="input-row-three">
             <div class="control-group">
                 <label>Outer Size</label>
@@ -320,7 +319,6 @@
             </div>
         </div>
 
-        <!-- Supplier Discount Control Strip with Steppers -->
         <div class="control-group">
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <label>Supplier Discount</label>
@@ -337,7 +335,6 @@
             </div>
         </div>
 
-        <!-- Row 2: Target Margin, Rebate, Selling Price -->
         <div class="input-row-three" style="margin-top: 4px;">
             <div class="control-group">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -377,7 +374,6 @@
         </div>
     </div>
 
-    <!-- Row 3: Metrics Board Area Grid Layout Matrix -->
     <div class="results-panel-three">
         <div class="metric-tile" style="border-top: 3px solid var(--brand-primary)">
             <span class="metric-label">Net Cost</span>
@@ -459,14 +455,11 @@
         textEl.textContent = num(inputEl.value).toFixed(0) + suffix;
     }
 
-    // Touch layout nudging function engine
     function stepValue(inputId, direction) {
         const inputElement = el[inputId];
         let currentVal = num(inputElement.value);
         currentVal = Math.max(0, currentVal + direction);
         inputElement.value = currentVal;
-        
-        // Dispatch synthetic event wrapper context to fire calculations natively
         inputElement.dispatchEvent(new Event('input'));
     }
 
@@ -485,8 +478,6 @@
         el.valNetCost.textContent = `AED ${cost.toFixed(2)}`;
 
         const divisor = 1 - deduction - margin;
-        
-        // Mathematical equation protection boundary safety logic rules
         if (divisor <= 0 || (cost === 0 && margin === 0 && deduction === 0)) {
             el.sellingPrice.value = "";
             el.valSellingPrice.textContent = "AED 0.00";
@@ -526,7 +517,7 @@
         const profit = price - rebateAmount - cost;
         const marginPct = (price > 0) ? (profit / price) * 100 : 0;
 
-        el.targetMargin.value = marginPct.toFixed(1);
+        el.targetMargin.value = marginPct.toFixed(0);
         syncSliders(el.targetMargin, el.rngMargin, el.txtMargin);
 
         el.valSellingPrice.textContent = `AED ${price.toFixed(2)}`;
