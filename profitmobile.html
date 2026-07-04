@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <title>Profit Calculator - Mobile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-app: #f1f5f9;
+            --surface: rgba(255, 255, 255, 0.9);
+            --surface-border: rgba(15, 23, 42, 0.08);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --input-bg: #f8fafc;
+            
+            --brand-primary: #0284c7;
+            --brand-success: #16a34a;
+            --brand-warning: #b45309;
+            --brand-danger: #dc2626;
+            
+            --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-app);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 10px;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .phone-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        header {
+            padding: 4px;
+        }
+
+        header h1 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--brand-primary);
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--surface-border);
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Fluid 3-Column Grid rows */
+        .input-row-three {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        label {
+            font-size: 0.62rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: var(--input-bg);
+            border: 1px solid var(--surface-border);
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--brand-primary);
+            background: #fff;
+        }
+
+        .input-prefix, .input-suffix {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            user-select: none;
+        }
+        .input-prefix { padding-left: 6px; }
+        .input-suffix { padding-right: 6px; }
+
+        input[type="number"] {
+            width: 100%;
+            height: 36px;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            padding: 0 4px;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+        }
+
+        .slider-control {
+            width: 100%;
+            height: 4px;
+            background: var(--input-bg);
+            border-radius: 2px;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            margin-top: 2px;
+        }
+
+        .slider-control::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--brand-primary);
+            cursor: pointer;
+        }
+
+        /* Results Panel Metrics - Balanced Row Layout Grid */
+        .results-panel-three {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .metric-tile {
+            background: var(--surface);
+            border: 1px solid var(--surface-border);
+            border-radius: 10px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .metric-label {
+            font-size: 0.58rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .metric-value {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Matrix Allocation Bar Chart Component */
+        .chart-container {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: var(--surface);
+            border: 1px solid var(--surface-border);
+            border-radius: 12px;
+            padding: 10px;
+        }
+
+        .chart-bar-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .chart-bar-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .chart-bar-bg {
+            height: 4px;
+            background: var(--input-bg);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .chart-bar-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.2s ease;
+        }
+
+        .chart-bar-fill.cost { background: var(--brand-warning); }
+        .chart-bar-fill.rebate { background: var(--brand-danger); }
+        .chart-bar-fill.profit { background: var(--brand-success); }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body>
+
+<div class="phone-container">
+    <header>
+        <h1>PROFIT ENGINE</h1>
+        <p>B2B Revenue & Rebate Strategy</p>
+    </header>
+
+    <div class="card">
+        <div class="input-row-three">
+            <div class="control-group">
+                <label title="Outer Size">Outer Size</label>
+                <div class="input-wrapper">
+                    <input type="number" id="outerSize" placeholder="0">
+                </div>
+            </div>
+            <div class="control-group">
+                <label title="Outer Cost">Outer Cost</label>
+                <div class="input-wrapper">
+                    <span class="input-prefix">AED</span>
+                    <input type="number" id="outerCost" placeholder="0.00">
+                </div>
+            </div>
+            <div class="control-group">
+                <label title="Base Unit Cost">Unit Cost</label>
+                <div class="input-wrapper">
+                    <span class="input-prefix">AED</span>
+                    <input type="number" id="unitCost" placeholder="0.00">
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <label>Supplier Discount</label>
+                <span style="font-size:0.7rem; font-weight:700; color:var(--brand-primary);" id="txtCostDiscount">0.0%</span>
+            </div>
+            <div class="input-wrapper">
+                <input type="number" id="costDiscount" min="0" max="100" step="0.1" placeholder="0.0">
+                <span class="input-suffix">%</span>
+            </div>
+            <input type="range" id="rngCostDiscount" class="slider-control" min="0" max="100" step="0.5" value="0">
+        </div>
+
+        <div class="input-row-three" style="margin-top: 4px;">
+            <div class="control-group">
+                <div style="display:flex; justify-content:space-between; align-items:center; overflow:hidden;">
+                    <label title="Target Margin">Margin</label>
+                    <span style="font-size:0.6rem; font-weight:700; color:var(--brand-success);" id="txtMargin">0%</span>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="targetMargin" min="0" max="100" step="0.1" placeholder="0.0">
+                    <span class="input-suffix">%</span>
+                </div>
+                <input type="range" id="rngMargin" class="slider-control" min="0" max="90" step="0.5" value="0">
+            </div>
+
+            <div class="control-group">
+                <div style="display:flex; justify-content:space-between; align-items:center; overflow:hidden;">
+                    <label title="Sales Rebate / Deduction">Rebate</label>
+                    <span style="font-size:0.6rem; font-weight:700; color:var(--brand-warning);" id="txtDeduction">0%</span>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="salesDeduction" min="0" max="100" step="0.1" placeholder="0.0">
+                    <span class="input-suffix">%</span>
+                </div>
+                <input type="range" id="rngDeduction" class="slider-control" min="0" max="50" step="0.5" value="0">
+            </div>
+
+            <div class="control-group">
+                <label title="Custom Overriding Price">Price Override</label>
+                <div class="input-wrapper">
+                    <span class="input-prefix">AED</span>
+                    <input type="number" id="sellingPrice" min="0" step="0.01" placeholder="0.00">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="results-panel-three">
+        <div class="metric-tile" style="border-top: 3px solid var(--brand-primary)">
+            <span class="metric-label" title="Net Unit Cost">Net Cost</span>
+            <span class="metric-value" id="valNetCost">AED 0.00</span>
+        </div>
+
+        <div class="metric-tile" style="border-top: 3px solid var(--brand-warning)">
+            <span class="metric-label" title="Recommended Selling Price">Rec. Price</span>
+            <span class="metric-value" id="valSellingPrice" style="color:var(--brand-warning);">AED 0.00</span>
+        </div>
+
+        <div class="metric-tile" style="border-top: 3px solid var(--brand-success)">
+            <span class="metric-label" title="Net Profit Yield">Net Profit</span>
+            <span class="metric-value" id="valProfitAmount" style="color:var(--brand-success);">AED 0.00</span>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <div class="chart-bar-wrapper">
+            <div class="chart-bar-label-row">
+                <span>Cost Component</span>
+                <span id="pctBarCost">0%</span>
+            </div>
+            <div class="chart-bar-bg"><div id="barCost" class="chart-bar-fill cost"></div></div>
+        </div>
+        <div class="chart-bar-wrapper">
+            <div class="chart-bar-label-row">
+                <span>Rebate Provision</span>
+                <span id="pctBarRebate">0%</span>
+            </div>
+            <div class="chart-bar-bg"><div id="barRebate" class="chart-bar-fill rebate"></div></div>
+        </div>
+        <div class="chart-bar-wrapper">
+            <div class="chart-bar-label-row">
+                <span>Retained Margin</span>
+                <span id="pctBarProfit">0%</span>
+            </div>
+            <div class="chart-bar-bg"><div id="barProfit" class="chart-bar-fill profit"></div></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const el = {
+        outerSize: document.getElementById('outerSize'),
+        outerCost: document.getElementById('outerCost'),
+        unitCost: document.getElementById('unitCost'),
+        costDiscount: document.getElementById('costDiscount'),
+        rngCostDiscount: document.getElementById('rngCostDiscount'),
+        txtCostDiscount: document.getElementById('txtCostDiscount'),
+        targetMargin: document.getElementById('targetMargin'),
+        rngMargin: document.getElementById('rngMargin'),
+        txtMargin: document.getElementById('txtMargin'),
+        salesDeduction: document.getElementById('salesDeduction'),
+        rngDeduction: document.getElementById('rngDeduction'),
+        txtDeduction: document.getElementById('txtDeduction'),
+        sellingPrice: document.getElementById('sellingPrice'),
+        
+        valNetCost: document.getElementById('valNetCost'),
+        valSellingPrice: document.getElementById('valSellingPrice'),
+        valProfitAmount: document.getElementById('valProfitAmount'),
+        
+        barCost: document.getElementById('barCost'),
+        barRebate: document.getElementById('barRebate'),
+        barProfit: document.getElementById('barProfit'),
+        pctBarCost: document.getElementById('pctBarCost'),
+        pctBarRebate: document.getElementById('pctBarRebate'),
+        pctBarProfit: document.getElementById('pctBarProfit')
+    };
+
+    const num = v => parseFloat(v) || 0;
+
+    function getNetUnitCost() {
+        return num(el.unitCost.value) * (1 - num(el.costDiscount.value) / 100);
+    }
+
+    function syncSliders(inputEl, sliderEl, textEl, suffix = "%") {
+        sliderEl.value = num(inputEl.value);
+        textEl.textContent = num(inputEl.value).toFixed(0) + suffix;
+    }
+
+    function runEngineFromCoreParameters() {
+        const cost = getNetUnitCost();
+        const margin = num(el.targetMargin.value) / 100;
+        const deduction = num(el.salesDeduction.value) / 100;
+
+        el.valNetCost.textContent = `AED ${cost.toFixed(2)}`;
+
+        const divisor = 1 - deduction - margin;
+        if (divisor <= 0 || (cost === 0 && margin === 0 && deduction === 0)) {
+            el.sellingPrice.value = "";
+            el.valSellingPrice.textContent = "AED 0.00";
+            el.valProfitAmount.textContent = "AED 0.00";
+            updateVisualCharts(0, 0, 0, 0);
+            return;
+        }
+
+        const price = cost / divisor;
+        el.sellingPrice.value = price.toFixed(2);
+        
+        const profit = price - (price * deduction) - cost;
+        
+        el.valSellingPrice.textContent = `AED ${price.toFixed(2)}`;
+        el.valProfitAmount.textContent = `AED ${profit.toFixed(2)}`;
+
+        updateVisualCharts(price, cost, price * deduction, profit);
+    }
+
+    function runEngineFromOverridingPrice() {
+        const price = num(el.sellingPrice.value);
+        const cost = getNetUnitCost();
+        const deduction = num(el.salesDeduction.value) / 100;
+
+        el.valNetCost.textContent = `AED ${cost.toFixed(2)}`;
+
+        if (price <= 0) {
+            el.targetMargin.value = "";
+            syncSliders(el.targetMargin, el.rngMargin, el.txtMargin);
+            el.valSellingPrice.textContent = "AED 0.00";
+            el.valProfitAmount.textContent = "AED 0.00";
+            updateVisualCharts(0, 0, 0, 0);
+            return;
+        }
+
+        const rebateAmount = price * deduction;
+        const profit = price - rebateAmount - cost;
+        const marginPct = (price > 0) ? (profit / price) * 100 : 0;
+
+        el.targetMargin.value = marginPct.toFixed(1);
+        syncSliders(el.targetMargin, el.rngMargin, el.txtMargin);
+
+        el.valSellingPrice.textContent = `AED ${price.toFixed(2)}`;
+        el.valProfitAmount.textContent = `AED ${profit.toFixed(2)}`;
+
+        updateVisualCharts(price, cost, rebateAmount, profit);
+    }
+
+    function updateVisualCharts(totalPrice, cost, rebate, profit) {
+        if (totalPrice <= 0) {
+            ['barCost', 'barRebate', 'barProfit'].forEach(b => el[b].style.width = "0%");
+            ['pctBarCost', 'pctBarRebate', 'pctBarProfit'].forEach(p => el[p].textContent = "0%");
+            return;
+        }
+
+        const pCost = Math.max(0, (cost / totalPrice) * 100);
+        const pRebate = Math.max(0, (rebate / totalPrice) * 100);
+        const pProfit = (profit / totalPrice) * 100;
+
+        el.barCost.style.width = `${pCost}%`;
+        el.barRebate.style.width = `${pRebate}%`;
+        el.barProfit.style.width = `${Math.max(0, pProfit)}%`;
+
+        el.pctBarCost.textContent = `${pCost.toFixed(0)}%`;
+        el.pctBarRebate.textContent = `${pRebate.toFixed(0)}%`;
+        el.pctBarProfit.textContent = `${pProfit.toFixed(0)}%`;
+    }
+
+    el.outerSize.addEventListener('input', () => {
+        const size = num(el.outerSize.value);
+        if (size > 0) el.unitCost.value = (num(el.outerCost.value) / size).toFixed(2);
+        runEngineFromCoreParameters();
+    });
+
+    el.outerCost.addEventListener('input', () => {
+        const size = num(el.outerSize.value);
+        if (size > 0) el.unitCost.value = (num(el.outerCost.value) / size).toFixed(2);
+        runEngineFromCoreParameters();
+    });
+
+    el.unitCost.addEventListener('input', () => {
+        el.outerSize.value = "";
+        el.outerCost.value = "";
+        runEngineFromCoreParameters();
+    });
+
+    [['costDiscount', 'rngCostDiscount', 'txtCostDiscount'],
+     ['targetMargin', 'rngMargin', 'txtMargin'],
+     ['salesDeduction', 'rngDeduction', 'txtDeduction']].forEach(([inputID, sliderID, textID]) => {
+        const inputElement = el[inputID];
+        const sliderElement = el[sliderID];
+        const textElement = el[textID];
+
+        inputElement.addEventListener('input', () => {
+            sliderElement.value = num(inputElement.value);
+            textElement.textContent = num(inputElement.value).toFixed(0) + "%";
+            runEngineFromCoreParameters();
+        });
+
+        sliderElement.addEventListener('input', () => {
+            inputElement.value = sliderElement.value;
+            textElement.textContent = num(sliderElement.value).toFixed(0) + "%";
+            runEngineFromCoreParameters();
+        });
+    });
+
+    el.sellingPrice.addEventListener('input', runEngineFromOverridingPrice);
+
+    window.onload = () => {
+        runEngineFromCoreParameters();
+    };
+</script>
+</body>
+</html>
