@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-    <title>Profit Calculator - Mobile</title>
+    <title>Profit Calculator - Optimized Mobile</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-app: #f1f5f9;
-            --surface: rgba(255, 255, 255, 0.9);
+            --surface: rgba(255, 255, 255, 0.95);
             --surface-border: rgba(15, 23, 42, 0.08);
             --text-main: #0f172a;
             --text-muted: #64748b;
@@ -52,6 +52,9 @@
 
         header {
             padding: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         header h1 {
@@ -67,6 +70,18 @@
             font-weight: 500;
         }
 
+        .btn-clear {
+            background: transparent;
+            border: 1px solid var(--surface-border);
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            background-color: #fff;
+        }
+
         .card {
             background: var(--surface);
             border: 1px solid var(--surface-border);
@@ -78,7 +93,6 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
-        /* Fluid 3-Column Grid rows */
         .input-row-three {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -89,6 +103,28 @@
             display: flex;
             flex-direction: column;
             gap: 3px;
+        }
+
+        .slider-stepper-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+        }
+
+        .step-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 1px solid var(--surface-border);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
         }
 
         label {
@@ -142,26 +178,24 @@
         }
 
         .slider-control {
-            width: 100%;
+            flex-grow: 1;
             height: 4px;
             background: var(--input-bg);
             border-radius: 2px;
             outline: none;
             -webkit-appearance: none;
             appearance: none;
-            margin-top: 2px;
         }
 
         .slider-control::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             background: var(--brand-primary);
             cursor: pointer;
         }
 
-        /* Results Panel Metrics - Balanced Row Layout Grid */
         .results-panel-three {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -199,7 +233,6 @@
             text-overflow: ellipsis;
         }
 
-        /* Matrix Allocation Bar Chart Component */
         .chart-container {
             display: flex;
             flex-direction: column;
@@ -255,94 +288,109 @@
 
 <div class="phone-container">
     <header>
-        <h1>PROFIT ENGINE</h1>
-        <p>B2B Revenue & Rebate Strategy</p>
+        <div>
+            <h1>PROFIT ENGINE</h1>
+            <p>B2B Revenue & Rebate Strategy</p>
+        </div>
+        <button class="btn-clear" onclick="resetCalculator()">✕ Reset</button>
     </header>
 
     <div class="card">
+        <!-- Row 1: Fixed Overlaps & Custom Mobile Native Keypads Added -->
         <div class="input-row-three">
             <div class="control-group">
-                <label title="Outer Size">Outer Size</label>
+                <label>Outer Size</label>
                 <div class="input-wrapper">
-                    <input type="number" id="outerSize" placeholder="0">
+                    <input type="number" id="outerSize" inputmode="numeric" pattern="[0-9]*" placeholder="0">
                 </div>
             </div>
             <div class="control-group">
-                <label title="Outer Cost">Outer Cost</label>
+                <label>Outer Cost</label>
                 <div class="input-wrapper">
                     <span class="input-prefix">AED</span>
-                    <input type="number" id="outerCost" placeholder="0.00">
+                    <input type="number" id="outerCost" inputmode="decimal" placeholder="0.00">
                 </div>
             </div>
             <div class="control-group">
-                <label title="Base Unit Cost">Unit Cost</label>
+                <label>Unit Cost</label>
                 <div class="input-wrapper">
                     <span class="input-prefix">AED</span>
-                    <input type="number" id="unitCost" placeholder="0.00">
+                    <input type="number" id="unitCost" inputmode="decimal" placeholder="0.00">
                 </div>
             </div>
         </div>
 
+        <!-- Supplier Discount Control Strip with Steppers -->
         <div class="control-group">
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <label>Supplier Discount</label>
-                <span style="font-size:0.7rem; font-weight:700; color:var(--brand-primary);" id="txtCostDiscount">0.0%</span>
+                <span style="font-size:0.7rem; font-weight:700; color:var(--brand-primary);" id="txtCostDiscount">0%</span>
             </div>
             <div class="input-wrapper">
-                <input type="number" id="costDiscount" min="0" max="100" step="0.1" placeholder="0.0">
+                <input type="number" id="costDiscount" inputmode="decimal" min="0" max="100" step="0.1" placeholder="0.0">
                 <span class="input-suffix">%</span>
             </div>
-            <input type="range" id="rngCostDiscount" class="slider-control" min="0" max="100" step="0.5" value="0">
+            <div class="slider-stepper-row">
+                <button class="step-btn" onclick="stepValue('costDiscount', -1)">-</button>
+                <input type="range" id="rngCostDiscount" class="slider-control" min="0" max="100" step="0.5" value="0">
+                <button class="step-btn" onclick="stepValue('costDiscount', 1)">+</button>
+            </div>
         </div>
 
+        <!-- Row 2: Target Margin, Rebate, Selling Price -->
         <div class="input-row-three" style="margin-top: 4px;">
             <div class="control-group">
-                <div style="display:flex; justify-content:space-between; align-items:center; overflow:hidden;">
-                    <label title="Target Margin">Margin</label>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <label>Margin</label>
                     <span style="font-size:0.6rem; font-weight:700; color:var(--brand-success);" id="txtMargin">0%</span>
                 </div>
                 <div class="input-wrapper">
-                    <input type="number" id="targetMargin" min="0" max="100" step="0.1" placeholder="0.0">
+                    <input type="number" id="targetMargin" inputmode="decimal" min="0" max="100" step="0.1" placeholder="0.0">
                     <span class="input-suffix">%</span>
                 </div>
-                <input type="range" id="rngMargin" class="slider-control" min="0" max="90" step="0.5" value="0">
+                <div class="slider-stepper-row">
+                    <input type="range" id="rngMargin" class="slider-control" min="0" max="90" step="0.5" value="0">
+                </div>
             </div>
 
             <div class="control-group">
-                <div style="display:flex; justify-content:space-between; align-items:center; overflow:hidden;">
-                    <label title="Sales Rebate / Deduction">Rebate</label>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <label>Rebate</label>
                     <span style="font-size:0.6rem; font-weight:700; color:var(--brand-warning);" id="txtDeduction">0%</span>
                 </div>
                 <div class="input-wrapper">
-                    <input type="number" id="salesDeduction" min="0" max="100" step="0.1" placeholder="0.0">
+                    <input type="number" id="salesDeduction" inputmode="decimal" min="0" max="100" step="0.1" placeholder="0.0">
                     <span class="input-suffix">%</span>
                 </div>
-                <input type="range" id="rngDeduction" class="slider-control" min="0" max="50" step="0.5" value="0">
+                <div class="slider-stepper-row">
+                    <input type="range" id="rngDeduction" class="slider-control" min="0" max="50" step="0.5" value="0">
+                </div>
             </div>
 
             <div class="control-group">
-                <label title="Custom Overriding Price">Price Override</label>
+                <label>Override</label>
                 <div class="input-wrapper">
                     <span class="input-prefix">AED</span>
-                    <input type="number" id="sellingPrice" min="0" step="0.01" placeholder="0.00">
+                    <input type="number" id="sellingPrice" inputmode="decimal" min="0" step="0.01" placeholder="0.00">
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Row 3: Metrics Board Area Grid Layout Matrix -->
     <div class="results-panel-three">
         <div class="metric-tile" style="border-top: 3px solid var(--brand-primary)">
-            <span class="metric-label" title="Net Unit Cost">Net Cost</span>
+            <span class="metric-label">Net Cost</span>
             <span class="metric-value" id="valNetCost">AED 0.00</span>
         </div>
 
         <div class="metric-tile" style="border-top: 3px solid var(--brand-warning)">
-            <span class="metric-label" title="Recommended Selling Price">Rec. Price</span>
+            <span class="metric-label">Rec. Price</span>
             <span class="metric-value" id="valSellingPrice" style="color:var(--brand-warning);">AED 0.00</span>
         </div>
 
         <div class="metric-tile" style="border-top: 3px solid var(--brand-success)">
-            <span class="metric-label" title="Net Profit Yield">Net Profit</span>
+            <span class="metric-label">Net Profit</span>
             <span class="metric-value" id="valProfitAmount" style="color:var(--brand-success);">AED 0.00</span>
         </div>
     </div>
@@ -411,6 +459,24 @@
         textEl.textContent = num(inputEl.value).toFixed(0) + suffix;
     }
 
+    // Touch layout nudging function engine
+    function stepValue(inputId, direction) {
+        const inputElement = el[inputId];
+        let currentVal = num(inputElement.value);
+        currentVal = Math.max(0, currentVal + direction);
+        inputElement.value = currentVal;
+        
+        // Dispatch synthetic event wrapper context to fire calculations natively
+        inputElement.dispatchEvent(new Event('input'));
+    }
+
+    function resetCalculator() {
+        ['outerSize', 'outerCost', 'unitCost', 'costDiscount', 'targetMargin', 'salesDeduction', 'sellingPrice'].forEach(id => {
+            el[id].value = "";
+        });
+        runEngineFromCoreParameters();
+    }
+
     function runEngineFromCoreParameters() {
         const cost = getNetUnitCost();
         const margin = num(el.targetMargin.value) / 100;
@@ -419,6 +485,8 @@
         el.valNetCost.textContent = `AED ${cost.toFixed(2)}`;
 
         const divisor = 1 - deduction - margin;
+        
+        // Mathematical equation protection boundary safety logic rules
         if (divisor <= 0 || (cost === 0 && margin === 0 && deduction === 0)) {
             el.sellingPrice.value = "";
             el.valSellingPrice.textContent = "AED 0.00";
