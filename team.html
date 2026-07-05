@@ -19,58 +19,8 @@
             --primary-hover: #15803d;
             --divider-color: #e2e8f0;
             --pitch-shadow: rgba(15, 23, 42, 0.15);
-            --pane-bg: rgba(255, 255, 255, 0.85);
             --item-hover: #f0fdf4;
             --glass-blur: blur(12px);
-            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-        }
-
-        [data-theme="dark"] {
-            --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-            --sidebar-bg: rgba(30, 41, 59, 0.85);
-            --sidebar-text: #f8fafc;
-            --input-bg: #1e293b;
-            --input-border: #334155;
-            --input-text: #f8fafc;
-            --primary-light: #22c55e;
-            --primary-hover: #16a34a;
-            --divider-color: #334155;
-            --pitch-shadow: rgba(0, 0, 0, 0.6);
-            --pane-bg: rgba(30, 41, 59, 0.85);
-            --item-hover: #1e293b;
-            --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
-        }
-
-        [data-theme="cyberpunk"] {
-            --bg-gradient: linear-gradient(135deg, #0d081b 0%, #1b0d33 100%);
-            --sidebar-bg: rgba(5, 3, 10, 0.85);
-            --sidebar-text: #00ffcc;
-            --input-bg: #120a24;
-            --input-border: #ff007f;
-            --input-text: #00ffcc;
-            --primary-light: #ff007f;
-            --primary-hover: #b30059;
-            --divider-color: #ff007f;
-            --pitch-shadow: rgba(255, 0, 127, 0.3);
-            --pane-bg: rgba(5, 3, 10, 0.85);
-            --item-hover: #25123e;
-            --card-shadow: 0 0 15px rgba(255, 0, 127, 0.2);
-        }
-
-        [data-theme="vintage"] {
-            --bg-gradient: radial-gradient(circle, #4e342e 0%, #2d1b18 100%);
-            --sidebar-bg: rgba(62, 39, 35, 0.9);
-            --sidebar-text: #d7ccc8;
-            --input-bg: #4e342e;
-            --input-border: #8d6e63;
-            --input-text: #f5f5f5;
-            --primary-light: #8d6e63;
-            --primary-hover: #5d4037;
-            --divider-color: #5d4037;
-            --pitch-shadow: rgba(0,0,0,0.6);
-            --pane-bg: rgba(62, 39, 35, 0.9);
-            --item-hover: #5d4037;
-            --card-shadow: 0 15px 30px rgba(0,0,0,0.5);
         }
 
         * {
@@ -131,8 +81,8 @@
 
         /* --- SIDEBAR --- */
         .sidebar {
-            width: 280px;
-            min-width: 280px;
+            width: 300px;
+            min-width: 300px;
             background-color: var(--sidebar-bg);
             backdrop-filter: var(--glass-blur);
             -webkit-backdrop-filter: var(--glass-blur);
@@ -176,7 +126,7 @@
             transition: all 0.2s;
         }
 
-        textarea:focus, select:focus {
+        textarea:focus {
             outline: none;
             border-color: var(--primary-light);
             box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
@@ -195,16 +145,26 @@
         .color-row {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
             width: 100%;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .color-inputs {
+            display: flex;
+            gap: 6px;
+            align-items: center;
         }
 
         input[type="color"] {
             -webkit-appearance: none;
             border: none;
-            width: 36px;
-            height: 34px;
-            border-radius: 8px;
+            width: 34px;
+            height: 30px;
+            border-radius: 6px;
             cursor: pointer;
             background: none;
         }
@@ -212,19 +172,12 @@
         input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
         input[type="color"]::-webkit-color-swatch {
             border: 1px solid var(--input-border);
-            border-radius: 8px;
+            border-radius: 6px;
         }
 
-        select {
-            flex-grow: 1;
-            background-color: var(--input-bg);
-            border: 1px solid var(--input-border);
-            color: var(--input-text);
-            padding: 8px 12px;
-            border-radius: 8px;
+        .color-label-text {
             font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
+            font-weight: 600;
         }
 
         .btn-primary {
@@ -251,87 +204,15 @@
             margin: 4px 0;
         }
 
-        /* --- WORKING SCREEN VIEW --- */
+        /* --- DISPLAY LAYOUT ENVIRONMENT --- */
         .main-content {
             flex-grow: 1;
             height: 100%;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 24px;
-            gap: 24px;
-            overflow-y: auto;
-        }
-
-        .team-pane {
-            width: 250px;
-            height: 100%;
-            max-height: 780px;
-            background-color: var(--pane-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--divider-color);
-            padding: 18px;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .team-pane label {
-            font-size: 0.85rem;
-            letter-spacing: 0.05em;
-        }
-
-        .player-list-container {
-            flex-grow: 1;
-            background-color: var(--input-bg);
-            border: 1px solid var(--input-border);
-            border-radius: 8px;
-            overflow-y: auto;
-            padding: 6px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .list-player-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            background-color: var(--sidebar-bg);
-            border: 1px solid var(--divider-color);
-            border-radius: 6px;
-            color: var(--input-text);
-            font-size: 0.9rem;
-            font-weight: 600;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .list-player-item:hover {
-            background-color: var(--item-hover);
-            border-color: var(--primary-light);
-        }
-
-        .swap-btn {
-            background-color: var(--primary-light);
-            color: white;
-            border: none;
-            width: 26px;
-            height: 26px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 24px;
         }
-
-        .swap-btn:hover { background-color: var(--primary-hover); }
 
         .pitch-wrapper {
             flex-grow: 1;
@@ -354,7 +235,7 @@
             background-size: 100% 20%;
         }
 
-        /* --- SAVING LINK BUTTON --- */
+        /* --- DOWNLOAD BOARD LINK BUTTON --- */
         .download-pitch-btn {
             position: absolute;
             top: 12px;
@@ -447,7 +328,6 @@
             filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.25));
             transition: transform 0.2s;
         }
-        .player-wrapper:active .jersey-container { transform: scale(1.1); }
 
         .jersey-body {
             position: absolute;
@@ -547,6 +427,32 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         }
 
+        /* --- INLINE SWAP CONTROL TRIGGER BUTTON --- */
+        .inline-swap-btn {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--primary-light);
+            color: white;
+            border: 2px solid white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+            z-index: 50;
+        }
+        
+        /* Show the swap button when a jersey element wrapper is clicked or has active class */
+        .player-wrapper.focused-player .inline-swap-btn {
+            display: flex;
+        }
+
         /* --- POP-UP MODAL WINDOW --- */
         .modal-overlay {
             position: fixed;
@@ -617,10 +523,7 @@
 
         /* --- RESPONSIVE MEDIA QUERIES --- */
         @media (max-width: 1024px) {
-            body { 
-                flex-direction: column; 
-                overflow-y: auto; 
-            }
+            body { flex-direction: column; overflow-y: auto; }
             .mobile-tabs { display: flex; }
             .sidebar {
                 width: 100vw;
@@ -637,9 +540,6 @@
                 min-height: calc(100vh - 60px);
                 padding: 16px;
                 padding-bottom: 80px;
-                gap: 20px;
-                flex-direction: column;
-                justify-content: flex-start;
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -647,21 +547,11 @@
                 transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
             .main-content.active-tab { transform: translateX(0); }
-            .team-pane { 
-                display: flex; 
-                width: 100%; 
-                max-width: 600px;
-                height: 320px; 
-            }
-            .pitch-wrapper { 
-                height: auto;
-                width: 100%; 
-                max-width: 600px;
-            }
+            .pitch-wrapper { height: auto; width: 100%; max-width: 600px; }
         }
     </style>
 </head>
-<body data-theme="stadium">
+<body>
 
     <div class="mobile-tabs">
         <button id="btnSetupTab" class="tab-button active" onclick="switchMobileTab('setup')">📝 Setup Pool</button>
@@ -678,67 +568,46 @@
 
     <div id="sidebarView" class="sidebar active-tab">
         <h2>Squad Setup</h2>
-        <div class="form-group">
-            <label for="themeSelector">🎨 Theme</label>
-            <select id="themeSelector" onchange="changeAppTheme(this.value)">
-                <option value="stadium" selected>Stadium Light</option>
-                <option value="dark">Midnight Dark</option>
-                <option value="cyberpunk">Cyberpunk Neon</option>
-                <option value="vintage">Vintage Leather</option>
-            </select>
-        </div>
         <div class="divider"></div>
+        
         <div class="form-group" style="flex-grow: 1; display: flex; flex-direction: column;">
             <label for="playerInput">Master Player Pool</label>
             <textarea id="playerInput" class="main-roster" placeholder="Enter one name per line..."></textarea>
         </div>
+
+        <div class="form-group">
+            <label>Home Kit Customizer</label>
+            <div class="color-row">
+                <div class="color-inputs">
+                    <input type="color" id="homeColor" value="#ffeb3b" onchange="updatePitch()">
+                    <input type="color" id="homeTrimColor" value="#16a34a" onchange="updatePitch()">
+                </div>
+                <span class="color-label-text" style="color:#b45309;">🏠 Home Team</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Away Kit Customizer</label>
+            <div class="color-row">
+                <div class="color-inputs">
+                    <input type="color" id="awayColor" value="#2563eb" onchange="updatePitch()">
+                    <input type="color" id="awayTrimColor" value="#ffffff" onchange="updatePitch()">
+                </div>
+                <span class="color-label-text" style="color:#2563eb;">✈️ Away Team</span>
+            </div>
+        </div>
+
         <button class="btn-primary" onclick="generateTeams(); switchMobileTab('pitch')">🎲 Split Teams</button>
     </div>
 
     <div id="mainContentView" class="main-content">
-        <div class="team-pane">
-            <label style="color:#b45309;">🏠 Home Team</label>
-            <div id="homePlayerList" class="player-list-container"></div>
-            <div class="form-group">
-                <label>Kit / Formation</label>
-                <div class="color-row">
-                    <input type="color" id="homeColor" value="#ffeb3b" onchange="updatePitch(false)">
-                    <input type="color" id="homeTrimColor" value="#16a34a" onchange="updatePitch(false)">
-                    <select id="homeFormation" onchange="updatePitch(true)">
-                        <option value="auto">Auto Formation</option>
-                        <option value="4-4-2">4-4-2</option>
-                        <option value="4-3-3">4-3-3</option>
-                        <option value="3-5-2">3-5-2</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
         <div class="pitch-wrapper">
-            <div class="pitch" id="pitch">
+            <div class="pitch" id="pitch" onclick="clearFocus(event)">
                 <button class="download-pitch-btn" onclick="exportPitchToImage()">📸 Save Board</button>
                 <div class="halfway-line"></div>
                 <div class="center-circle"></div>
                 <div class="penalty-box-top"></div>
                 <div class="penalty-box-bottom"></div>
-            </div>
-        </div>
-
-        <div class="team-pane">
-            <label style="color:#2563eb;">✈️ Away Team</label>
-            <div id="awayPlayerList" class="player-list-container"></div>
-            <div class="form-group">
-                <label>Kit / Formation</label>
-                <div class="color-row">
-                    <input type="color" id="awayColor" value="#2563eb" onchange="updatePitch(false)">
-                    <input type="color" id="awayTrimColor" value="#ffffff" onchange="updatePitch(false)">
-                    <select id="awayFormation" onchange="updatePitch(true)">
-                        <option value="auto">Auto Formation</option>
-                        <option value="4-4-2">4-4-2</option>
-                        <option value="4-3-3" selected>4-3-3</option>
-                        <option value="3-5-2">3-5-2</option>
-                    </select>
-                </div>
             </div>
         </div>
     </div>
@@ -747,20 +616,10 @@
         document.getElementById('playerInput').value = 
             "10. Messi #1\n7. CR7!\n17. De Bruyne (C)\n9. Haaland\n4. Van Dijk\n11. Neymar Jr.\n1. Ederson [GK]\n8. Rodri\n2. Walker\n5. Stones\n3. Dias\n29. Havertz\n7. Saka\n11. Martinelli\n8. Odegaard\n4. Saliba\n6. Gabriel\n22. Raya";
 
-        const standardFormations = {
-            '4-4-2': { gk: {y: 7}, rows: [{ y: 20, count: 4 }, { y: 34, count: 4 }, { y: 46, count: 2 }] },
-            '4-3-3': { gk: {y: 7}, rows: [{ y: 18, count: 4 }, { y: 32, count: 3 }, { y: 45, count: 3 }] },
-            '3-5-2': { gk: {y: 7}, rows: [{ y: 18, count: 3 }, { y: 34, count: 5 }, { y: 46, count: 2 }] }
-        };
-
         let currentHomeSquad = [];
         let currentAwaySquad = [];
         let customPositions = {}; 
         let pendingSwapTarget = null;
-
-        function changeAppTheme(themeName) {
-            document.body.setAttribute('data-theme', themeName);
-        }
 
         function switchMobileTab(tab) {
             const sidebar = document.getElementById('sidebarView');
@@ -793,24 +652,17 @@
         function calculateAdaptiveLayout(teamSize) {
             let layout = { gk: { y: 7 }, rows: [] };
             if (teamSize <= 1) return { gk: { y: 25 }, rows: [] };
-
             let outfieldCount = teamSize - 1;
             let def = 0, mid = 0, fwd = 0;
-
             for (let i = 0; i < outfieldCount; i++) {
                 if (i % 3 === 0) def++;
                 else if (i % 3 === 1) mid++;
                 else fwd++;
             }
-
-            if (outfieldCount === 2 && def === 1 && mid === 1) {
-                mid = 0; fwd = 1;
-            }
-
+            if (outfieldCount === 2 && def === 1 && mid === 1) { mid = 0; fwd = 1; }
             if (def > 0) layout.rows.push({ y: 18, count: def });
             if (mid > 0) layout.rows.push({ y: 32, count: mid });
             if (fwd > 0) layout.rows.push({ y: 45, count: fwd });
-
             return layout;
         }
 
@@ -833,8 +685,6 @@
             currentAwaySquad = players.slice(half);
             
             customPositions = {}; 
-
-            renderTeamLists();
             updatePitch(true);
         }
 
@@ -879,66 +729,38 @@
             }
 
             closeModal();
-            renderTeamLists();
             updatePitch(false);
         }
 
         function closeModal() {
             document.getElementById('replacementModal').classList.remove('active');
             pendingSwapTarget = null;
+            clearAllPlayerFocus();
         }
 
-        function renderTeamLists() {
-            const homeContainer = document.getElementById('homePlayerList');
-            const awayContainer = document.getElementById('awayPlayerList');
-
-            homeContainer.innerHTML = '';
-            awayContainer.innerHTML = '';
-
-            currentHomeSquad.forEach(name => {
-                homeContainer.appendChild(createPlayerItemElement(name, 'home'));
-            });
-
-            currentAwaySquad.forEach(name => {
-                awayContainer.appendChild(createPlayerItemElement(name, 'away'));
-            });
+        function clearFocus(e) {
+            // Clicking empty pitch background clears the visible active swap buttons
+            if (e.target.classList.contains('pitch')) {
+                clearAllPlayerFocus();
+            }
         }
 
-        function createPlayerItemElement(name, team) {
-            const item = document.createElement('div');
-            item.className = 'list-player-item';
-            
-            const nameSpan = document.createElement('span');
-            nameSpan.innerText = name;
-
-            const btn = document.createElement('button');
-            btn.className = 'swap-btn';
-            btn.innerHTML = '⇄';
-            btn.onclick = () => initiateSwap(name, team);
-
-            item.appendChild(nameSpan);
-            item.appendChild(btn);
-            return item;
+        function clearAllPlayerFocus() {
+            document.querySelectorAll('.player-wrapper').forEach(el => {
+                el.classList.remove('focused-player');
+            });
         }
 
         function updatePitch(resetFormations = false) {
             document.querySelectorAll('.player-wrapper').forEach(el => el.remove());
-
-            const homeFormSelection = document.getElementById('homeFormation').value;
-            const awayFormSelection = document.getElementById('awayFormation').value;
             
             const homeColor = document.getElementById('homeColor').value;
             const homeTrim = document.getElementById('homeTrimColor').value;
             const awayColor = document.getElementById('awayColor').value;
             const awayTrim = document.getElementById('awayTrimColor').value;
 
-            let homeLayout = (homeFormSelection === 'auto' || currentHomeSquad.length < 11) 
-                ? calculateAdaptiveLayout(currentHomeSquad.length) 
-                : standardFormations[homeFormSelection];
-
-            let awayLayout = (awayFormSelection === 'auto' || currentAwaySquad.length < 11) 
-                ? calculateAdaptiveLayout(currentAwaySquad.length) 
-                : standardFormations[awayFormSelection];
+            let homeLayout = calculateAdaptiveLayout(currentHomeSquad.length);
+            let awayLayout = calculateAdaptiveLayout(currentAwaySquad.length);
 
             renderSquadOnPitch(currentHomeSquad, true, homeColor, homeTrim, homeLayout, resetFormations);
             renderSquadOnPitch(currentAwaySquad, false, awayColor, awayTrim, awayLayout, resetFormations);
@@ -972,7 +794,6 @@
                         y = 25 + Math.random() * 20;
                     }
                     if (!isTopHalf) y = 100 - y;
-                    
                     customPositions[name] = { x: x, y: y };
                 }
 
@@ -981,6 +802,23 @@
                 wrapper.setAttribute('data-name', name);
                 wrapper.style.left = `${x}%`;
                 wrapper.style.top = `${y}%`;
+
+                // Handle clicking/touching the jersey token to cycle selection focus state
+                wrapper.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Avoid triggering clearFocus from parent pitch container
+                    clearAllPlayerFocus();
+                    wrapper.classList.add('focused-player');
+                });
+
+                // Small inline overlay button matching the prompt request
+                const inlineBtn = document.createElement('button');
+                inlineBtn.className = 'inline-swap-btn';
+                inlineBtn.innerHTML = '⇄';
+                inlineBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    initiateSwap(name, isTopHalf ? 'home' : 'away');
+                });
+                wrapper.appendChild(inlineBtn);
 
                 const jerseyContainer = document.createElement('div');
                 jerseyContainer.className = 'jersey-container';
@@ -1026,12 +864,14 @@
 
         function enableDrag(el, playerName) {
             let startX = 0, startY = 0;
+            let isDragging = false;
             
             el.addEventListener('mousedown', dragStart);
             el.addEventListener('touchstart', dragStart, { passive: false });
 
             function dragStart(e) {
                 if (e.type === 'touchstart') e.preventDefault();
+                isDragging = false;
                 
                 const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
                 const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
@@ -1046,6 +886,7 @@
             }
 
             function dragging(e) {
+                isDragging = true;
                 const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
                 const clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
                 
@@ -1068,65 +909,64 @@
                 customPositions[playerName] = { x: pctLeft, y: pctTop };
             }
 
-            function dragEnd() {
+            function dragEnd(e) {
                 document.removeEventListener('mousemove', dragging);
                 document.removeEventListener('touchmove', dragging);
                 document.removeEventListener('mouseup', dragEnd);
                 document.removeEventListener('touchend', dragEnd);
+                
+                // If the user performed a drag rather than a click tap, suppress the focus click overlay cycle
+                if (isDragging) {
+                    e.stopPropagation();
+                }
             }
         }
 
-        /* --- OVERHAULED POSITION-SAFE SNAPSHOT ENGINE --- */
         function exportPitchToImage() {
             const pitchElement = document.getElementById('pitch');
             const saveBtn = pitchElement.querySelector('.download-pitch-btn');
             
-            // Hide screenshot button from capture file
             if (saveBtn) saveBtn.style.visibility = 'hidden';
+            clearAllPlayerFocus();
 
-            // Exact base desktop measurements to resolve aspect configuration ratio bounds
-            const desktopWidth = pitchElement.clientWidth;
-            const desktopHeight = pitchElement.clientHeight;
+            const desktopWidth = 600;
+            const desktopHeight = 750;
 
             html2canvas(pitchElement, {
                 width: desktopWidth,
                 height: desktopHeight,
-                scale: 2, // High resolution pixel matrix super-sampling
+                scale: 2, 
                 logging: false,
                 useCORS: true,
                 backgroundColor: null,
-                onclone: (clonedDoc) => {
-                    const clonedPitch = clonedDoc.getElementById('pitch');
-                    
-                    // Reset CSS styles to prevent responsive shrinking artifacts on mobile devices
+                windowWidth: 1200, 
+                windowHeight: 1500,
+                onclone: (clDoc) => {
+                    const clonedPitch = clDoc.getElementById('pitch');
                     clonedPitch.style.width = `${desktopWidth}px`;
                     clonedPitch.style.height = `${desktopHeight}px`;
                     clonedPitch.style.transform = 'none';
                     clonedPitch.style.position = 'relative';
 
-                    // Maintain exact token scales to prevent layout overlapping bugs
                     const players = clonedPitch.querySelectorAll('.player-wrapper');
                     players.forEach(p => {
                         const name = p.getAttribute('data-name');
                         if (customPositions[name]) {
-                            // Enforce exact positions without expanding outer bounds
                             p.style.left = `${(customPositions[name].x / 100) * desktopWidth}px`;
                             p.style.top = `${(customPositions[name].y / 100) * desktopHeight}px`;
-                            p.style.transform = 'translate(-50%, -50%)'; // Removed token scale boost to completely fix overlap
+                            p.style.transform = 'translate(-50%, -50%)';
                         }
                     });
                 }
             }).then(canvas => {
                 if (saveBtn) saveBtn.style.visibility = 'visible';
-
-                // Save out PNG capture bundle attachment hook
                 const link = document.createElement('a');
                 link.download = 'football_tactics_board.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             }).catch(err => {
                 if (saveBtn) saveBtn.style.visibility = 'visible';
-                alert("Error rendering image on this device.");
+                alert("Error rendering image.");
             });
         }
 
