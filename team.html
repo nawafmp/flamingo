@@ -448,7 +448,6 @@
             z-index: 50;
         }
         
-        /* Show the swap button when a jersey element wrapper is clicked or has active class */
         .player-wrapper.focused-player .inline-swap-btn {
             display: flex;
         }
@@ -739,7 +738,6 @@
         }
 
         function clearFocus(e) {
-            // Clicking empty pitch background clears the visible active swap buttons
             if (e.target.classList.contains('pitch')) {
                 clearAllPlayerFocus();
             }
@@ -803,14 +801,12 @@
                 wrapper.style.left = `${x}%`;
                 wrapper.style.top = `${y}%`;
 
-                // Handle clicking/touching the jersey token to cycle selection focus state
                 wrapper.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Avoid triggering clearFocus from parent pitch container
+                    e.stopPropagation(); 
                     clearAllPlayerFocus();
                     wrapper.classList.add('focused-player');
                 });
 
-                // Small inline overlay button matching the prompt request
                 const inlineBtn = document.createElement('button');
                 inlineBtn.className = 'inline-swap-btn';
                 inlineBtn.innerHTML = '⇄';
@@ -915,7 +911,6 @@
                 document.removeEventListener('mouseup', dragEnd);
                 document.removeEventListener('touchend', dragEnd);
                 
-                // If the user performed a drag rather than a click tap, suppress the focus click overlay cycle
                 if (isDragging) {
                     e.stopPropagation();
                 }
