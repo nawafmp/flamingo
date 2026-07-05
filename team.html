@@ -55,23 +55,13 @@
             align-items: center;
             gap: 12px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            flex-shrink: 0;
         }
 
-        /* --- BOTTOM CONTROL FOOTER --- */
-        .bottom-nav {
-            width: 100%;
-            max-width: 600px;
-            margin: 8px auto 0 auto;
-            background-color: var(--panel-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--input-border);
-            padding: 10px 14px;
-            border-radius: 12px;
+        .kit-selectors-container {
             display: flex;
-            justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            gap: 8px;
         }
 
         label {
@@ -86,18 +76,18 @@
         .color-group {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
-            padding: 4px 8px;
+            padding: 4px 6px;
             border-radius: 8px;
         }
 
         input[type="color"] {
             -webkit-appearance: none;
             border: none;
-            width: 28px;
-            height: 24px;
+            width: 26px;
+            height: 22px;
             border-radius: 4px;
             cursor: pointer;
             background: none;
@@ -137,6 +127,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            /* Bottom safe padding to shield from mobile browser navigation controls */
+            padding-bottom: env(safe-area-inset-bottom, 20px); 
+            overflow: hidden;
         }
 
         .pitch-wrapper {
@@ -151,12 +144,12 @@
         .pitch {
             width: 100%;
             height: 100%;
-            background-color: #11381b;
+            background-color: #2e7d32;
             border: 4px solid #f0fdf4;
             border-radius: 12px;
             position: relative;
             box-shadow: var(--pitch-shadow);
-            background-image: linear-gradient(to bottom, #11381b 50%, #0e3116 50%);
+            background-image: linear-gradient(to bottom, #2e7d32 50%, #276b2b 50%);
             background-size: 100% 20%;
         }
 
@@ -432,17 +425,50 @@
             font-weight: 600;
             font-size: 0.85rem;
         }
+
+        /* --- MOBILE GENERAL POSITION FIXES --- */
+        @media (max-width: 1024px) {
+            .top-nav {
+                max-width: 100%;
+                border-radius: 12px;
+                margin-bottom: 12px;
+            }
+            .main-content {
+                height: calc(100vh - 120px);
+            }
+            .pitch-wrapper { 
+                max-width: 100%;
+                aspect-ratio: 4 / 5.4;
+            }
+            /* --- SCALED DOWN MOBILE PLAYER PLACEMENTS --- */
+            .player-wrapper { width: 36px; height: 48px; }
+            .jersey-container { width: 32px; height: 28px; }
+            .jersey-body { left: 7px; top: 2px; width: 18px; height: 25px; }
+            .jersey-collar { left: 12px; width: 8px; height: 5px; }
+            .sleeve-left { width: 9px; height: 11px; }
+            .sleeve-right { width: 9px; height: 11px; }
+            .jersey-badge { top: 6px; left: 19px; width: 4px; height: 5px; }
+            .player-name { font-size: 8px; padding: 1px 4px; max-width: 54px; border-radius: 4px; margin-top: 1px; }
+            .inline-swap-btn { width: 18px; height: 18px; font-size: 0.7rem; top: -6px; right: -6px; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Top Row Controls Layout Frame -->
+    <!-- Top Navigation Control Row -->
     <div class="top-nav">
         <button class="btn-paste" onclick="pasteAndSplitPool()">📋 Paste & Split</button>
-        <div class="color-group">
-            <label>Home Kit</label>
-            <input type="color" id="homeColor" value="#ffeb3b" onchange="applyLiveKitColors()">
-            <input type="color" id="homeTrimColor" value="#11381b" onchange="applyLiveKitColors()">
+        <div class="kit-selectors-container">
+            <div class="color-group">
+                <label>Home</label>
+                <input type="color" id="homeColor" value="#ffeb3b" onchange="applyLiveKitColors()">
+                <input type="color" id="homeTrimColor" value="#11381b" onchange="applyLiveKitColors()">
+            </div>
+            <div class="color-group">
+                <label>Away</label>
+                <input type="color" id="awayColor" value="#2563eb" onchange="applyLiveKitColors()">
+                <input type="color" id="awayTrimColor" value="#ffffff" onchange="applyLiveKitColors()">
+            </div>
         </div>
     </div>
 
@@ -468,22 +494,12 @@
         </div>
     </div>
 
-    <!-- Bottom Row Controls Layout Frame -->
-    <div class="bottom-nav">
-        <div class="color-group">
-            <label>Away Kit</label>
-            <input type="color" id="awayColor" value="#2563eb" onchange="applyLiveKitColors()">
-            <input type="color" id="awayTrimColor" value="#ffffff" onchange="applyLiveKitColors()">
-        </div>
-    </div>
-
     <script>
         let currentHomeSquad = [];
         let currentAwaySquad = [];
         let customPositions = {}; 
         let pendingSwapTarget = null;
 
-        // Clipboard quick paste wrapper handler logic
         async function pasteAndSplitPool() {
             try {
                 const text = await navigator.clipboard.readText();
@@ -493,8 +509,7 @@
                 }
                 processPlayerInputAndSplit(text);
             } catch (err) {
-                // Fallback prompt array seed rule if browser system blocks direct clipboard readout permissions
-                const backupInput = prompt("Enter or paste player names (one per line):", "10. Cr7\n7. Ronaldo\n17. Cristiano\n9. CR7\n4. Cristiano Ronaldo\n11. Cristiano\n1. CR7\n8. Siuuu!");
+                const backupInput = prompt("Enter or paste player names (one per line):", "10. Messi\n7. Ronaldo\n17. De Bruyne\n9. Haaland\n4. Van Dijk\n11. Neymar\n1. Ederson\n8. Rodri");
                 if (backupInput) processPlayerInputAndSplit(backupInput);
             }
         }
@@ -579,7 +594,6 @@
                 currentHomeSquad = currentHomeSquad.map(p => p === playerB ? playerA : p);
             }
 
-            // Invert coordinate records to map players neatly onto opposite field halves
             if (customPositions[playerA] && customPositions[playerB]) {
                 const tempPos = { ...customPositions[playerA] };
                 customPositions[playerA] = { ...customPositions[playerB] };
@@ -653,7 +667,6 @@
                     customPositions[name] = { x: x, y: y };
                 }
 
-                // Autonomous color parsing based on coordinate placement
                 const isCurrentlyOnTopHalf = y < 50;
                 const teamColor = isCurrentlyOnTopHalf ? document.getElementById('homeColor').value : document.getElementById('awayColor').value;
                 const trimColor = isCurrentlyOnTopHalf ? document.getElementById('homeTrimColor').value : document.getElementById('awayTrimColor').value;
@@ -675,7 +688,6 @@
                 inlineBtn.innerHTML = '⇄';
                 inlineBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    // Detect current home/away team assignment based on current squad arrays
                     const assignedTeamSide = currentHomeSquad.includes(name) ? 'home' : 'away';
                     initiateSwap(name, assignedTeamSide);
                 });
@@ -769,7 +781,6 @@
 
                 customPositions[playerName] = { x: pctLeft, y: pctTop };
 
-                // Autonomous Live Cross-Over Kit Swapping Logic
                 const isCurrentlyOnTopHalf = pctTop < 50;
                 const targetColor = isCurrentlyOnTopHalf ? document.getElementById('homeColor').value : document.getElementById('awayColor').value;
                 const targetTrim = isCurrentlyOnTopHalf ? document.getElementById('homeTrimColor').value : document.getElementById('awayTrimColor').value;
@@ -790,7 +801,6 @@
                 
                 if (isDragging) {
                     e.stopPropagation();
-                    // Clean up and sync array memory allocations after drag-crossings conclude
                     const finalTopHalfCheck = customPositions[playerName].y < 50;
                     if (finalTopHalfCheck && currentAwaySquad.includes(playerName)) {
                         currentAwaySquad = currentAwaySquad.filter(p => p !== playerName);
@@ -871,8 +881,7 @@
             });
         }
 
-        // Seed an initial placeholder match on boot automatically
-processPlayerInputAndSplit("Cr7\nRonaldo\nCristiano\nSiuuuu!\nCristiano Ronaldo\nCr7\nRonaldo\nSiuuuu!");
+        processPlayerInputAndSplit("Cr7\nRonaldo\nCristiano\nSiuuuu!\nCristiano Ronaldo\nCr7\nRonaldo\nSiuuuu!");
     </script>
 </body>
 </html>
