@@ -1,1152 +1,1495 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flamingo Stationery Trading</title>
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --forest: #2d5016;
-    --forest-deep: #1a3009;
-    --forest-mid: #3d6b20;
-    --forest-light: #4a7a26;
-    --forest-pale: #e8f0e0;
-    --forest-mist: #f2f6ed;
-    --cream: #faf8f3;
-    --cream-warm: #f5f0e8;
-    --gold: #c9a84c;
-    --gold-light: #e8c97a;
-    --charcoal: #1c1c1a;
-    --text-muted: #6b6b62;
-    --text-light: #9a9a8e;
-    --white: #ffffff;
-    --border: rgba(45, 80, 22, 0.12);
-    --border-strong: rgba(45, 80, 22, 0.25);
-    --shadow-sm: 0 4px 20px rgba(45, 80, 22, 0.05);
-    --shadow-md: 0 12px 44px rgba(45, 80, 22, 0.08);
-    --shadow-lg: 0 24px 80px rgba(45, 80, 22, 0.12);
-    --radius: 30px;
-    --radius-md: 20px;
-    --radius-lg: 24px;
-    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <title>Order Form</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <style>
+        :root {
+            /* Extracted Color Palette Reference Tokens - Default Theme (Ocean Blue) */
+            --md-sys-color-bg: #e5f1f6; 
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-variant: #cedee5;
+            --md-sys-color-primary: #023047; /* Dark Navy Blue */
+            --md-sys-color-primary-container: #8ecae6; /* Light Blue */
+            --md-sys-color-on-primary-container: #011621;
+            --md-sys-color-accent: #fb8500; /* Vibrant Orange */
+            --md-sys-color-accent-container: #ffb703; /* Bright Yellow */
+            --md-sys-color-error: #ba1a1a;
+            --md-sys-color-error-container: #ffdad6;
+            --md-sys-color-on-error-container: #410002;
+            --md-sys-color-outline: #219ebc; /* Teal/Cyan */
+            --md-sys-color-text: #023047;
+            --md-sys-color-text-secondary: #219ebc;
+            
+            /* High Contrast Custom Highlights */
+            --price-highlight-text: #fb8500;
+        }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        /* Sunset Bronze Theme Variables */
+        body.theme-sunset {
+            --md-sys-color-bg: #fdf6f0; 
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-variant: #f1e4dc;
+            --md-sys-color-primary: #5c2504; 
+            --md-sys-color-primary-container: #ffdfcb; 
+            --md-sys-color-on-primary-container: #260c00;
+            --md-sys-color-accent: #d97706; 
+            --md-sys-color-accent-container: #fef3c7; 
+            --md-sys-color-outline: #b45309; 
+            --md-sys-color-text: #5c2504;
+            --md-sys-color-text-secondary: #b45309;
+            --price-highlight-text: #d97706;
+        }
 
-  html { 
-    scroll-behavior: smooth; 
-    -webkit-text-size-adjust: 100%; /* Prevents font-size mobile adjustments on iOS */
-  }
+        /* Forest Mint Theme Variables */
+        body.theme-forest {
+            --md-sys-color-bg: #f2f7f4; 
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-variant: #dee7e2;
+            --md-sys-color-primary: #113f26; 
+            --md-sys-color-primary-container: #c6ebd7; 
+            --md-sys-color-on-primary-container: #041a0e;
+            --md-sys-color-accent: #16a34a; 
+            --md-sys-color-accent-container: #dcfce7; 
+            --md-sys-color-outline: #15803d; 
+            --md-sys-color-text: #113f26;
+            --md-sys-color-text-secondary: #15803d;
+            --price-highlight-text: #16a34a;
+        }
 
-  body {
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--cream);
-    color: var(--charcoal);
-    line-height: 1.6;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-  }
+        body { 
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+            background: var(--md-sys-color-bg); 
+            margin: 0; 
+            padding: 8px; 
+            color: var(--md-sys-color-text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: 100%;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        .container { max-width: 1440px; margin: 0 auto; }
+        
+        .header { 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px; 
+            background: var(--md-sys-color-surface); 
+            padding: 10px 16px; 
+            border-radius: 12px; 
+            border: 1px solid var(--md-sys-color-surface-variant);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .header h2 { margin: 0; font-size: 1.1rem; color: var(--md-sys-color-primary); font-weight: 700; letter-spacing: -0.2px; }
 
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-  }
+        /* Theme Dropdown Container Styles */
+        .theme-dropdown-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .theme-select {
+            height: 36px;
+            padding: 0 32px 0 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--md-sys-color-primary);
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 8px;
+            background-color: var(--md-sys-color-surface);
+            cursor: pointer;
+        }
 
-  /* ─── SKIP LINK ─── */
-  .skip-link {
-    position: absolute; top: -100%; left: 1rem;
-    background: var(--forest); color: white;
-    padding: 0.5rem 1rem; border-radius: var(--radius-md);
-    font-size: 14px; text-decoration: none; z-index: 9999;
-  }
-  .skip-link:focus { top: 1rem; }
+        .btn-header-shortcut {
+            background: var(--md-sys-color-primary);
+            color: #ffffff;
+            min-height: 36px !important;
+            height: 36px;
+            padding: 0 12px !important;
+            font-size: 0.75rem !important;
+        }
 
-  /* ─── NAV ─── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    padding: 0 3rem;
-    display: flex; align-items: center; justify-content: space-between;
-    height: 96px;
-    background: rgba(250, 248, 243, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    transition: var(--transition);
-  }
-  nav.scrolled { box-shadow: var(--shadow-sm); background: rgba(250, 248, 243, 0.95); height: 80px; }
+        .workspace-row {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .top-full, .bottom-full { width: 100%; }
 
-  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; min-height: 44px; }
-  .nav-logo img { height: 60px; width: auto; transition: var(--transition); }
-  nav.scrolled .nav-logo img { height: 48px; }
-  .nav-logo:hover img { transform: scale(1.02); }
+        .card { 
+            background: var(--md-sys-color-surface); 
+            padding: 14px; 
+            border-radius: 14px; 
+            border: 1px solid var(--md-sys-color-surface-variant);
+            box-sizing: border-box;
+            height: 100%;
+        }
+        
+        h3 { 
+            margin-top: 0; 
+            color: var(--md-sys-color-primary); 
+            font-size: 0.8rem; 
+            border-bottom: 1px solid var(--md-sys-color-surface-variant); 
+            padding-bottom: 10px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.05em; 
+            display: flex; 
+            flex-direction: column;
+            gap: 6px;
+            font-weight: 700;
+        }
 
-  .nav-links { display: flex; align-items: center; gap: 3rem; list-style: none; }
-  .nav-links li { display: flex; align-items: center; }
-  .nav-links a:not(.nav-cta) {
-    font-size: 13px; font-weight: 500; letter-spacing: 0.08em;
-    color: var(--text-muted); text-decoration: none; text-transform: uppercase;
-    transition: var(--transition); position: relative; padding: 12px 0; /* Expanded touch footprint */
-  }
-  .nav-links a:not(.nav-cta)::after {
-    content: ''; position: absolute; bottom: 6px; left: 50%; right: 50%;
-    height: 2px; background: var(--forest);
-    transition: var(--transition);
-  }
-  .nav-links a:not(.nav-cta):hover { color: var(--forest); }
-  .nav-links a:not(.nav-cta):hover::after { left: 0; right: 0; }
-  .nav-links a:focus-visible { outline: 2px solid var(--forest); outline-offset: 4px; border-radius: 4px; }
+        .inventory-head-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
 
-  .nav-cta-wrapper { list-style: none; }
-  .nav-cta {
-    position: relative;
-    background: transparent; 
-    color: var(--forest) !important;
-    padding: 0.75rem 1.75rem; 
-    border-radius: var(--radius) !important;
-    font-size: 13px !important; 
-    font-weight: 600 !important;
-    letter-spacing: 0.08em; 
-    text-transform: uppercase;
-    border: 1.5px solid var(--forest);
-    overflow: hidden;
-    z-index: 1;
-    display: inline-block;
-    text-decoration: none;
-    transition: var(--transition) !important;
-    touch-action: manipulation;
-  }
-  .nav-cta::before {
-    content: '';
-    position: absolute; top: 0; left: 0; width: 0; height: 100%;
-    background: var(--forest);
-    transition: var(--transition);
-    z-index: -1;
-  }
-  .nav-cta:hover { color: var(--white) !important; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(45,80,22,0.15); }
-  .nav-cta:hover::before { width: 100%; }
+        .btn-toggle-controls {
+            background: transparent;
+            border: none;
+            color: var(--md-sys-color-primary);
+            font-size: 0.95rem;
+            cursor: pointer;
+            padding: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-  .hamburger {
-    display: none; background: none; border: none; cursor: pointer;
-    width: 48px; height: 48px; align-items: center; justify-content: center;
-    flex-direction: column; gap: 6px; z-index: 110; touch-action: manipulation;
-  }
-  .hamburger span { width: 24px; height: 2px; background: var(--charcoal); transition: var(--transition); display: block; transform-origin: center; }
+        .column-visibility-dropdown-container {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            flex: 1;
+        }
+        .dropdown-trigger-btn {
+            width: 100%;
+            height: 44px;
+            background: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 8px;
+            padding: 0 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--md-sys-color-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            box-sizing: border-box;
+            white-space: nowrap;
+        }
+        .dropdown-trigger-btn::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 5px solid var(--md-sys-color-primary);
+            margin-left: 6px;
+        }
+        .dropdown-menu-panel {
+            display: none;
+            position: absolute;
+            top: 48px;
+            right: 0;
+            width: 200px;
+            background: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+            z-index: 110;
+            padding: 6px 0;
+            box-sizing: border-box;
+        }
+        .dropdown-menu-panel.show {
+            display: block;
+        }
+        .dropdown-item-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--md-sys-color-primary);
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .dropdown-item-label:active {
+            background-color: var(--md-sys-color-bg);
+        }
+        .dropdown-item-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--md-sys-color-primary);
+            cursor: pointer;
+            margin: 0;
+        }
 
-  /* Mobile menu Active cross states */
-  .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-  .hamburger.active span:nth-child(2) { opacity: 0; }
-  .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+        .filter-search-wrapper {
+            margin-bottom: 12px;
+            width: 100%;
+            position: relative;
+            scroll-margin-top: 8px;
+        }
+        .filter-search-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            width: 100%;
+        }
+        .filter-search-container input[type="text"] {
+            width: 100%;
+            padding-right: 82px;
+        }
+        .btn-clear-search {
+            position: absolute;
+            right: 42px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 34px;
+            height: 34px;
+            background: transparent;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--md-sys-color-primary);
+            font-size: 1.1rem;
+            font-weight: bold;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-clear-search:active {
+            background: var(--md-sys-color-surface-variant);
+        }
+        .btn-scan-barcode {
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-scan-barcode:active {
+            background: var(--md-sys-color-surface-variant);
+        }
+        .btn-scan-barcode svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--md-sys-color-primary);
+        }
 
-  @media (max-width: 900px) {
-    nav { padding: 0 1.5rem; height: 80px; }
-    .nav-logo img { height: 48px; }
-    .hamburger { display: flex; }
-    
-    .nav-links {
-      position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
-      background: var(--cream); flex-direction: column; justify-content: center;
-      gap: 2.5rem; transition: cubic-bezier(0.25, 0.8, 0.25, 1) 0.4s; z-index: 105;
-      padding: 2rem; box-shadow: var(--shadow-lg);
-    }
-    .nav-links.active { right: 0; }
-    .nav-links a:not(.nav-cta) { font-size: 18px; width: 100%; text-align: center; }
-    .nav-cta { font-size: 16px !important; padding: 1rem 3rem; text-align: center; }
-    .nav-links li, .nav-cta-wrapper { width: 100%; justify-content: center; display: flex; }
-  }
+        .tab-container {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--md-sys-color-surface-variant);
+            padding-bottom: 0px;
+            margin-bottom: 14px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 12px 14px; 
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--md-sys-color-primary);
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+            -webkit-tap-highlight-color: transparent;
+            flex: 1 0 auto;
+            text-align: center;
+            opacity: 0.7;
+        }
+        .tab-btn.active {
+            color: var(--md-sys-color-primary);
+            background: transparent;
+            opacity: 1;
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--md-sys-color-accent);
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .form-grid { 
+            display: flex;
+            flex-direction: column; 
+            gap: 12px; 
+            width: 100%;
+            padding-bottom: 4px;
+        }
 
-  /* ─── HERO ─── */
-  .hero {
-    min-height: 100dvh;
-    display: flex; align-items: center;
-    padding: 140px 2rem 80px;
-    position: relative; overflow: hidden;
-    background: var(--cream);
-  }
+        .form-unit {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
 
-  .hero-bg {
-    position: absolute; inset: 0; pointer-events: none;
-    background:
-      radial-gradient(ellipse 60% 50% at 80% 30%, rgba(45,80,22,0.05) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(201,168,76,0.04) 0%, transparent 60%);
-  }
+        .form-group { width: 100%; display: flex; flex-direction: column; }
+        
+        label { 
+            display: block; 
+            font-size: 0.68rem; 
+            font-weight: 700; 
+            color: var(--md-sys-color-primary); 
+            margin-bottom: 4px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.04em;
+        }
+        
+        input[type="text"], input[type="number"], select, textarea { 
+            width: 100%; 
+            padding: 10px 12px; 
+            border: 1px solid var(--md-sys-color-outline); 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 0.92rem; 
+            background: var(--md-sys-color-surface); 
+            color: var(--md-sys-color-primary);
+            transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        input[type="text"], input[type="number"], select { height: 44px; }
+        textarea { resize: vertical; padding: 12px; font-family: monospace; }
+        
+        select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23023047' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 14px;
+            padding-right: 36px;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--md-sys-color-outline);
+            border-width: 2px;
+            padding: 9px 11px;
+        }
 
-  .hero-grid-lines {
-    position: absolute; inset: 0; pointer-events: none; opacity: 0.25;
-    background-image:
-      linear-gradient(to right, rgba(45,80,22,0.04) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(45,80,22,0.04) 1px, transparent 1px);
-    background-size: 80px 80px;
-  }
+        .tab-panel {
+            display: none;
+            opacity: 0;
+        }
+        .tab-panel.active {
+            display: block;
+            opacity: 1;
+        }
 
-  .hero-inner {
-    max-width: 1280px; margin: 0 auto; width: 100%;
-    display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 5rem; align-items: center;
-  }
+        /* Continuous Barcode Scanning UI Elements */
+        .camera-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: var(--md-sys-color-outline);
+            color: white;
+            padding: 14px 0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-sizing: border-box;
+            margin-bottom: 12px;
+            border: none;
+            transition: background 0.2s;
+        }
+        .camera-btn:active { opacity: 0.85; }
+        
+        #scanStatus {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 12px;
+            min-height: 20px;
+            font-size: 0.85rem;
+        }
 
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--forest-pale); border: 1px solid rgba(45,80,22,0.15);
-    padding: 6px 16px; border-radius: 100px; margin-bottom: 2rem;
-    font-size: 11px; font-weight: 600; color: var(--forest); letter-spacing: 0.08em; text-transform: uppercase;
-  }
-  .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--forest); animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        #toolkitLiveReader {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto 12px auto;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            display: none; 
+            border: 2px solid var(--md-sys-color-outline);
+        }
 
-  .hero-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3rem, 5.5vw, 5.2rem);
-    font-weight: 300; line-height: 1.1;
-    color: var(--charcoal); margin-bottom: 1.75rem;
-    letter-spacing: -0.02em;
-  }
-  .hero-title em { font-style: italic; color: var(--forest); font-weight: 400; }
-  .hero-title strong { font-weight: 600; display: block; }
+        #toolkitOutput {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            overflow-x: auto;
+            gap: 16px;
+            padding: 8px 4px 16px 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .barcode-container {
+            background: #fff;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid var(--md-sys-color-surface-variant);
+            text-align: center;
+            flex: 0 0 auto;
+            min-width: fit-content;
+            box-sizing: border-box;
+        }
+        .barcode-error { color: var(--md-sys-color-error); font-size: 13px; font-weight: 500; }
 
-  .hero-desc {
-    font-size: 18px; color: var(--text-muted);
-    line-height: 1.8; max-width: 520px; margin-bottom: 2.75rem;
-  }
+        .order-tab-header {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed var(--md-sys-color-surface-variant);
+        }
+        .order-tab-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--md-sys-color-primary);
+        }
 
-  .hero-actions { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+        .table-container, .inventory-table-container { 
+            overflow-x: auto; 
+            max-height: 420px; 
+            overflow-y: auto; 
+            border-radius: 10px;
+            border: 1px solid var(--md-sys-color-surface-variant);
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        table { width: 100%; border-collapse: collapse; table-layout: auto; }
+        
+        th { 
+            position: sticky; 
+            top: 0; 
+            background: var(--md-sys-color-bg); 
+            text-align: left; 
+            padding: 10px; 
+            font-size: 0.7rem; 
+            font-weight: 700;
+            color: var(--md-sys-color-primary); 
+            border-bottom: 2px solid var(--md-sys-color-surface-variant); 
+            z-index: 10; 
+            white-space: nowrap; 
+        }
+        td { padding: 10px; border-bottom: 1px solid var(--md-sys-color-surface-variant); font-size: 0.82rem; white-space: nowrap; height: 54px; box-sizing: border-box; }
+        
+        td.wrap-cell { white-space: normal; word-break: break-word; font-size: 0.8rem; line-height: 1.25; }
 
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: var(--forest); color: white;
-    padding: 1.1rem 2.2rem; border-radius: var(--radius);
-    font-size: 14px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
-    text-decoration: none; border: none; cursor: pointer;
-    transition: var(--transition);
-    min-height: 54px;
-    box-shadow: 0 4px 14px rgba(45, 80, 22, 0.15);
-    touch-action: manipulation;
-  }
-  .btn-primary:hover { background: var(--forest-mid); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(45, 80, 22, 0.2); }
+        .sub-meta-text {
+            display: block;
+            font-size: 0.72rem;
+            color: var(--md-sys-color-text-secondary);
+            font-family: monospace;
+            margin-top: 2px;
+            font-weight: 500;
+        }
 
-  .btn-secondary {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: var(--white); color: var(--forest);
-    padding: 1.1rem 2.2rem; border-radius: var(--radius);
-    font-size: 14px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
-    text-decoration: none; border: 1.5px solid var(--border-strong); cursor: pointer;
-    transition: var(--transition);
-    min-height: 54px;
-    touch-action: manipulation;
-  }
-  .btn-secondary:hover { background: var(--forest-mist); border-color: var(--forest); transform: translateY(-2px); }
+        .col-id, .col-barcode, .col-stock, .col-actions { display: none; }
 
-  .hero-stats {
-    display: flex; gap: 3.5rem; margin-top: 3.5rem; padding-top: 2.5rem;
-    border-top: 1px solid var(--border);
-  }
-  .stat-number {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.8rem; font-weight: 500; color: var(--charcoal); line-height: 1;
-  }
-  .stat-label { font-size: 12px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 6px; font-weight: 500; }
+        tfoot {
+            position: sticky;
+            bottom: 0;
+            background: var(--md-sys-color-bg);
+            font-size: 0.8rem;
+            z-index: 10;
+        }
+        tfoot td {
+            border-top: 2px solid var(--md-sys-color-surface-variant);
+            padding: 10px;
+        }
+        .footer-metric-label { font-size: 0.68rem; text-transform: uppercase; color: var(--md-sys-color-primary); font-weight: bold; }
+        .footer-metric-val { font-weight: 700; color: var(--md-sys-color-primary); font-family: monospace; font-size: 0.85rem; }
+        .grand-total-row td { background: var(--md-sys-color-accent-container); border-top: 1px dashed var(--md-sys-color-outline); }
+        .grand-total-row .footer-metric-val { color: var(--md-sys-color-primary); font-size: 0.95rem; }
 
-  /* Hero Visual Card Components */
-  .hero-visual { position: relative; display: flex; align-items: center; justify-content: center; }
-  .hero-card-stack { position: relative; width: 100%; max-width: 440px; margin: 0 auto; }
+        .btn { 
+            cursor: pointer; 
+            border: none; 
+            border-radius: 8px; 
+            font-weight: 700; 
+            transition: all 0.2s cubic-bezier(0.2, 0, 0, 1); 
+            padding: 10px 14px; 
+            font-size: 0.8rem; 
+            min-height: 44px; 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn:active { filter: brightness(0.85); transform: scale(0.98); }
+        
+        .btn-save { background: var(--md-sys-color-primary); color: white; width: 100%; height: 46px; font-size: 0.9rem; }
+        .btn-plus { background: var(--md-sys-color-outline); color: white; width: 34px; height: 34px; min-height: 34px; padding: 0; font-size: 0.85rem; border-radius: 8px; flex-shrink: 0; }
+        .btn-edit { background: #b45309; color: white; width: 36px; height: 36px; min-height: 36px; padding: 0; border-radius: 8px; }
+        .btn-delete { background: var(--md-sys-color-error-container); color: var(--md-sys-color-error); width: 36px; height: 36px; min-height: 36px; padding: 0; border-radius: 8px; }
+        .btn-excel { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-primary); }
+        .btn-export-all { background: var(--md-sys-color-primary); color: white; }
 
-  .product-card-bg {
-    position: absolute; top: 20px; left: 16px; right: -16px; bottom: -20px;
-    background: var(--forest-pale); border-radius: var(--radius-lg);
-    border: 1px solid var(--border-strong); opacity: 0.7;
-  }
-  .product-card-bg2 {
-    position: absolute; top: 10px; left: 8px; right: -8px; bottom: -10px;
-    background: var(--forest-mist); border-radius: var(--radius-lg);
-    border: 1px solid var(--border); opacity: 0.9;
-  }
+        /* Interactive row contextual inline layout styles */
+        .btn-inline-delete {
+            background: var(--md-sys-color-error);
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            height: 28px;
+            min-height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.15s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
 
-  .product-card-main {
-    position: relative; background: white;
-    border-radius: var(--radius-lg); border: 1px solid var(--border);
-    overflow: hidden; box-shadow: var(--shadow-md);
-  }
+        .qty-input { width: 64px !important; text-align: center; border: 1px solid var(--md-sys-color-outline) !important; font-weight: bold; height: 36px; padding: 4px; border-radius: 6px; font-size: 0.9rem; }
 
-  .product-card-img {
-    height: 300px; background: var(--forest-mist);
-    display: flex; align-items: center; justify-content: center;
-    position: relative; overflow: hidden;
-  }
+        .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
+        .dot-active { background-color: #16a34a; box-shadow: 0 0 4px #16a34a; }
+        .dot-blocked { background-color: #dc2626; box-shadow: 0 0 4px #dc2626; }
+        
+        .action-cell { display: flex; gap: 6px; align-items: center; }
+        .desc-flex-cell { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; }
+        
+        .inventory-head-flex { display: flex; flex-direction: column; width: 100%; gap: 10px; }
+        .inventory-title-centered { text-align: center; font-weight: 700; font-size: 0.95rem; color: var(--md-sys-color-primary); }
+        
+        .collapsible-control-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            transition: all 0.3s ease-in-out;
+        }
+        .collapsible-control-panel.hidden {
+            display: none;
+        }
 
-  .product-card-body { padding: 2rem; text-align: center; }
-  .product-card-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.7rem; font-weight: 500; letter-spacing: -0.01em; color: var(--charcoal);
-  }
+        .header-controls-left, .header-controls-right { display: flex; gap: 8px; width: 100%; align-items: center; justify-content: center; flex-wrap: wrap; }
+        
+        .header-controls-right select { width: calc(50% - 4px); height: 44px; padding: 0 12px; font-size: 0.88rem; border-radius: 8px; flex-grow: 1; }
+        .inventory-head-flex .btn { flex: 1; height: 44px; min-height: 44px; margin: 0; }
 
-  .float-badge {
-    position: absolute; background: white; border-radius: 100px;
-    border: 1px solid var(--border); padding: 12px 20px;
-    box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 8px;
-    font-size: 13px; font-weight: 600; white-space: nowrap;
-    animation: floatBadge 4s ease-in-out infinite;
-  }
-  .float-badge-1 { top: -10px; right: -10px; animation-delay: 0s; }
-  .float-badge-icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-  @keyframes floatBadge { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        .order-summary-wrapper { display: flex; align-items: center; gap: 8px; width: 100%; justify-content: space-between; }
+        .order-summary-wrapper .btn { flex: 1; min-height: 38px; height: 38px; font-size: 0.75rem; padding: 2px 8px; }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
 
-  @media (max-width: 1024px) {
-    .hero-inner { grid-template-columns: 1fr; gap: 4rem; }
-    .hero-visual { order: -1; }
-    .hero-card-stack { max-width: 400px; }
-  }
-  @media (max-width: 768px) {
-    .hero { padding: 120px 1.5rem 60px; }
-    .hero-stats { gap: 2.5rem; }
-  }
-
-  /* ─── MARQUEE ─── */
-  .marquee-section { background: var(--forest); overflow: hidden; padding: 1.25rem 0; }
-  .marquee-track { display: flex; gap: 4rem; width: max-content; animation: marquee 35s linear infinite; }
-  .marquee-item {
-    font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 400; font-style: italic;
-    color: rgba(255,255,255,0.85); white-space: nowrap; display: flex; align-items: center; gap: 2rem;
-  }
-  .marquee-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); display: inline-block; }
-  @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-
-  /* ─── SECTIONS SHARED ─── */
-  section { padding: 8rem 2rem; }
-  .section-inner { max-width: 1280px; margin: 0 auto; }
-  .section-label {
-    font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--forest); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 12px;
-  }
-  .section-label::before { content: ''; width: 32px; height: 1.5px; background: var(--forest); }
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.5rem, 4.5vw, 3.8rem); font-weight: 300; line-height: 1.15;
-    color: var(--charcoal); margin-bottom: 1.5rem; letter-spacing: -0.02em;
-  }
-  .section-title em { font-style: italic; color: var(--forest); font-weight: 400; }
-  .section-desc { font-size: 17px; color: var(--text-muted); max-width: 560px; line-height: 1.8; }
-
-  /* ─── CATEGORIES ─── */
-  #categories { background: var(--white); }
-  .categories-header {
-    display: flex; align-items: flex-end; justify-content: space-between;
-    margin-bottom: 4rem; gap: 2rem; flex-wrap: wrap;
-  }
-  .categories-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem;
-  }
-
-  .cat-card {
-    border: 1px solid var(--border); border-radius: var(--radius-lg);
-    overflow: hidden; cursor: pointer; text-decoration: none;
-    background: var(--cream); position: relative;
-    transition: var(--transition); display: block;
-    box-shadow: var(--shadow-sm);
-  }
-  .cat-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: var(--forest-light); }
-
-  .cat-card-img { height: 220px; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; }
-  .cat-card-body { padding: 1.75rem; background: var(--white); border-top: 1px solid var(--border); }
-  .cat-card-name { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 500; margin-bottom: 6px; color: var(--charcoal); }
-  .cat-card-count { font-size: 13px; color: var(--text-muted); font-weight: 500; }
-  .cat-card-arrow {
-    position: absolute; bottom: 1.75rem; right: 1.75rem;
-    width: 36px; height: 36px; border-radius: 50%;
-    background: var(--forest-mist); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    transition: var(--transition);
-  }
-  .cat-card:hover .cat-card-arrow { background: var(--forest); fill: white; border-color: var(--forest); }
-
-  /* ─── FEATURES ─── */
-  #why { background: var(--cream); }
-  .features-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
-  .features-list { display: flex; flex-direction: column; gap: 3rem; margin-top: 3.5rem; }
-  .feature-item { display: flex; gap: 1.5rem; }
-  .feature-icon {
-    width: 56px; height: 56px; border-radius: 50%;
-    background: var(--forest-pale); border: 1px solid var(--border-strong);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .feature-text h3 {
-    font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 500;
-    margin-bottom: 8px; color: var(--charcoal);
-  }
-  .feature-text p { font-size: 15px; color: var(--text-muted); line-height: 1.75; }
-
-  .features-visual { position: relative; }
-  .features-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-  .feat-stat-card {
-    background: white; border: 1px solid var(--border);
-    border-radius: var(--radius-lg); padding: 2.25rem; transition: var(--transition);
-    box-shadow: var(--shadow-sm);
-  }
-  .feat-stat-card:hover { box-shadow: var(--shadow-md); transform: scale(1.02); }
-  .feat-stat-num { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 300; color: var(--charcoal); line-height: 1; }
-  .feat-stat-label { font-size: 14px; color: var(--text-muted); margin-top: 8px; line-height: 1.5; }
-  .feat-stat-card.accent { background: var(--forest); border-color: var(--forest-deep); }
-  .feat-stat-card.accent .feat-stat-num { color: white; }
-  .feat-stat-card.accent .feat-stat-label { color: rgba(255,255,255,0.75); }
-  .feat-stat-card.tall { grid-row: span 2; display: flex; flex-direction: column; justify-content: flex-end; padding: 2.5rem; }
-  .feat-stat-card.tall .feat-stat-num { font-size: 4.5rem; }
-
-  @media (max-width: 1024px) {
-    .features-layout { grid-template-columns: 1fr; gap: 4rem; }
-    .features-visual { order: -1; }
-  }
-
-  /* ─── PRODUCTS ─── */
-  #products { background: var(--white); }
-  .products-header {
-    display: flex; align-items: flex-end; justify-content: space-between;
-    margin-bottom: 4rem; gap: 2rem; flex-wrap: wrap;
-  }
-  .filter-pills { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-  .filter-pill {
-    padding: 8px 22px; border-radius: var(--radius);
-    border: 1.5px solid var(--border); background: transparent;
-    font-size: 13px; font-weight: 500; color: var(--text-muted);
-    cursor: pointer; transition: var(--transition);
-    min-height: 40px;
-    touch-action: manipulation;
-  }
-  .filter-pill:hover { border-color: var(--forest); color: var(--forest); }
-  .filter-pill.active { background: var(--forest); color: white; border-color: var(--forest); box-shadow: 0 4px 12px rgba(45,80,22,0.15); }
-
-  .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
-  .prod-card { border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--cream); overflow: hidden; transition: var(--transition); box-shadow: var(--shadow-sm); }
-  .prod-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: var(--border-strong); }
-
-  .prod-card-img { height: 260px; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; }
-  .prod-card-img:hover svg { transform: scale(1.05); }
-  .prod-card-img svg { transition: var(--transition); }
-  .prod-new-badge {
-    position: absolute; top: 16px; left: 16px;
-    font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-    background: var(--gold); color: var(--forest-deep);
-    padding: 4px 10px; border-radius: 100px;
-  }
-  .prod-card-body { padding: 1.75rem; background: var(--white); border-top: 1px solid var(--border); }
-  .prod-cat { font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; font-weight: 600; }
-  .prod-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 500; color: var(--charcoal); }
-
-  /* ─── CTA FORM SECTION ─── */
-  #contact { background: var(--cream-warm); }
-  .cta-layout { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 6rem; align-items: start; }
-  .cta-form { background: white; border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 3.5rem; box-shadow: var(--shadow-lg); }
-  .cta-form h3 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 500; margin-bottom: 0.75rem; letter-spacing: -0.01em; }
-  .cta-form p { font-size: 15px; color: var(--text-muted); margin-bottom: 2.5rem; }
-
-  .form-group { margin-bottom: 1.75rem; }
-  .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; letter-spacing: 0.02em; }
-  .form-group input, .form-group textarea {
-    width: 100%; padding: 1rem 1.25rem;
-    border: 1.5px solid rgba(45, 80, 22, 0.15); border-radius: var(--radius-md);
-    font-size: 15px; font-family: 'Inter', sans-serif;
-    background: var(--cream); color: var(--charcoal);
-    transition: var(--transition);
-    outline: none; min-height: 50px;
-    -webkit-appearance: none; /* Removes native iOS default shadow inputs styling */
-  }
-  .form-group textarea { min-height: 120px; resize: vertical; border-radius: var(--radius-lg); }
-  .form-group input:focus, .form-group textarea:focus {
-    border-color: var(--forest); background: var(--white); box-shadow: 0 0 0 4px rgba(45,80,22,0.08);
-  }
-  
-  .form-submit {
-    width: 100%; padding: 1.1rem; background: var(--forest); color: white;
-    border: none; border-radius: var(--radius); font-size: 14px; font-weight: 600;
-    letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
-    min-height: 56px; transition: var(--transition);
-    box-shadow: 0 4px 14px rgba(45, 80, 22, 0.2);
-    touch-action: manipulation;
-  }
-  .form-submit:hover { background: var(--forest-mid); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(45, 80, 22, 0.25); }
-
-  .cta-info { padding-top: 1.5rem; }
-  .cta-info-list { list-style: none; display: flex; flex-direction: column; gap: 2rem; margin-top: 3rem; }
-  .cta-info-item { display: flex; gap: 1.25rem; align-items: flex-start; }
-  .cta-info-icon {
-    width: 48px; height: 48px; border-radius: 50%;
-    background: var(--forest-pale); border: 1px solid var(--border-strong);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .cta-info-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: var(--charcoal); }
-  .cta-info-item p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
-
-  @media (max-width: 1024px) {
-    .cta-layout { grid-template-columns: 1fr; gap: 4rem; }
-    .cta-form { padding: 2.5rem; }
-  }
-
-  /* ─── FOOTER ─── */
-  footer { background: var(--charcoal); color: rgba(255,255,255,0.65); padding: 5rem 2rem 3rem; }
-  .footer-inner { max-width: 1280px; margin: 0 auto; }
-  .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
-  .footer-brand img { height: 52px; filter: brightness(0) invert(1); margin-bottom: 1.5rem; }
-  .footer-brand p { font-size: 14px; line-height: 1.7; max-width: 280px; }
-  .footer-col h4 { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: white; margin-bottom: 1.5rem; }
-  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
-  .footer-col ul a { font-size: 14px; color: rgba(255,255,255,0.5); text-decoration: none; transition: var(--transition); display: inline-block; padding: 4px 0; }
-  .footer-col ul a:hover { color: white; transform: translateX(4px); }
-  .footer-bottom {
-    border-top: 1px solid rgba(255,255,255,0.08); padding-top: 2rem;
-    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;
-  }
-  .footer-bottom p { font-size: 13px; }
-  .footer-socials { display: flex; gap: 1rem; }
-  .footer-social {
-    width: 40px; height: 40px; border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.12);
-    display: flex; align-items: center; justify-content: center;
-    color: rgba(255,255,255,0.6); text-decoration: none; transition: var(--transition);
-  }
-  .footer-social:hover { border-color: rgba(255,255,255,0.4); color: white; background: rgba(255,255,255,0.05); }
-
-  @media (max-width: 1024px) { .footer-top { grid-template-columns: 1fr 1fr; gap: 3rem; } }
-  @media (max-width: 600px) { .footer-top { grid-template-columns: 1fr; } footer { padding: 4rem 1.5rem 2.5rem; } }
-
-  /* ─── SCROLL REVEAL ANIMATIONS ─── */
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-delay-1 { transition-delay: 0.15s; }
-  .reveal-delay-2 { transition-delay: 0.3s; }
-  .reveal-delay-3 { transition-delay: 0.45s; }
-
-  /* Toast Framework setup */
-  .toast {
-    position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
-    background: var(--forest); color: white;
-    padding: 1rem 2rem; border-radius: var(--radius);
-    font-size: 14px; font-weight: 500; box-shadow: var(--shadow-lg);
-    transform: translateY(120px); opacity: 0;
-    transition: var(--transition); pointer-events: none;
-  }
-  .toast.show { transform: translateY(0); opacity: 1; }
-</style>
+        @media (min-width: 768px) {
+            body { padding: 16px; }
+            .inventory-head-flex { flex-direction: row; justify-content: space-between; align-items: center; }
+            .inventory-title-centered { flex: 1; text-align: center; }
+            .collapsible-control-panel { flex-direction: row; justify-content: space-between; align-items: center; }
+            .header-controls-left { width: auto; justify-content: flex-start; }
+            .header-controls-right { width: auto; justify-content: flex-end; flex-wrap: nowrap; }
+            .header-controls-right select { width: 130px; flex-grow: 0; }
+            .column-visibility-dropdown-container { width: 160px; flex-grow: 0; }
+            .form-grid { flex-direction: row; flex-wrap: wrap; }
+            .form-unit { flex: 1 1 calc(25% - 12px); }
+            .order-tab-header { flex-direction: row; justify-content: space-between; align-items: center; }
+            .order-summary-wrapper { width: auto; }
+        }
+    </style>
 </head>
 <body>
 
-<a href="#main" class="skip-link">Skip to main content</a>
-
-<nav id="navbar" role="navigation" aria-label="Main navigation">
-  <a href="/" class="nav-logo" aria-label="Flamingo home">
-    <img src="Logo_transparent.png" alt="Flamingo Stationery Trading">
-  </a>
-  <ul class="nav-links" id="nav-links" role="list">
-    <li><a href="#categories">Collections</a></li>
-    <li><a href="#products">Products</a></li>
-    <li><a href="#why">Why Us</a></li>
-    <li class="nav-cta-wrapper"><a href="#contact" class="nav-cta">Contact us</a></li>
-  </ul>
-  <button class="hamburger" id="hamburger-menu" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-
-<main id="main">
-<section class="hero" aria-label="Welcome to Flamingo">
-  <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-grid-lines" aria-hidden="true"></div>
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-badge" aria-label="Now available">
-        Flamingo Stationery Trading LLC SPC
-      </div>
-      <h1 class="hero-title">
-        Wholesale <em>solutions</em><br>for every<br><strong>desk.</strong>
-      </h1>
-      <p class="hero-desc">
-        Premium stationery, curated for retailers and businesses who believe the right paper changes everything.
-      </p>
-      <div class="hero-actions">
-        <a href="#products" class="btn-primary" aria-label="Browse our catalogue">
-          Browse Catalogue
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-        <a href="#contact" class="btn-secondary">Request Samples</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat-item">
-          <div class="stat-number">100<span style="font-size:1.5rem">+</span></div>
-          <div class="stat-label">Active Stockists</div>
+<div class="container">
+    <div class="header">
+        <h2>ORDER FORM</h2>
+        
+        <div class="theme-dropdown-container">
+            <select id="themeSelector" class="theme-select" onchange="setTheme(this.value)">
+                <option value="default">Ocean Theme</option>
+                <option value="sunset">Sunset Theme</option>
+                <option value="forest">Forest Theme</option>
+            </select>
         </div>
-        <div class="stat-item">
-          <div class="stat-number">800<span style="font-size:1.5rem">+</span></div>
-          <div class="stat-label">SKUs Available</div>
-        </div>
-      </div>
+
+        <button class="btn btn-header-shortcut" onclick="scrollToOrders()">📦 View Orders</button>
     </div>
-    <div class="hero-visual" aria-hidden="true">
-      <div class="hero-card-stack">
-        <div class="product-card-bg2"></div>
-        <div class="product-card-bg"></div>
-        <div class="product-card-main">
-          <div class="product-card-img">
-            <svg width="340" height="280" viewBox="0 0 340 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="340" height="280" fill="#f2f6ed"/>
-              <rect x="80" y="80" width="110" height="148" rx="4" fill="#2d5016" opacity="0.9"/>
-              <rect x="84" y="84" width="102" height="140" rx="2" fill="#3d6b20"/>
-              <line x1="84" y1="110" x2="186" y2="110" stroke="#2d5016" stroke-width="1" opacity="0.4"/>
-              <line x1="84" y1="120" x2="186" y2="120" stroke="#2d5016" stroke-width="1" opacity="0.4"/>
-              <line x1="84" y1="130" x2="186" y2="130" stroke="#2d5016" stroke-width="1" opacity="0.4"/>
-              <text x="135" y="106" font-family="Georgia, serif" font-style="italic" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle">Flamingo</text>
-              <circle cx="80" cy="95" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-              <circle cx="80" cy="111" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-              <circle cx="80" cy="127" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-              <circle cx="80" cy="143" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-              <circle cx="80" cy="159" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-              <circle cx="80" cy="175" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-              <circle cx="80" cy="191" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-              <circle cx="80" cy="207" r="4" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-              <rect x="204" y="70" width="14" height="160" rx="7" fill="#1a3009"/>
-              <polygon points="204,230 218,230 211,248" fill="#f5f0e8"/>
-              <rect x="204" y="70" width="14" height="18" rx="7" fill="#c9a84c"/>
-              <rect x="224" y="80" width="12" height="148" rx="6" fill="#4a7a26"/>
-              <polygon points="224,228 236,228 230,244" fill="#f5f0e8"/>
-              <rect x="224" y="80" width="12" height="15" rx="6" fill="#e8c97a"/>
-              <rect x="50" y="160" width="140" height="18" rx="2" fill="#c9a84c" opacity="0.85"/>
-              <line x1="60" y1="160" x2="60" y2="168" stroke="#1a3009" stroke-width="1"/>
-              <line x1="75" y1="160" x2="75" y2="165" stroke="#1a3009" stroke-width="0.8"/>
-              <line x1="90" y1="160" x2="90" y2="168" stroke="#1a3009" stroke-width="1"/>
-              <line x1="105" y1="160" x2="105" y2="165" stroke="#1a3009" stroke-width="0.8"/>
-              <line x1="120" y1="160" x2="120" y2="168" stroke="#1a3009" stroke-width="1"/>
-              <line x1="135" y1="160" x2="135" y2="165" stroke="#1a3009" stroke-width="0.8"/>
-              <line x1="150" y1="160" x2="150" y2="168" stroke="#1a3009" stroke-width="1"/>
-              <line x1="165" y1="160" x2="165" y2="165" stroke="#1a3009" stroke-width="0.8"/>
-              <line x1="180" y1="160" x2="180" y2="168" stroke="#1a3009" stroke-width="1"/>
-              <path d="M256 120 C256 110 264 110 264 120 L264 150 C264 162 252 162 252 150 L252 118 C252 104 268 104 268 118 L268 152" stroke="#888" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-              <rect x="40" y="50" width="55" height="55" fill="#e8f0e0" rx="2"/>
-              <line x1="48" y1="68" x2="87" y2="68" stroke="#4a7a26" stroke-width="1" opacity="0.5"/>
-              <line x1="48" y1="76" x2="87" y2="76" stroke="#4a7a26" stroke-width="1" opacity="0.5"/>
-              <line x1="48" y1="84" x2="87" y2="84" stroke="#4a7a26" stroke-width="1" opacity="0.5"/>
-              <line x1="48" y1="92" x2="87" y2="92" stroke="#4a7a26" stroke-width="1" opacity="0.5"/>
-              <rect x="50" y="50" width="55" height="55" fill="#fef9c3" rx="2" transform="rotate(-6 50 50)" opacity="0.8"/>
-            </svg>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-name">Stationery & Office Supplies</div>
-          </div>
-        </div>
-        <div class="float-badge float-badge-1">
-          <div class="float-badge-icon" style="background:#e8f0e0">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M7 1l1.5 4H13l-3.5 2.5 1.5 4L7 9 3 11.5l1.5-4L1 5h4.5L7 1z" fill="#2d5016"/>
-            </svg>
-          </div>
-          <span style="color:#2d5016;font-size:13px">Premium Grade</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<div class="marquee-section" aria-hidden="true">
-  <div class="marquee-track">
-    <span class="marquee-item">Premium Notebooks <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Luxury Pens &amp; Pencils <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Gift Wrapping Solutions <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Eco-Friendly Options <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Custom Branding <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Desk Accessories <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Art Supplies <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Planners &amp; Journals <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Premium Notebooks <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Luxury Pens &amp; Pencils <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Gift Wrapping Solutions <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Eco-Friendly Options <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Custom Branding <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Desk Accessories <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Art Supplies <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Planners &amp; Journals <span class="marquee-dot"></span></span>
-  </div>
+    <div class="workspace-row">
+        <div class="bottom-full">
+            <div class="card">
+                <h3>
+                    <div class="inventory-head-flex">
+                        <div class="inventory-head-container">
+                            <div class="inventory-title-centered">Inventory List</div>
+                            <button class="btn-toggle-controls" id="btnToggleControls" onclick="toggleControlPanel()" title="Toggle Action Panel">▼</button>
+                        </div>
+                        
+                        <div class="collapsible-control-panel hidden" id="inventoryControlPanel">
+                            <div class="header-controls-left">
+                                <label class="btn btn-excel" title="Import CSV">
+                                    📊 Import
+                                    <input type="file" id="csvInput" accept=".csv" style="display:none;" onchange="importCSV(event)">
+                                </label>
+                                <button class="btn btn-export-all" onclick="exportInventoryCSV()">💾 Export</button>
+                                <button class="btn" style="background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="clearInventory()">🗑️ Clear</button>
+                            </div>
+                            <div class="header-controls-right">
+                                <select id="statusFilter" onchange="renderTable()">
+                                    <option value="All">All Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Blocked">Blocked</option>
+                                </select>
+
+                                <div class="column-visibility-dropdown-container">
+                                    <button class="dropdown-trigger-btn" onclick="toggleVisibilityDropdown(event)">Columns</button>
+                                    <div class="dropdown-menu-panel" id="columnVisibilityMenu">
+                                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleId" onchange="toggleColumnVisibility('id', this.checked)"> ID</label>
+                                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleBarcode" onchange="toggleColumnVisibility('barcode', this.checked)"> Barcode</label>
+                                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleStock" onchange="toggleColumnVisibility('stock', this.checked)"> Stock</label>
+                                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleActions" onchange="toggleColumnVisibility('actions', this.checked)"> Actions</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h3>
+
+                <div class="filter-search-wrapper" id="searchFieldWrapper">
+                    <div class="filter-search-container">
+                        <input type="text" id="tableFilter" placeholder="Search" oninput="renderTable()" onfocus="focusAndScrollSearch()">
+                        <button class="btn-clear-search" onclick="clearSearchField()" title="Clear Search">✕</button>
+                        <button class="btn-scan-barcode" onclick="triggerBarcodeScanner()" title="Scan Barcode">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4 4h3V2H4c-1.1.0-2 .9-2 2v3h2V4zm16-2h-3v2h3v3h2V4c0-1.1-.9-2-2-2zm2 16h-2v3h-3v2h4c1.1 0 2-.9 2-2v-3zM4 17H2v4c0 1.1.9 2 2 2h3v-2H4v-3zM6 6h2v12H6zm3 0h1v12H9zm3 0h2v12h-2zm3 0h3v12h-3zm4 0h1v12h-1z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="inventory-table-container">
+                    <table id="inventoryTable">
+                        <thead>
+                            <tr>
+                                <th class="col-id" style="width: 10%;">ID</th>
+                                <th style="width: 30%;">Code</th>
+                                <th style="width: 70%;">Description</th>
+                                <th class="col-barcode" style="width: 20%;">Barcode</th>
+                                <th class="col-stock" style="width: 10%;">Stock</th>
+                                <th class="col-actions" style="width: 10%;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="workspace-row">
+        <div id="targetWorkspaceCard" class="top-full">
+            <div class="card" style="padding-bottom: 14px;">
+                <div class="tab-container">
+                    <button class="tab-btn active" id="tabOrderBtn" onclick="switchWorkspaceTab('order')">📦 Orders</button>
+                    <button class="tab-btn" id="tabEntryBtn" onclick="switchWorkspaceTab('entry')">📝 Entry</button>
+                    <button class="tab-btn" id="tabToolkitBtn" onclick="switchWorkspaceTab('toolkit')">🖨️ Print</button>
+                </div>
+                
+                <div id="orderTabPanel" class="tab-panel active">
+                    <div class="order-tab-header">
+                        <div class="order-tab-title">Procurement Worksheet</div>
+                        <div class="order-summary-wrapper">
+                            <button class="btn btn-excel" onclick="exportToExcel()">📈 Export</button>
+                            <button class="btn" style="background:var(--md-sys-color-surface-variant); color:var(--md-sys-color-primary);" onclick="clearTransactions()">Clear Active</button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table id="transactionTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%;">Code</th>
+                                    <th style="width: 45%;">Description</th>
+                                    <th style="width: 15%;" class="text-center">Qty</th>
+                                    <th style="width: 10%;" class="text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-right footer-metric-label">Total:</td>
+                                    <td class="text-right footer-metric-val" id="footerTotalVal">0.00</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-right footer-metric-label">VAT (5%):</td>
+                                    <td class="text-right footer-metric-val" id="footerVatVal">0.00</td>
+                                </tr>
+                                <tr class="grand-total-row">
+                                    <td colspan="3" class="text-right footer-metric-label">Grand Total:</td>
+                                    <td class="text-right footer-metric-val" id="footerGrandTotalVal">0.00</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="entryTabPanel" class="tab-panel">
+                    <div class="form-grid">
+                        <div class="form-unit"><div class="form-group"><label>ID</label><input type="text" id="itemID"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>Code</label><input type="text" id="itemCode"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>Barcode</label><input type="text" id="barcode"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>Stock</label><input type="number" id="stock" placeholder="0"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>Description</label><input type="text" id="description"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>Price</label><input type="number" id="price" step="0.01"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>RSP</label><input type="number" id="rsp" step="0.01"></div></div>
+                        <div class="form-unit">
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select id="status"><option value="Active">Active</option><option value="Blocked">Blocked</option></select>
+                            </div>
+                        </div>
+                        <div class="form-unit" style="margin-top: 4px;">
+                            <button class="btn btn-save" onclick="addItem()">Save Item</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="toolkitTabPanel" class="tab-panel">
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        
+                        <div class="header-controls-left" style="gap: 12px; width:100%;">
+                            <button id="btnToggleToolkitScanner" class="camera-btn" style="flex: 2; margin-bottom:0;" onclick="toggleToolkitScanner()">📷 Live Scan</button>
+                            <label class="btn btn-excel" style="flex: 1; height:46px; min-height:46px; background:var(--md-sys-color-primary-container); color:var(--md-sys-color-primary);" title="Import 6th Column (Column F) From File">
+                                📊 Import Column F
+                                <input type="file" id="toolkitExcelInput" accept=".csv,.txt" style="display:none;" onchange="importToolkitFile(event)">
+                            </label>
+                        </div>
+                        
+                        <div id="toolkitLiveReader"></div>
+                        <div id="scanStatus"></div>
+
+                        <div class="form-group">
+                            <label style="margin-bottom: 6px;">Scanned Code Matrix Queue:</label>
+                            <textarea id="barcodeInput" rows="5" placeholder="Scanned or imported items appear here automatically..."></textarea>
+                        </div>
+                        
+                        <div class="header-controls-left" style="margin-top: 4px; gap: 12px;">
+                            <button class="btn btn-save" style="flex: 2; height: 44px; background: var(--md-sys-color-accent);" onclick="generateBarcodes()">⚙️ Generate Batch</button>
+                            <button class="btn" style="flex: 1; height: 44px; background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="clearToolkitBox()">🗑️ Reset</button>
+                        </div>
+
+                        <div id="toolkitOutput"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
 
-<section id="categories">
-  <div class="section-inner">
-    <div class="categories-header">
-      <div>
-        <div class="section-label reveal">Collections</div>
-        <h2 class="section-title reveal reveal-delay-1">Shop by <em>category</em></h2>
-        <p class="section-desc reveal reveal-delay-2">From classic notebooks to bespoke gift solutions, every product crafted with intention.</p>
-      </div>
-      <a href="#products" class="btn-secondary reveal reveal-delay-2" style="white-space:nowrap">View all products</a>
+<div id="scannerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; flex-direction: column; align-items: center; justify-content: center;">
+    <div style="width: 85%; max-width: 400px; background: var(--md-sys-color-surface); border-radius: 16px; padding: 16px; box-sizing: border-box; position: relative;">
+        <h4 style="margin: 0 0 12px 0; color: var(--md-sys-color-primary); font-size: 0.9rem; text-transform: uppercase;">Scan Barcode</h4>
+        
+        <div id="interactive-reader" style="width: 100%; border-radius: 8px; overflow: hidden; background: #000;"></div>
+        
+        <button class="btn" style="width: 100%; margin-top: 14px; background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="closeBarcodeScanner()">❌ Cancel</button>
     </div>
-    <div class="categories-grid">
-      <a href="#products" class="cat-card reveal" aria-label="Notebooks & Journals collection">
-        <div class="cat-card-img" style="background:#e8f0e0">
-          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-            <rect x="25" y="10" width="70" height="95" rx="3" fill="#2d5016"/>
-            <rect x="29" y="14" width="62" height="87" rx="1" fill="#3d6b20"/>
-            <line x1="29" y1="35" x2="91" y2="35" stroke="#2d5016" stroke-width="0.8" opacity="0.5"/>
-            <line x1="29" y1="46" x2="91" y2="46" stroke="#2d5016" stroke-width="0.8" opacity="0.5"/>
-            <line x1="29" y1="57" x2="91" y2="57" stroke="#2d5016" stroke-width="0.8" opacity="0.5"/>
-            <circle cx="25" cy="30" r="3.5" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-            <circle cx="25" cy="50" r="3.5" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-            <circle cx="25" cy="70" r="3.5" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-            <circle cx="25" cy="90" r="3.5" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-          </svg>
-        </div>
-        <div class="cat-card-body">
-          <div class="cat-card-name">Notebooks &amp; Journals</div>
-          <div class="cat-card-count">142 products</div>
-        </div>
-        <div class="cat-card-arrow" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-
-      <a href="#products" class="cat-card reveal reveal-delay-1" aria-label="Pens & Writing collection">
-        <div class="cat-card-img" style="background:#faf6ed">
-          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-            <rect x="54" y="10" width="12" height="90" rx="6" fill="#1a3009"/>
-            <polygon points="54,100 66,100 60,116" fill="#f5f0e8"/>
-            <rect x="54" y="10" width="12" height="18" rx="6" fill="#c9a84c"/>
-            <rect x="34" y="18" width="10" height="82" rx="5" fill="#4a7a26"/>
-            <polygon points="34,100 44,100 39,114" fill="#f5f0e8"/>
-            <rect x="76" y="15" width="10" height="80" rx="5" fill="#888"/>
-            <polygon points="76,95 86,95 81,108" fill="#f5f0e8"/>
-            <rect x="76" y="15" width="10" height="12" rx="5" fill="#e8c97a"/>
-          </svg>
-        </div>
-        <div class="cat-card-body">
-          <div class="cat-card-name">Pens &amp; Writing</div>
-          <div class="cat-card-count">98 products</div>
-        </div>
-        <div class="cat-card-arrow" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-
-      <a href="#products" class="cat-card reveal reveal-delay-2" aria-label="Planners & Calendars collection">
-        <div class="cat-card-img" style="background:#f2f6ed">
-          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-            <rect x="20" y="22" width="80" height="82" rx="4" fill="white" stroke="#2d5016" stroke-width="1.5"/>
-            <rect x="20" y="22" width="80" height="22" rx="4" fill="#2d5016"/>
-            <rect x="20" y="34" width="80" height="10" fill="#2d5016"/>
-            <line x1="40" y1="22" x2="40" y2="14" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="80" y1="22" x2="80" y2="14" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
-            <rect x="30" y="55" width="12" height="12" rx="1" fill="#e8f0e0"/>
-            <rect x="48" y="55" width="12" height="12" rx="1" fill="#e8f0e0"/>
-            <rect x="66" y="55" width="12" height="12" rx="1" fill="#2d5016"/>
-            <rect x="84" y="55" width="12" height="12" rx="1" fill="#e8f0e0"/>
-            <rect x="30" y="73" width="12" height="12" rx="1" fill="#e8f0e0"/>
-            <rect x="48" y="73" width="12" height="12" rx="1" fill="#e8f0e0"/>
-            <rect x="66" y="73" width="12" height="12" rx="1" fill="#e8f0e0"/>
-            <rect x="84" y="73" width="12" height="12" rx="1" fill="#e8f0e0"/>
-          </svg>
-        </div>
-        <div class="cat-card-body">
-          <div class="cat-card-name">Planners &amp; Calendars</div>
-          <div class="cat-card-count">76 products</div>
-        </div>
-        <div class="cat-card-arrow" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-
-      <a href="#products" class="cat-card reveal reveal-delay-3" aria-label="Desk Accessories collection">
-        <div class="cat-card-img" style="background:#fdf8f3">
-          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-            <rect x="30" y="50" width="60" height="60" rx="2" fill="none" stroke="#2d5016" stroke-width="1.5"/>
-            <rect x="30" y="50" width="60" height="60" rx="2" fill="#fdf8f3"/>
-            <rect x="38" y="20" width="44" height="35" rx="2" fill="#c9a84c" opacity="0.7"/>
-            <rect x="44" y="55" width="8" height="40" rx="1" fill="#2d5016"/>
-            <rect x="57" y="62" width="8" height="33" rx="1" fill="#3d6b20"/>
-            <rect x="70" y="50" width="8" height="45" rx="1" fill="#4a7a26"/>
-          </svg>
-        </div>
-        <div class="cat-card-body">
-          <div class="cat-card-name">Desk Accessories</div>
-          <div class="cat-card-count">203 products</div>
-        </div>
-        <div class="cat-card-arrow" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<section id="why">
-  <div class="section-inner">
-    <div class="features-layout">
-      <div>
-        <div class="section-label reveal">Why Flamingo</div>
-        <h2 class="section-title reveal reveal-delay-1">Built for<br><em>discerning</em> partners</h2>
-        <p class="section-desc reveal reveal-delay-2">We've spent years perfecting our stationery lines — from sourcing to your dynamic spaces.</p>
-        <div class="features-list">
-          <div class="feature-item reveal reveal-delay-1">
-            <div class="feature-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                <path d="M11 2L13.5 8.5H20L14.5 12.5L16.5 19L11 15L5.5 19L7.5 12.5L2 8.5H8.5L11 2Z" stroke="#2d5016" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div class="feature-text">
-              <h3>Curated Quality Standards</h3>
-              <p>Every product undergoes a 14-point quality review. Only 22% of submissions make it to our final catalogue.</p>
-            </div>
-          </div>
-          <div class="feature-item reveal reveal-delay-2">
-            <div class="feature-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                <rect x="2" y="6" width="18" height="13" rx="2" stroke="#2d5016" stroke-width="1.5" fill="none"/>
-                <path d="M6 6V4a5 5 0 0110 0v2" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-                <circle cx="11" cy="12.5" r="1.5" fill="#2d5016"/>
-              </svg>
-            </div>
-            <div class="feature-text">
-              <h3>Flexible Account Management</h3>
-              <p>Streamlined corporate onboarding and fast digital processing setup within 48 hours.</p>
-            </div>
-          </div>
-          <div class="feature-item reveal reveal-delay-3">
-            <div class="feature-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                <path d="M3 11l4 4 8-8" stroke="#2d5016" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M11 2a9 9 0 100 18A9 9 0 0011 2z" stroke="#2d5016" stroke-width="1.5" fill="none"/>
-              </svg>
-            </div>
-            <div class="feature-text">
-              <h3>Dedicated Support</h3>
-              <p>Every client benefits from a specialized team lead providing real assistance and timely order updates.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="features-visual reveal reveal-delay-1">
-        <div class="features-stat-grid">
-          <div class="feat-stat-card">
-            <div class="feat-stat-label">Since</div>
-            <div class="feat-stat-num">2017</div>
-          </div>
-          <div class="feat-stat-card accent tall">
-            <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:rgba(255,255,255,0.6);font-style:italic;margin-bottom:0.5rem">Fulfillment cycle</div>
-            <div class="feat-stat-num" style="font-size:3.5rem">Rapid</div>
-            <div class="feat-stat-label">dispatch metrics optimized</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="products">
-  <div class="section-inner">
-    <div class="products-header">
-      <div>
-        <div class="section-label reveal">Featured Products</div>
-        <h2 class="section-title reveal reveal-delay-1">Current <em>bestsellers</em></h2>
-      </div>
-      <div>
-        <div class="filter-pills reveal" role="group" aria-label="Filter products">
-          <button class="filter-pill active" onclick="filterProducts('all', this)" aria-pressed="true">All</button>
-          <button class="filter-pill" onclick="filterProducts('notebooks', this)" aria-pressed="false">Notebooks</button>
-          <button class="filter-pill" onclick="filterProducts('pens', this)" aria-pressed="false">Pens</button>
-          <button class="filter-pill" onclick="filterProducts('planners', this)" aria-pressed="false">Planners</button>
-          <button class="filter-pill" onclick="filterProducts('accessories', this)" aria-pressed="false">Accessories</button>
-        </div>
-      </div>
-    </div>
-    <div class="products-grid" id="products-grid" aria-label="Product catalogue">
-
-      <article class="prod-card reveal" data-cat="notebooks" aria-label="Linen Hardcover A5 Notebook">
-        <div class="prod-card-img" style="background:#e8f0e0">
-          <svg width="180" height="180" viewBox="0 0 180 180" fill="none" aria-hidden="true">
-            <rect x="40" y="20" width="100" height="135" rx="4" fill="#2d5016"/>
-            <rect x="44" y="24" width="92" height="127" rx="2" fill="white"/>
-            <rect x="44" y="24" width="92" height="30" fill="#f2f6ed"/>
-            <text x="90" y="43" font-family="Georgia,serif" font-style="italic" font-size="11" fill="#2d5016" text-anchor="middle">Flamingo</text>
-            <line x1="54" y1="70" x2="126" y2="70" stroke="#e0e0d8" stroke-width="0.8"/>
-            <line x1="54" y1="82" x2="126" y2="82" stroke="#e0e0d8" stroke-width="0.8"/>
-            <line x1="54" y1="94" x2="126" y2="94" stroke="#e0e0d8" stroke-width="0.8"/>
-            <line x1="54" y1="106" x2="126" y2="106" stroke="#e0e0d8" stroke-width="0.8"/>
-            <line x1="54" y1="118" x2="126" y2="118" stroke="#e0e0d8" stroke-width="0.8"/>
-            <circle cx="40" cy="45" r="3" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-            <circle cx="40" cy="65" r="3" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-            <circle cx="40" cy="85" r="3" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-            <circle cx="40" cy="105" r="3" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-            <circle cx="40" cy="125" r="3" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-            <circle cx="40" cy="145" r="3" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
-          </svg>
-          <div class="prod-new-badge">New</div>
-        </div>
-        <div class="prod-card-body">
-          <div class="prod-cat">Notebooks</div>
-          <div class="prod-name">Linen Hardcover A5</div>
-        </div>
-      </article>
-
-      <article class="prod-card reveal reveal-delay-1" data-cat="pens" aria-label="Brass Rollerball Pen">
-        <div class="prod-card-img" style="background:#faf6ed">
-          <svg width="180" height="180" viewBox="0 0 180 180" fill="none" aria-hidden="true">
-            <rect x="84" y="15" width="12" height="130" rx="6" fill="#c9a84c"/>
-            <polygon points="84,145 96,145 90,165" fill="#1a3009"/>
-            <rect x="84" y="15" width="12" height="22" rx="6" fill="#888"/>
-            <rect x="82" y="33" width="16" height="4" fill="#aaa"/>
-          </svg>
-        </div>
-        <div class="prod-card-body">
-          <div class="prod-cat">Pens</div>
-          <div class="prod-name">Brass Rollerball Pen</div>
-        </div>
-      </article>
-
-      <article class="prod-card reveal reveal-delay-2" data-cat="planners" aria-label="Weekly Desk Planner 2025">
-        <div class="prod-card-img" style="background:#f2f6ed">
-          <svg width="180" height="180" viewBox="0 0 180 180" fill="none" aria-hidden="true">
-            <rect x="30" y="35" width="120" height="115" rx="4" fill="white" stroke="#2d5016" stroke-width="1.5"/>
-            <rect x="30" y="35" width="120" height="28" rx="4" fill="#2d5016"/>
-            <rect x="30" y="50" width="120" height="13" fill="#2d5016"/>
-            <text x="90" y="52" font-family="Georgia,serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">2025 Planner</text>
-            <line x1="30" y1="84" x2="150" y2="84" stroke="#e8f0e0" stroke-width="0.8"/>
-            <line x1="30" y1="100" x2="150" y2="100" stroke="#e8f0e0" stroke-width="0.8"/>
-            <line x1="30" y1="116" x2="150" y2="116" stroke="#e8f0e0" stroke-width="0.8"/>
-            <line x1="30" y1="132" x2="150" y2="132" stroke="#e8f0e0" stroke-width="0.8"/>
-            <line x1="60" y1="63" x2="60" y2="150" stroke="#e8f0e0" stroke-width="0.8"/>
-            <line x1="90" y1="63" x2="90" y2="150" stroke="#e8f0e0" stroke-width="0.8"/>
-            <line x1="120" y1="63" x2="120" y2="150" stroke="#e8f0e0" stroke-width="0.8"/>
-            <circle cx="70" cy="92" r="5" fill="#2d5016" opacity="0.15"/>
-            <circle cx="100" cy="108" r="5" fill="#c9a84c" opacity="0.4"/>
-          </svg>
-        </div>
-        <div class="prod-card-body">
-          <div class="prod-cat">Planners</div>
-          <div class="prod-name">Weekly Desk Planner 2025</div>
-        </div>
-      </article>
-
-      <article class="prod-card reveal reveal-delay-3" data-cat="accessories" aria-label="Marble Desk Organiser">
-        <div class="prod-card-img" style="background:#fdf8f3">
-          <svg width="180" height="180" viewBox="0 0 180 180" fill="none" aria-hidden="true">
-            <rect x="40" y="80" width="100" height="80" rx="3" fill="#f5f0e8" stroke="#d0c8b8" stroke-width="1"/>
-            <rect x="50" y="50" width="28" height="115" rx="2" fill="#e8e0d0" stroke="#d0c8b8" stroke-width="1"/>
-            <rect x="86" y="60" width="28" height="105" rx="2" fill="#ddd5c5" stroke="#d0c8b8" stroke-width="1"/>
-            <rect x="122" y="45" width="20" height="120" rx="2" fill="#e8e0d0" stroke="#d0c8b8" stroke-width="1"/>
-            <rect x="54" y="55" width="8" height="80" rx="1" fill="#2d5016" opacity="0.7"/>
-            <rect x="64" y="65" width="8" height="70" rx="1" fill="#4a7a26" opacity="0.7"/>
-            <rect x="90" y="68" width="8" height="67" rx="1" fill="#2d5016" opacity="0.5"/>
-            <rect x="100" y="72" width="8" height="63" rx="1" fill="#c9a84c" opacity="0.6"/>
-            <rect x="125" y="50" width="8" height="85" rx="1" fill="#3d6b20" opacity="0.7"/>
-          </svg>
-          <div class="prod-new-badge">Popular</div>
-        </div>
-        <div class="prod-card-body">
-          <div class="prod-cat">Accessories</div>
-          <div class="prod-name">Marble Desk Organiser</div>
-        </div>
-      </article>
-
-    </div>
-    <div style="text-align:center;margin-top:4rem" class="reveal">
-      <a href="#contact" class="btn-secondary">Request Full Catalogue PDF</a>
-    </div>
-  </div>
-</section>
-
-<section id="contact">
-  <div class="section-inner">
-    <div class="cta-layout">
-      <div class="cta-info">
-        <div class="section-label reveal">Get Started</div>
-        <h2 class="section-title reveal reveal-delay-1">Let's build your <em>perfect</em> collection</h2>
-        <p class="section-desc reveal reveal-delay-2">Whether you're a boutique store or an established chain, our team will help you configure the right catalog assortments.</p>
-        <ul class="cta-info-list" role="list">
-          <li class="cta-info-item reveal reveal-delay-1">
-            <div class="cta-info-icon" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M10 2a6 6 0 100 12A6 6 0 0010 2z" stroke="#2d5016" stroke-width="1.5" fill="none"/>
-                <path d="M10 14c-4 0-7 1.5-7 3.5" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-                <path d="M10 14c4 0 7 1.5 7 3.5" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-              </svg>
-            </div>
-            <div>
-              <h4>Dedicated Account Consultant</h4>
-              <p>An expert assigned to your brand portfolio from day one. No bots, no queues.</p>
-            </div>
-          </li>
-          <li class="cta-info-item reveal reveal-delay-2">
-            <div class="cta-info-icon" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <rect x="2" y="4" width="16" height="12" rx="2" stroke="#2d5016" stroke-width="1.5" fill="none"/>
-                <path d="M2 8l8 5 8-5" stroke="#2d5016" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-              </svg>
-            </div>
-            <div>
-              <h4>Response Within 4 Hours</h4>
-              <p>sales@flamingostationery.com · Available Mon–Sat, 8am–6pm GST</p>
-            </div>
-          </li>
-          <li class="cta-info-item reveal reveal-delay-3">
-            <div class="cta-info-icon" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M2 3a1 1 0 011-1h2.1a1 1 0 011 .8l.7 3.5a1 1 0 01-.6 1.1L4.7 8.5a11 11 0 004.8 4.8l1.1-1.5a1 1 0 011.1-.6l3.5.7a1 1 0 01.8 1V17a1 1 0 01-1 1h-1C8.1 18 2 11.9 2 4V3z" stroke="#2d5016" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div>
-              <h4>Direct Corporate Support</h4>
-              <p>+971 544 93 06 93 · Dynamic ordering inquiries</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div class="cta-form reveal reveal-delay-2">
-        <h3>Request a Proposal</h3>
-        <p>Fill in your corporate details and we'll prepare a personalized proposal within one business day.</p>
-        <form onsubmit="handleSubmit(event)" novalidate aria-label="Wholesale enquiry form">
-          
-          <div class="form-group">
-            <label for="fullname">Full name <span aria-hidden="true" style="color:#c9a84c">*</span></label>
-            <input type="text" id="fullname" name="fullname" autocomplete="name" required placeholder="Sarah Jones" aria-required="true">
-          </div>
-
-          <div class="form-group">
-            <label for="email">Business email <span aria-hidden="true" style="color:#c9a84c">*</span></label>
-            <input type="email" id="email" name="email" autocomplete="email" required placeholder="sarah@yourstore.com" aria-required="true">
-          </div>
-
-          <div class="form-group">
-            <label for="company">Company name <span aria-hidden="true" style="color:#c9a84c">*</span></label>
-            <input type="text" id="company" name="company" autocomplete="organization" required placeholder="The Stationery Co." aria-required="true">
-          </div>
-
-          <div class="form-group">
-            <label for="message">Tell us about your business</label>
-            <textarea id="message" name="message" placeholder="Store style, brand alignments, estimated volume, or specific product lines requested…"></textarea>
-          </div>
-          
-          <button type="submit" class="form-submit" id="submit-btn">Send Enquiry</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-</main>
-
-<footer role="contentinfo">
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <img src="Logo_transparent.png" alt="Flamingo">
-        <p>Premium stationery for partners who believe in the power of beautiful things. Supplying stockists since 2017.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Products</h4>
-        <ul>
-          <li><a href="#categories">Notebooks &amp; Journals</a></li>
-          <li><a href="#categories">Pens &amp; Writing</a></li>
-          <li><a href="#categories">Planners &amp; Calendars</a></li>
-          <li><a href="#categories">Desk Accessories</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Company</h4>
-        <ul>
-          <li><a href="#why">About Flamingo</a></li>
-          <li><a href="#contact">Sustainability</a></li>
-          <li><a href="#contact">Careers</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Support</h4>
-        <ul>
-          <li><a href="#contact">Apply for Account</a></li>
-          <li><a href="#contact">Shipping &amp; Delivery</a></li>
-          <li><a href="#contact">FAQ</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2026 Flamingo Stationery Trading. All rights reserved.</p>
-      <div class="footer-socials">
-        <a href="https://www.instagram.com/flamingostationeryae/" class="footer-social" aria-label="Instagram">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.25" fill="none"/><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.25" fill="none"/><circle cx="11.5" cy="4.5" r="0.75" fill="currentColor"/></svg>
-        </a>
-        <a href="https://www.linkedin.com/company/flamingo-stationery-trading" class="footer-social" aria-label="LinkedIn">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.25" fill="none"/><path d="M5 7v4M5 5.5v.01M8 11V8.5a1.5 1.5 0 013 0V11" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
-
+</div>
 <script>
-  // Mobile drawer panel logic integration
-  const hamburger = document.getElementById('hamburger-menu');
-  const navLinks = document.getElementById('nav-links');
+    let inventory = JSON.parse(localStorage.getItem('flamingo_db_v3')) || [];
+    let transactions = JSON.parse(localStorage.getItem('flamingo_trans_v3')) || [];
 
-  hamburger.addEventListener('click', () => {
-    const expanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
-    hamburger.setAttribute('aria-expanded', !expanded);
-    hamburger.classList.toggle('active');
-    navLinks.classList.toggle('active');
-  });
+    let visibleColumns = {
+        id: false,
+        barcode: false,
+        stock: false,
+        actions: false
+    };
 
-  // Closes drawer interface when anchors are triggered
-  document.querySelectorAll('#nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.setAttribute('aria-expanded', 'false');
-      hamburger.classList.remove('active');
-      navLinks.classList.remove('active');
-    });
-  });
+    const elements = {
+        itemID: document.getElementById('itemID'),
+        itemCode: document.getElementById('itemCode'),
+        barcode: document.getElementById('barcode'),
+        description: document.getElementById('description'),
+        price: document.getElementById('price'),
+        rsp: document.getElementById('rsp'),
+        stock: document.getElementById('stock'),
+        status: document.getElementById('status'),
+        tableFilter: document.getElementById('tableFilter'),
+        statusFilter: document.getElementById('statusFilter'),
+        inventoryTbody: document.querySelector("#inventoryTable tbody"),
+        transactionTbody: document.querySelector("#transactionTable tbody"),
+        footerTotalVal: document.getElementById('footerTotalVal'),
+        footerVatVal: document.getElementById('footerVatVal'),
+        footerGrandTotalVal: document.getElementById('footerGrandTotalVal'),
+        csvInput: document.getElementById('csvInput'),
+        toolkitExcelInput: document.getElementById('toolkitExcelInput'),
+        themeSelector: document.getElementById('themeSelector')
+    };
 
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 40);
-  }, { passive: true });
+    const calcEl = {
+        tabEntryBtn: document.getElementById("tabEntryBtn"),
+        tabOrderBtn: document.getElementById("tabOrderBtn"),
+        tabToolkitBtn: document.getElementById("tabToolkitBtn"),
+        entryPanel: document.getElementById("entryTabPanel"),
+        orderPanel: document.getElementById("orderTabPanel"),
+        toolkitPanel: document.getElementById("toolkitTabPanel")
+    };
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    // Global toolkit references
+    const scanStatus = document.getElementById('scanStatus');
+    const toolkitTextarea = document.getElementById('barcodeInput');
+    let toolkitLiveScanner = null;
+    let lastScannedCode = "";
+    let throttleTimeout = null;
 
-  function filterProducts(cat, btn) {
-    document.querySelectorAll('.filter-pill').forEach(p => { p.classList.remove('active'); p.setAttribute('aria-pressed','false'); });
-    btn.classList.add('active'); btn.setAttribute('aria-pressed','true');
-    document.querySelectorAll('.prod-card').forEach(card => {
-      const show = cat === 'all' || card.dataset.cat === cat;
-      card.style.opacity = show ? '1' : '0.15';
-      card.style.pointerEvents = show ? 'auto' : 'none';
-      card.style.transform = show ? '' : 'scale(0.98)';
-      card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-    });
-  }
+    window.onload = () => { 
+        if (elements.statusFilter) {
+            elements.statusFilter.value = "Active";
+        }
 
-  let toastTimer;
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
-  }
+        // Initialize theme configurations
+        const savedTheme = localStorage.getItem('flamingo_app_theme') || 'default';
+        setTheme(savedTheme);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    const btn = document.getElementById('submit-btn');
-    btn.textContent = 'Sending…'; btn.disabled = true;
-    setTimeout(() => {
-      btn.textContent = '✓ Enquiry Sent!';
-      btn.style.background = '#4a7a26';
-      btn.style.borderColor = '#4a7a26';
-      showToast('Thank you! We will look over your details within 4 hours.');
-      setTimeout(() => { btn.textContent = 'Send Enquiry'; btn.disabled = false; btn.style.background = ''; btn.style.borderColor = ''; }, 4000);
-    }, 1200);
-  }
+        renderTable(); 
+        renderTransactions(); 
+        
+        document.addEventListener("click", () => {
+            const menu = document.getElementById("columnVisibilityMenu");
+            if(menu) menu.classList.remove("show");
+        });
+    };
 
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-    });
-  });
+    // Global Theme Switcher Engine logic
+    function setTheme(themeName) {
+        document.body.classList.remove('theme-sunset', 'theme-forest');
+        if (themeName !== 'default') {
+            document.body.classList.add('theme-' + themeName);
+        }
+        localStorage.setItem('flamingo_app_theme', themeName);
+        
+        if (elements.themeSelector) elements.themeSelector.value = themeName;
+    }
+
+    function toggleControlPanel() {
+        const panel = document.getElementById('inventoryControlPanel');
+        const btn = document.getElementById('btnToggleControls');
+        if (panel.classList.contains('hidden')) {
+            panel.classList.remove('hidden');
+            btn.innerText = '▲';
+        } else {
+            panel.classList.add('hidden');
+            btn.innerText = '▼';
+        }
+    }
+
+    function importToolkitFile(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const lines = e.target.result.split(/\r?\n/);
+            if (lines.length <= 0) return alert("The selected file structure is completely empty.");
+
+            let parsedCodes = [];
+            const targetColumnIndex = 5; 
+
+            for (let i = 0; i < lines.length; i++) {
+                const lineClean = lines[i].trim();
+                if (!lineClean) continue; 
+
+                const segments = parseCSVLine(lineClean);
+                if (segments.length > targetColumnIndex) {
+                    const targetCodeValue = segments[targetColumnIndex].replace(/^["']|["']$/g, '').trim();
+                    if (targetCodeValue !== "") { 
+                        parsedCodes.push(targetCodeValue);
+                    }
+                }
+            }
+
+            if (parsedCodes.length === 0) {
+                alert("Import Finished: Found no structural non-blank items inside the 6th column (F).");
+            } else {
+                let currentVal = toolkitTextarea.value.trim();
+                if (currentVal.length > 0) {
+                    currentVal += "\n";
+                }
+                toolkitTextarea.value = currentVal + parsedCodes.join("\n") + "\n";
+                scanStatus.style.color = "#16a34a";
+                scanStatus.innerText = `📊 Successfully imported ${parsedCodes.length} barcode inputs from Column F.`;
+                
+                generateBarcodes();
+            }
+
+            if (elements.toolkitExcelInput) elements.toolkitExcelInput.value = "";
+        };
+        reader.readAsText(file);
+    }
+
+    function toggleToolkitScanner() {
+        const readerElement = document.getElementById('toolkitLiveReader');
+        const btn = document.getElementById('btnToggleToolkitScanner');
+
+        if (toolkitLiveScanner) {
+            stopToolkitScanner();
+            return;
+        }
+
+        readerElement.style.display = "block";
+        btn.innerText = "🛑 Stop Scanner";
+        btn.style.backgroundColor = "var(--md-sys-color-error)";
+        scanStatus.style.color = "var(--md-sys-color-primary)";
+        scanStatus.innerText = "🎥 Camera active. Positioning barcode...";
+
+        toolkitLiveScanner = new Html5Qrcode("toolkitLiveReader");
+        const config = { fps: 15, qrbox: { width: 260, height: 140 } };
+
+        toolkitLiveScanner.start(
+            { facingMode: "environment" },
+            config,
+            (decodedText) => {
+                const scannedClean = decodedText.trim();
+                
+                if (scannedClean === lastScannedCode) return;
+                lastScannedCode = scannedClean;
+
+                clearTimeout(throttleTimeout);
+                throttleTimeout = setTimeout(() => { lastScannedCode = ""; }, 2500);
+
+                scanStatus.style.color = "#16a34a";
+                scanStatus.innerText = `✅ Added: ${scannedClean}`;
+
+                let currentValue = toolkitTextarea.value;
+                if (currentValue.length > 0 && !currentValue.endsWith('\n')) {
+                    currentValue += '\n';
+                }
+                toolkitTextarea.value = currentValue + scannedClean + '\n';
+                
+                generateBarcodes();
+            },
+            (errorMessage) => { }
+        ).catch(err => {
+            alert("Camera access denied or failed: " + err);
+            stopToolkitScanner();
+        });
+    }
+
+    function stopToolkitScanner() {
+        const readerElement = document.getElementById('toolkitLiveReader');
+        const btn = document.getElementById('btnToggleToolkitScanner');
+        
+        btn.innerText = "📷 Live Scan";
+        btn.style.backgroundColor = "var(--md-sys-color-outline)";
+        scanStatus.innerText = "";
+        readerElement.style.display = "none";
+
+        if (toolkitLiveScanner) {
+            toolkitLiveScanner.stop().then(() => {
+                toolkitLiveScanner.clear();
+                toolkitLiveScanner = null;
+            }).catch(err => {
+                console.error("Scanner dynamic release fault:", err);
+                toolkitLiveScanner = null;
+            });
+        }
+    }
+
+    function clearToolkitBox() {
+        stopToolkitScanner();
+        toolkitTextarea.value = '';
+        document.getElementById('toolkitOutput').innerHTML = '';
+        scanStatus.innerText = '';
+    }
+
+    function generateBarcodes() {
+        const input = toolkitTextarea.value;
+        const outputDiv = document.getElementById('toolkitOutput');
+        outputDiv.innerHTML = '';
+
+        const lines = input.split('\n').map(line => line.trim()).filter(line => line !== '');
+
+        if (lines.length === 0) return;
+
+        lines.forEach((code, index) => {
+            const container = document.createElement('div');
+            container.className = 'barcode-container';
+
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.id = 'barcode-render-' + index;
+            
+            container.appendChild(svg);
+            outputDiv.appendChild(container);
+
+            try {
+                JsBarcode("#barcode-render-" + index, code, {
+                    format: "CODE128",
+                    lineColor: "#023047",
+                    width: 2,
+                    height: 70,
+                    displayValue: true,
+                    fontSize: 16,
+                    margin: 8
+                });
+            } catch (error) {
+                const errorMsg = document.createElement('p');
+                errorMsg.className = 'barcode-error';
+                errorMsg.innerText = `Format Error "${code}"`;
+                container.innerHTML = '';
+                container.appendChild(errorMsg);
+            }
+        });
+    }
+
+    function sync() {
+        localStorage.setItem('flamingo_db_v3', JSON.stringify(inventory));
+        localStorage.setItem('flamingo_trans_v3', JSON.stringify(transactions));
+        renderTable();
+    }
+
+    function toggleVisibilityDropdown(event) {
+        event.stopPropagation();
+        const menu = document.getElementById("columnVisibilityMenu");
+        if(menu) menu.classList.toggle("show");
+    }
+
+    function stopPropagation(event) {
+        event.stopPropagation();
+    }
+
+    function clearSearchField() {
+        if (elements.tableFilter) {
+            elements.tableFilter.value = "";
+            renderTable();
+            elements.tableFilter.focus();
+        }
+    }
+
+    function focusAndScrollSearch() {
+        const target = document.getElementById('searchFieldWrapper');
+        if (target) {
+            setTimeout(() => {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+        }
+    }
+
+    let html5QrcodeScanner = null;
+
+    function triggerBarcodeScanner() {
+        const modal = document.getElementById('scannerModal');
+        modal.style.display = 'flex';
+
+        html5QrcodeScanner = new Html5Qrcode("interactive-reader");
+
+        const config = { 
+            fps: 10, 
+            qrbox: { width: 250, height: 150 }
+        };
+
+        html5QrcodeScanner.start(
+            { facingMode: "environment" }, 
+            config,
+            (decodedText) => {
+                elements.tableFilter.value = decodedText.trim();
+                renderTable();
+                closeBarcodeScanner();
+                focusAndScrollSearch();
+            },
+            (errorMessage) => {
+            }
+        ).catch(err => {
+            alert("Camera initialization failed: " + err);
+            closeBarcodeScanner();
+        });
+    }
+
+    function closeBarcodeScanner() {
+        const modal = document.getElementById('scannerModal');
+        modal.style.display = 'none';
+        
+        if (html5QrcodeScanner) {
+            html5QrcodeScanner.stop().then(() => {
+                html5QrcodeScanner.clear();
+                html5QrcodeScanner = null;
+            }).catch(err => {
+                console.error("Failed to safely release camera resource:", err);
+                html5QrcodeScanner = null;
+            });
+        }
+    }
+    
+    function scrollToOrders() {
+        switchWorkspaceTab('order');
+        const container = document.getElementById('targetWorkspaceCard');
+        if (container) {
+            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    // Handles row element conversion to a transient delete action layout state
+    function prepareRowDeletion(elementId, referenceId) {
+        const container = document.getElementById(elementId);
+        if(!container) return;
+        
+        container.innerHTML = `<button class="btn-inline-delete" onclick="event.stopPropagation(); remTrans(${referenceId});">🗑️ Delete</button>`;
+    }
+
+    function toggleColumnVisibility(columnClass, isChecked) {
+        visibleColumns[columnClass] = isChecked;
+        const thElements = document.querySelectorAll(`#inventoryTable th.col-${columnClass}`);
+        thElements.forEach(el => el.style.display = isChecked ? 'table-cell' : 'none');
+        const tdElements = document.querySelectorAll(`#inventoryTable td.col-${columnClass}`);
+        tdElements.forEach(el => el.style.display = isChecked ? 'table-cell' : 'none');
+    }
+
+    function switchWorkspaceTab(targetTab) {
+        if(targetTab !== 'toolkit') {
+            stopToolkitScanner();
+        }
+
+        [calcEl.tabEntryBtn, calcEl.tabOrderBtn, calcEl.tabToolkitBtn].forEach(btn => {
+            if(btn) btn.classList.remove('active');
+        });
+        [calcEl.entryPanel, calcEl.orderPanel, calcEl.toolkitPanel].forEach(panel => {
+            if(panel) panel.classList.remove('active');
+        });
+
+        if (targetTab === 'entry' && calcEl.tabEntryBtn && calcEl.entryPanel) {
+            calcEl.tabEntryBtn.classList.add('active');
+            calcEl.entryPanel.classList.add('active');
+        } else if (targetTab === 'order' && calcEl.tabOrderBtn && calcEl.orderPanel) {
+            calcEl.tabOrderBtn.classList.add('active');
+            calcEl.orderPanel.classList.add('active');
+        } else if (targetTab === 'toolkit' && calcEl.tabToolkitBtn && calcEl.toolkitPanel) {
+            calcEl.tabToolkitBtn.classList.add('active');
+            calcEl.toolkitPanel.classList.add('active');
+        }
+    }
+
+    function editItem(barcode) {
+        const item = inventory.find(i => i.barcode === barcode);
+        if (item) {
+            if(!visibleColumns.actions) {
+                const chk = document.getElementById('chkToggleActions');
+                if(chk) chk.checked = true;
+                toggleColumnVisibility('actions', true);
+            }
+            switchWorkspaceTab('entry');
+            elements.itemID.value = item.id;
+            elements.itemCode.value = item.code;
+            elements.barcode.value = item.barcode;
+            elements.description.value = item.desc;
+            elements.price.value = item.price;
+            elements.rsp.value = item.rsp;
+            elements.stock.value = item.stock;
+            elements.status.value = item.status;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    // Business Logic context item structures 
+    function addItem() {
+        const codeVal = elements.itemCode.value.toUpperCase().trim();
+        const barcodeVal = elements.barcode.value.trim();
+        
+        if (!codeVal || !barcodeVal) return alert("Required: Code & Barcode");
+
+        const item = {
+            uniqueRef: Date.now(),
+            id: elements.itemID.value.trim(),
+            code: codeVal,
+            barcode: barcodeVal,
+            desc: elements.description.value.trim(),
+            price: elements.price.value || "0.00",
+            rsp: elements.rsp.value || "0.00",
+            stock: elements.stock.value || "0",
+            status: elements.status.value
+        };
+
+        inventory = inventory.filter(i => i.barcode !== item.barcode);
+        inventory.push(item);
+        sync();
+        clearEntryForm();
+        renderTransactions(); 
+    }
+
+    function clearEntryForm() {
+        ['itemID', 'itemCode', 'barcode', 'description', 'price', 'rsp', 'stock'].forEach(id => {
+            if(elements[id]) elements[id].value = "";
+        });
+        if(elements.status) elements.status.value = "Active";
+    }
+
+    function delItem(ref) { 
+        if(confirm("Delete item?")) { 
+            inventory = inventory.filter(i => i.uniqueRef !== ref); 
+            sync(); 
+            renderTransactions(); 
+        } 
+    }
+
+    function renderTable() {
+        const filterInput = elements.tableFilter.value.toLowerCase().trim();
+        const searchTokens = filterInput.split(/\s+/).filter(t => t.length > 0);
+        const stat = elements.statusFilter.value;
+        
+        let htmlBuffer = '';
+
+        const filtered = inventory.filter(i => {
+            if (stat !== "All" && i.status !== stat) return false;
+            if (searchTokens.length === 0) return true;
+            const itemString = `${i.code} ${i.barcode} ${i.desc} ${i.id}`.toLowerCase();
+            return searchTokens.every(token => itemString.includes(token));
+        });
+
+        filtered.forEach(i => {
+            const dotClass = i.status === 'Active' ? 'dot-active' : 'dot-blocked';
+            
+            const idStyle = visibleColumns.id ? 'table-cell' : 'none';
+            const barcodeStyle = visibleColumns.barcode ? 'table-cell' : 'none';
+            const stockStyle = visibleColumns.stock ? 'table-cell' : 'none';
+            const actionsStyle = visibleColumns.actions ? 'table-cell' : 'none';
+
+            const priceNum = Number(i.price).toFixed(2);
+            const rspNum = Number(i.rsp).toFixed(2);
+
+            htmlBuffer += `
+                <tr>
+                    <td class="col-id" style="display: ${idStyle};">${i.id}</td>
+                    <td>
+                        <span style="font-weight:700; font-family:monospace; white-space: normal; word-break: break-all;">${i.code}</span>
+                        <span class="sub-meta-text">${i.barcode}</span>
+                    </td>
+                    <td class="wrap-cell">
+                        <div class="desc-flex-cell">
+                            <div>
+                                <span class="status-dot ${dotClass}" title="${i.status}"></span>${i.desc}
+                                <span class="sub-meta-text">(<span style="color:var(--price-highlight-text); font-weight:700;">${priceNum}</span> / ${rspNum})</span>
+                            </div>
+                            <button class="btn btn-plus" title="Add to Order" onclick="addTrans('${i.code}')">➕</button>
+                        </div>
+                    </td>
+                    <td class="col-barcode" style="display: ${barcodeStyle}; font-family:monospace;">${i.barcode}</td>
+                    <td class="col-stock" style="display: ${stockStyle};"><strong>${i.stock}</strong></td>
+                    <td class="col-actions" style="display: ${actionsStyle};">
+                        <div class="action-cell">
+                            <button class="btn btn-edit" title="Edit Item" onclick="editItem('${i.barcode}')">✏️</button>
+                            <button class="btn btn-delete" title="Delete Item" onclick="delItem(${i.uniqueRef})">🗑️</button>
+                        </div>
+                    </td>
+                </tr>`;
+        });
+        
+        elements.inventoryTbody.innerHTML = htmlBuffer;
+    }
+
+    function addTrans(code) {
+        const item = inventory.find(i => i.code === code);
+        if (!item) return;
+        transactions.push({ code: item.code, desc: item.desc, qty: 12, price: item.price, ref: Date.now() });
+        syncTransactions();
+        scrollToOrders();
+    }
+
+    function updateQty(ref, val) {
+        const t = transactions.find(item => item.ref === ref);
+        if (t) { 
+            t.qty = val; 
+            localStorage.setItem('flamingo_trans_v3', JSON.stringify(transactions)); 
+            calculateGrandTotal();
+            const rowTotalSpan = document.getElementById(`row-total-${ref}`);
+            if(rowTotalSpan) {
+                const currentItem = inventory.find(i => i.code === t.code);
+                const unitPrice = currentItem ? Number(currentItem.price) : (Number(t.price) || 0);
+                rowTotalSpan.innerText = (unitPrice * Number(val)).toFixed(2);
+            }
+        }
+    }
+
+    function syncTransactions() {
+        localStorage.setItem('flamingo_trans_v3', JSON.stringify(transactions));
+        renderTransactions();
+    }
+
+    function renderTransactions() {
+        elements.transactionTbody.innerHTML = transactions.map(t => {
+            const currentItem = inventory.find(i => i.code === t.code);
+            const unitPrice = currentItem ? Number(currentItem.price) : (Number(t.price) || 0);
+            const lineTotal = unitPrice * Number(t.qty);
+            const inlineCellId = `code-container-${t.ref}`;
+            
+            return `
+                <tr>
+                    <td style="font-weight:700; font-family:monospace; cursor:pointer; user-select:none; height:44px;" id="${inlineCellId}" onclick="prepareRowDeletion('${inlineCellId}', ${t.ref})">
+                        ${t.code}
+                    </td>
+                    <td class="wrap-cell">${t.desc}</td>
+                    <td class="text-center"><input type="number" class="qty-input" value="${t.qty}" min="1" oninput="updateQty(${t.ref}, this.value)"></td>
+                    <td class="text-right" style="font-weight:700; color:var(--md-sys-color-primary); font-family:monospace;"><span id="row-total-${t.ref}">${lineTotal.toFixed(2)}</span></td>
+                </tr>`;
+        }).join('');
+        
+        calculateGrandTotal();
+    }
+
+    function calculateGrandTotal() {
+        let subtotal = 0;
+        transactions.forEach(t => {
+            const currentItem = inventory.find(i => i.code === t.code);
+            const unitPrice = currentItem ? Number(currentItem.price) : (Number(t.price) || 0);
+            subtotal += unitPrice * (Number(t.qty) || 0);
+        });
+        
+        const vatTotal = subtotal * 0.05;
+        const netGrandTotal = subtotal + vatTotal;
+
+        if (elements.footerTotalVal) elements.footerTotalVal.innerText = subtotal.toFixed(2);
+        if (elements.footerVatVal) elements.footerVatVal.innerText = vatTotal.toFixed(2);
+        if (elements.footerGrandTotalVal) elements.footerGrandTotalVal.innerText = netGrandTotal.toFixed(2);
+    }
+
+    function remTrans(ref) { transactions = transactions.filter(t => t.ref !== ref); syncTransactions(); }
+    function clearTransactions() { transactions = []; syncTransactions(); }
+
+    function exportInventoryCSV() {
+        if (!inventory.length) return alert("Inventory is empty!");
+        let csv = "ID,Code,Barcode,Description,Price,RSP,Stock,Status\n";
+        inventory.forEach(i => {
+            csv += `"${i.id}","${i.code}","${i.barcode}","${i.desc}","${i.price}","${i.rsp}","${i.stock}","${i.status}"\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `Flamingo_Inventory_Backup_${new Date().toLocaleDateString()}.csv`;
+        link.click();
+    }
+
+    function exportToExcel() {
+        if (!transactions.length) return alert("No items found in the Active Order List.");
+        let filename = prompt("Enter Export Filename:", "Flamingo_Order");
+        if (!filename) return; 
+
+        let csvContent = "\uFEFF"; 
+        csvContent += "Code,Description,Quantity\n"; 
+        let sortedTransactions = [...transactions].sort((a, b) => Number(b.qty) - Number(a.qty));
+
+        sortedTransactions.forEach(t => {
+            const cleanedDescription = t.desc.replace(/"/g, '""');
+            csvContent += `"${t.code}","${cleanedDescription}",${t.qty}\n`; 
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${filename.trim().replace(/[\/\?<>\\:\*\|"]/g, '_')}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }
+
+    function parseCSVLine(text) {
+        let p = '', r = [];
+        let q = false;
+        for (let i = 0; i < text.length; i++) {
+            let c = text[i];
+            if (c === '"') { q = !q; }
+            else if (c === ',' && !q) { r.push(p); p = ''; }
+            else { p += c; }
+        }
+        r.push(p);
+        return r;
+    }
+
+    function importCSV(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const lines = e.target.result.split(/\r?\n/);
+            if(lines.length <= 1) return;
+
+            let timestampBase = Date.now();
+            let newItems = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                const lineClean = lines[i].trim();
+                if (!lineClean) continue;
+                
+                const c = parseCSVLine(lineClean);
+                if (c.length >= 6) {
+                    newItems.push({
+                        uniqueRef: timestampBase + i,
+                        id: (c[0] || "").trim(), 
+                        code: (c[1] || "").trim().toUpperCase(),
+                        barcode: (c[2] || "").trim(), 
+                        desc: (c[3] || "").trim(),
+                        price: (c[4] || "").trim() || "0.00", 
+                        rsp: (c[5] || "").trim() || "0.00",
+                        stock: (c[6] || "").trim() || "0", 
+                        status: (c[7] || "").trim() || "Active"
+                    });
+                }
+            }
+
+            if(newItems.length > 0) {
+                const barcodeMap = new Set(newItems.map(item => item.barcode));
+                inventory = inventory.filter(i => !barcodeMap.has(i.barcode)).concat(newItems);
+                sync();
+                alert(`Successfully imported ${newItems.length} items!`);
+            }
+            if(elements.csvInput) elements.csvInput.value = "";
+        };
+        reader.readAsText(file);
+    }
+
+    function clearInventory() { if(confirm("Delete ALL?")) { inventory = []; sync(); renderTransactions(); } }
 </script>
+
 </body>
 </html>
