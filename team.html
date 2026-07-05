@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Tactics Board & Team Maker</title>
-    <!-- Industry standard client-side screenshot library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         /* --- PREMIUM FOREST DESIGN SYSTEM --- */
@@ -30,22 +29,15 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: var(--bg-gradient);
+            /* PERMANENT FIX: Uses dynamic viewport height to adapt to mobile browser toolbars */
             height: 100vh;
+            height: 100dvh; 
             width: 100vw;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             color: var(--sidebar-text);
-            padding: 10px 10px 0 10px; /* Removed bottom padding, handled by wrapper height */
-        }
-
-        /* App Wrapper restricted strictly to 90% vertical height to fit all UI safely */
-        .app-container {
-            height: 80vh;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            padding: 10px calc(10px + env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) calc(10px + env(safe-area-inset-left, 0px));
         }
 
         /* --- TOP HEADER NAVIGATION --- */
@@ -138,8 +130,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            padding-bottom: 5px;
+            overflow: hidden; /* Locks out scrolling and clipping */
         }
 
         .pitch-wrapper {
@@ -439,7 +430,7 @@
             font-size: 0.85rem;
         }
 
-        /* --- RESPONSIVE MOBILE FIXES --- */
+        /* --- RESPONSIVE MOBILE OVERRIDES --- */
         @media (max-width: 1024px) {
             .top-nav {
                 max-width: 100%;
@@ -456,48 +447,40 @@
 </head>
 <body>
 
-    <!-- App boundary container containing layout constraints to 90% vertical space -->
-    <div class="app-container">
-        
-        <!-- Top Navigation Control Row -->
-        <div class="top-nav">
-            <button class="btn-paste" onclick="pasteAndSplitPool()" title="Paste & Split">📋</button>
-            <div class="kit-selectors-container">
-                <div class="color-group">
-                    <label>Home</label>
-                    <input type="color" id="homeColor" value="#ffeb3b" onchange="applyLiveKitColors()">
-                    <input type="color" id="homeTrimColor" value="#11381b" onchange="applyLiveKitColors()">
-                </div>
-                <div class="color-group">
-                    <label>Away</label>
-                    <input type="color" id="awayColor" value="#2563eb" onchange="applyLiveKitColors()">
-                    <input type="color" id="awayTrimColor" value="#ffffff" onchange="applyLiveKitColors()">
-                </div>
+    <div class="top-nav">
+        <button class="btn-paste" onclick="pasteAndSplitPool()" title="Paste & Split">📋</button>
+        <div class="kit-selectors-container">
+            <div class="color-group">
+                <label>Home</label>
+                <input type="color" id="homeColor" value="#ffeb3b" onchange="applyLiveKitColors()">
+                <input type="color" id="homeTrimColor" value="#11381b" onchange="applyLiveKitColors()">
+            </div>
+            <div class="color-group">
+                <label>Away</label>
+                <input type="color" id="awayColor" value="#2563eb" onchange="applyLiveKitColors()">
+                <input type="color" id="awayTrimColor" value="#ffffff" onchange="applyLiveKitColors()">
             </div>
         </div>
+    </div>
 
-        <!-- Replacement Trade Option Modal Pop-up -->
-        <div id="replacementModal" class="modal-overlay">
-            <div class="modal-card">
-                <h3 style="font-size: 1.1rem; text-align: center;" id="modalTitle">Select Replacement</h3>
-                <div id="modalListContainer" class="modal-list"></div>
-                <button class="modal-cancel" onclick="closeModal()">Cancel Trade</button>
+    <div id="replacementModal" class="modal-overlay">
+        <div class="modal-card">
+            <h3 style="font-size: 1.1rem; text-align: center;" id="modalTitle">Select Replacement</h3>
+            <div id="modalListContainer" class="modal-list"></div>
+            <button class="modal-cancel" onclick="closeModal()">Cancel Trade</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="pitch-wrapper">
+            <div class="pitch" id="pitch" onclick="clearFocus(event)">
+                <button class="download-pitch-btn" onclick="exportPitchToImage()">📸 Save Board</button>
+                <div class="halfway-line"></div>
+                <div class="center-circle"></div>
+                <div class="penalty-box-top"></div>
+                <div class="penalty-box-bottom"></div>
             </div>
         </div>
-
-        <!-- Main Game Board Container -->
-        <div class="main-content">
-            <div class="pitch-wrapper">
-                <div class="pitch" id="pitch" onclick="clearFocus(event)">
-                    <button class="download-pitch-btn" onclick="exportPitchToImage()">📸 Save Board</button>
-                    <div class="halfway-line"></div>
-                    <div class="center-circle"></div>
-                    <div class="penalty-box-top"></div>
-                    <div class="penalty-box-bottom"></div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <script>
