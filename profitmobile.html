@@ -280,7 +280,6 @@
     </header>
 
     <div class="card">
-        <!-- Top Row: Sizes & Costs -->
         <div class="grid-3">
             <div class="control-group">
                 <label>Outer Size</label>
@@ -304,7 +303,6 @@
             </div>
         </div>
 
-        <!-- Middle Row: Discounts & Rebates Combined -->
         <div class="grid-2">
             <div class="control-group">
                 <div class="label-row">
@@ -329,7 +327,6 @@
             </div>
         </div>
 
-        <!-- Bottom Row: Margin & Price Overrides -->
         <div class="grid-2">
             <div class="control-group">
                 <div class="label-row">
@@ -352,7 +349,6 @@
         </div>
     </div>
 
-    <!-- Outputs -->
     <div class="results-panel-three">
         <div class="metric-tile" style="border-top: 3px solid var(--brand-primary)">
             <span class="metric-label">Net Cost</span>
@@ -370,7 +366,6 @@
         </div>
     </div>
 
-    <!-- Charts -->
     <div class="chart-container">
         <div class="chart-bar-wrapper">
             <div class="chart-bar-label-row">
@@ -434,10 +429,11 @@
     }
 
     function resetCalculator() {
-        ['outerCost', 'unitCost', 'costDiscount', 'targetMargin', 'salesDeduction', 'sellingPrice'].forEach(id => {
+        ['outerCost', 'unitCost', 'costDiscount', 'targetMargin', 'sellingPrice'].forEach(id => {
             el[id].value = "";
         });
         el.outerSize.value = "1";
+        el.salesDeduction.value = "18";
         updateLabelBadges();
         runEngineFromCoreParameters();
     }
