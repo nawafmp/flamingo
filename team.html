@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tactics Board & Team Maker</title>
+    <style>
+        /* --- CORE THEME DEFINITIONS --- */
+        :root {
+            --bg-gradient: radial-gradient(circle, #eceff1 0%, #cfd8dc 100%);
+            --sidebar-bg: #ffffff;
+            --sidebar-text: #263238;
+            --input-bg: #f0f4f5;
+            --input-border: #b0bec5;
+            --input-text: #263238;
+            --primary-light: #2e7d32;
+            --primary-hover: #1b5e20;
+            --divider-color: #cfd8dc;
+            --pitch-shadow: rgba(38,50,56,0.2);
+            --pane-bg: rgba(255, 255, 255, 0.9);
+            --item-hover: #e0f2f1;
+        }
+
+        [data-theme="dark"] {
+            --bg-gradient: radial-gradient(circle, #222 0%, #111 100%);
+            --sidebar-bg: #1e1e24;
+            --sidebar-text: #f5f5f7;
+            --input-bg: #2a2a32;
+            --input-border: #444;
+            --input-text: #fff;
+            --primary-light: #4caf50;
+            --primary-hover: #1b5e20;
+            --divider-color: #3a3a45;
+            --pitch-shadow: rgba(0,0,0,0.5);
+            --pane-bg: rgba(30, 30, 36, 0.9);
+            --item-hover: #3a3a45;
+        }
+
+        [data-theme="cyberpunk"] {
+            --bg-gradient: linear-gradient(135deg, #0d081b 0%, #1b0d33 100%);
+            --sidebar-bg: #05030a;
+            --sidebar-text: #00ffcc;
+            --input-bg: #120a24;
+            --input-border: #ff007f;
+            --input-text: #00ffcc;
+            --primary-light: #ff007f;
+            --primary-hover: #b30059;
+            --divider-color: #ff007f;
+            --pitch-shadow: rgba(255, 0, 127, 0.4);
+            --pane-bg: rgba(5, 3, 10, 0.85);
+            --item-hover: #25123e;
+        }
+
+        [data-theme="vintage"] {
+            --bg-gradient: radial-gradient(circle, #4e342e 0%, #2d1b18 100%);
+            --sidebar-bg: #3e2723;
+            --sidebar-text: #d7ccc8;
+            --input-bg: #4e342e;
+            --input-border: #8d6e63;
+            --input-text: #f5f5f5;
+            --primary-light: #8d6e63;
+            --primary-hover: #5d4037;
+            --divider-color: #5d4037;
+            --pitch-shadow: rgba(0,0,0,0.7);
+            --pane-bg: rgba(62, 39, 35, 0.9);
+            --item-hover: #5d4037;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-gradient);
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Sidebar Styling (Master Pool Only) */
+        .sidebar {
+            width: 260px;
+            min-width: 260px;
+            background-color: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            display: flex;
+            flex-direction: column;
+            border-right: 2px solid var(--divider-color);
+            height: 100%;
+            padding: 15px;
+            gap: 12px;
+            z-index: 20;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--input-text);
+            padding: 8px;
+            border-radius: 6px;
+            resize: none;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .main-roster {
+            flex-grow: 1;
+        }
+
+        textarea:focus, select:focus {
+            outline: 2px solid var(--primary-light);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .color-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 32px;
+            height: 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            background: none;
+        }
+
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: 1px solid var(--input-border);
+            border-radius: 6px;
+        }
+
+        select {
+            flex-grow: 1;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--input-text);
+            padding: 6px 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-light);
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .hint {
+            font-size: 0.7rem;
+            opacity: 0.6;
+            line-height: 1.3;
+            text-align: center;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: var(--divider-color);
+            margin: 5px 0;
+        }
+
+        /* --- THREE COLUMN LAYOUT ENVIRONMENT --- */
+        .main-content {
+            flex-grow: 1;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* Side Control Panes */
+        .team-pane {
+            width: 240px;
+            height: 100%;
+            max-height: 780px;
+            background-color: var(--pane-bg);
+            color: var(--sidebar-text);
+            border: 1px solid var(--input-border);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Interactive Dynamic Lists */
+        .player-list-container {
+            flex-grow: 1;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 6px;
+            overflow-y: auto;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .list-player-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 10px;
+            background-color: rgba(0,0,0,0.05);
+            border-radius: 4px;
+            color: var(--input-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .list-player-item:hover {
+            background-color: var(--item-hover);
+        }
+
+        /* Swap Button Activation on Hover */
+        .swap-btn {
+            background-color: var(--primary-light);
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .list-player-item:hover .swap-btn {
+            display: flex;
+        }
+
+        .swap-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .pitch-wrapper {
+            flex-grow: 1;
+            height: 100%;
+            max-width: 620px; 
+            max-height: 780px; 
+            aspect-ratio: 4 / 5;
+            position: relative;
+        }
+
+        .pitch {
+            width: 100%;
+            height: 100%;
+            background-color: #2e7d32;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 10px 30px var(--pitch-shadow);
+            background-image: linear-gradient(to bottom, #2e7d32 50%, #276b2b 50%);
+            background-size: 100% 20%;
+        }
+
+        /* Pitch Markings */
+        .halfway-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-50%);
+        }
+
+        .center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 25%;
+            height: 20%;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .penalty-box-top {
+            position: absolute;
+            top: 0;
+            left: 20%;
+            width: 60%;
+            height: 16%;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            border-top: none;
+        }
+
+        .penalty-box-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            width: 60%;
+            height: 16%;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            border-bottom: none;
+        }
+
+        /* --- STYLIZED JERSEY ICON --- */
+        .player-wrapper {
+            position: absolute;
+            width: 68px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: move;
+            user-select: none;
+            z-index: 10;
+            transform: translate(-50%, -50%);
+        }
+
+        .player-wrapper:active {
+            z-index: 1000;
+        }
+
+        .jersey-container {
+            position: relative;
+            width: 64px;
+            height: 56px;
+            filter: drop-shadow(0px 4px 5px rgba(0,0,0,0.3));
+        }
+
+        .jersey-body {
+            position: absolute;
+            left: 14px;
+            top: 4px;
+            width: 36px;
+            height: 50px;
+            border-radius: 3px 3px 0 0;
+            overflow: hidden;
+        }
+
+        .jersey-body::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.12);
+        }
+        .jersey-body::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.12);
+        }
+
+        .jersey-collar {
+            position: absolute;
+            top: 0px;
+            left: 24px;
+            width: 16px;
+            height: 9px;
+            border-radius: 0 0 8px 8px;
+            z-index: 4;
+            display: flex;
+            justify-content: center;
+        }
+        .jersey-collar::before {
+            content: '';
+            width: 10px;
+            height: 5px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 0 0 5px 5px;
+        }
+
+        .sleeve-left {
+            position: absolute;
+            top: 4px;
+            left: 1px;
+            width: 18px;
+            height: 20px;
+            border-radius: 4px 2px 0 2px;
+            transform: rotate(-32deg);
+            transform-origin: top right;
+        }
+
+        .sleeve-right {
+            position: absolute;
+            top: 4px;
+            right: 1px;
+            width: 18px;
+            height: 20px;
+            border-radius: 2px 4px 2px 0;
+            transform: rotate(32deg);
+            transform-origin: top left;
+        }
+
+        .jersey-badge {
+            position: absolute;
+            top: 14px;
+            left: 36px;
+            width: 8px;
+            height: 10px;
+            background-color: #fff;
+            border: 1px solid rgba(0,0,0,0.2);
+            border-radius: 0 0 4px 4px;
+            z-index: 3;
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .player-name {
+            background-color: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-top: 4px;
+            white-space: nowrap;
+            max-width: 82px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border: 1px solid rgba(255,255,255,0.15);
+            text-shadow: 1px 1px 0px #000;
+        }
+    </style>
+</head>
+<body data-theme="stadium">
+
+    <!-- Sidebar: Master Pool Control -->
+    <div class="sidebar">
+        <h2>Squad Setup</h2>
+        
+        <div class="form-group">
+            <label for="themeSelector">🎨 Theme</label>
+            <select id="themeSelector" onchange="changeAppTheme(this.value)">
+                <option value="stadium" selected>Stadium Light</option>
+                <option value="dark">Midnight Dark</option>
+                <option value="cyberpunk">Cyberpunk Neon</option>
+                <option value="vintage">Vintage Leather</option>
+            </select>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="form-group" style="flex-grow: 1; display: flex; flex-direction: column;">
+            <label for="playerInput">Master Player Pool</label>
+            <textarea id="playerInput" class="main-roster" placeholder="Enter one name per line..."></textarea>
+        </div>
+
+        <button class="btn-primary" onclick="generateTeams()">🎲 Split Teams</button>
+    </div>
+
+    <!-- On-Field Dashboard Area -->
+    <div class="main-content">
+        
+        <!-- Left Column: Home Team (Yellow) -->
+        <div class="team-pane">
+            <label style="color:#b59410;">🏠 Home Team</label>
+            <div id="homePlayerList" class="player-list-container"></div>
+            <div class="form-group">
+                <label>Kit / Formation</label>
+                <div class="color-row">
+                    <input type="color" id="homeColor" value="#ffeb3b" onchange="updatePitch()">
+                    <input type="color" id="homeTrimColor" value="#1b5e20" onchange="updatePitch()">
+                    <select id="homeFormation" onchange="updatePitch()">
+                        <option value="auto">Auto Formation</option>
+                        <option value="4-4-2">4-4-2</option>
+                        <option value="4-3-3">4-3-3</option>
+                        <option value="3-5-2">3-5-2</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Column: Pitch Viewport Grid -->
+        <div class="pitch-wrapper">
+            <div class="pitch" id="pitch">
+                <div class="halfway-line"></div>
+                <div class="center-circle"></div>
+                <div class="penalty-box-top"></div>
+                <div class="penalty-box-bottom"></div>
+            </div>
+        </div>
+
+        <!-- Right Column: Away Team (Blue) -->
+        <div class="team-pane">
+            <label style="color:#1e88e5;">✈️ Away Team</label>
+            <div id="awayPlayerList" class="player-list-container"></div>
+            <div class="form-group">
+                <label>Kit / Formation</label>
+                <div class="color-row">
+                    <input type="color" id="awayColor" value="#1e88e5" onchange="updatePitch()">
+                    <input type="color" id="awayTrimColor" value="#ffffff" onchange="updatePitch()">
+                    <select id="awayFormation" onchange="updatePitch()">
+                        <option value="auto">Auto Formation</option>
+                        <option value="4-4-2">4-4-2</option>
+                        <option value="4-3-3" selected>4-3-3</option>
+                        <option value="3-5-2">3-5-2</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById('playerInput').value = 
+            "10. Messi #1\n7. CR7!\n17. De Bruyne (C)\n9. Haaland\n4. Van Dijk\n11. Neymar Jr.\n1. Ederson [GK]\n8. Rodri\n2. Walker\n5. Stones\n3. Dias\n29. Havertz\n7. Saka\n11. Martinelli\n8. Odegaard\n4. Saliba\n6. Gabriel\n22. Raya";
+
+        const standardFormations = {
+            '4-4-2': { gk: {y: 7}, rows: [{ y: 20, count: 4 }, { y: 34, count: 4 }, { y: 46, count: 2 }] },
+            '4-3-3': { gk: {y: 7}, rows: [{ y: 18, count: 4 }, { y: 32, count: 3 }, { y: 45, count: 3 }] },
+            '3-5-2': { gk: {y: 7}, rows: [{ y: 18, count: 3 }, { y: 34, count: 5 }, { y: 46, count: 2 }] }
+        };
+
+        // State arrays to keep track of players currently in teams
+        let currentHomeSquad = [];
+        let currentAwaySquad = [];
+
+        function changeAppTheme(themeName) {
+            document.body.setAttribute('data-theme', themeName);
+        }
+
+        function cleanPlayerNames(rawText) {
+            return rawText.split('\n')
+                .map(line => {
+                    let cleaned = line.replace(/[^a-zA-Z\s]/g, '').trim();
+                    return cleaned.replace(/\s+/g, ' ');
+                })
+                .filter(p => p.length > 0);
+        }
+
+        function calculateAdaptiveLayout(teamSize) {
+            let layout = { gk: { y: 7 }, rows: [] };
+            if (teamSize <= 1) return { gk: { y: 25 }, rows: [] };
+
+            let outfieldCount = teamSize - 1;
+            let def = 0, mid = 0, fwd = 0;
+
+            for (let i = 0; i < outfieldCount; i++) {
+                if (i % 3 === 0) def++;
+                else if (i % 3 === 1) mid++;
+                else fwd++;
+            }
+
+            if (outfieldCount === 2 && def === 1 && mid === 1) {
+                mid = 0; fwd = 1;
+            }
+
+            if (def > 0) layout.rows.push({ y: 18, count: def });
+            if (mid > 0) layout.rows.push({ y: 32, count: mid });
+            if (fwd > 0) layout.rows.push({ y: 45, count: fwd });
+
+            return layout;
+        }
+
+        // Action: Randomly splits pool into state arrays
+        function generateTeams() {
+            const rawInput = document.getElementById('playerInput').value;
+            const players = cleanPlayerNames(rawInput);
+
+            if (players.length < 2) {
+                alert("Please add at least 2 players in the master pool.");
+                return;
+            }
+
+            for (let i = players.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [players[i], players[j]] = [players[j], players[i]];
+            }
+
+            const half = Math.ceil(players.length / 2);
+            currentHomeSquad = players.slice(0, half);
+            currentAwaySquad = players.slice(half);
+
+            renderTeamLists();
+            updatePitch();
+        }
+
+        // Moves a single player from one side to another
+        function swapTeam(playerName, currentTeam) {
+            if (currentTeam === 'home') {
+                currentHomeSquad = currentHomeSquad.filter(p => p !== playerName);
+                currentAwaySquad.push(playerName);
+            } else {
+                currentAwaySquad = currentAwaySquad.filter(p => p !== playerName);
+                currentHomeSquad.push(playerName);
+            }
+            renderTeamLists();
+            updatePitch();
+        }
+
+        // Renders HTML lists with hover controls
+        function renderTeamLists() {
+            const homeContainer = document.getElementById('homePlayerList');
+            const awayContainer = document.getElementById('awayPlayerList');
+
+            homeContainer.innerHTML = '';
+            awayContainer.innerHTML = '';
+
+            currentHomeSquad.forEach(name => {
+                homeContainer.appendChild(createPlayerItemElement(name, 'home'));
+            });
+
+            currentAwaySquad.forEach(name => {
+                awayContainer.appendChild(createPlayerItemElement(name, 'away'));
+            });
+        }
+
+        function createPlayerItemElement(name, team) {
+            const item = document.createElement('div');
+            item.className = 'list-player-item';
+            
+            const nameSpan = document.createElement('span');
+            nameSpan.innerText = name;
+
+            const btn = document.createElement('button');
+            btn.className = 'swap-btn';
+            btn.innerHTML = '⇄';
+            btn.title = `Move to ${team === 'home' ? 'Away' : 'Home'} team`;
+            btn.onclick = () => swapTeam(name, team);
+
+            item.appendChild(nameSpan);
+            item.appendChild(btn);
+            return item;
+        }
+
+        // Re-projects components onto the map
+        function updatePitch() {
+            document.querySelectorAll('.player-wrapper').forEach(el => el.remove());
+
+            const homeFormSelection = document.getElementById('homeFormation').value;
+            const awayFormSelection = document.getElementById('awayFormation').value;
+            
+            const homeColor = document.getElementById('homeColor').value;
+            const homeTrim = document.getElementById('homeTrimColor').value;
+            const awayColor = document.getElementById('awayColor').value;
+            const awayTrim = document.getElementById('awayTrimColor').value;
+
+            let homeLayout = (homeFormSelection === 'auto' || currentHomeSquad.length < 11) 
+                ? calculateAdaptiveLayout(currentHomeSquad.length) 
+                : standardFormations[homeFormSelection];
+
+            let awayLayout = (awayFormSelection === 'auto' || currentAwaySquad.length < 11) 
+                ? calculateAdaptiveLayout(currentAwaySquad.length) 
+                : standardFormations[awayFormSelection];
+
+            renderSquadOnPitch(currentHomeSquad, true, homeColor, homeTrim, homeLayout);
+            renderSquadOnPitch(currentAwaySquad, false, awayColor, awayTrim, awayLayout);
+        }
+
+        function renderSquadOnPitch(squad, isTopHalf, teamColor, trimColor, formationLayout) {
+            const pitch = document.getElementById('pitch');
+            let coords = [];
+
+            if (formationLayout.gk) {
+                coords.push({ x: 50, y: formationLayout.gk.y });
+            }
+
+            formationLayout.rows.forEach(row => {
+                for (let i = 0; i < row.count; i++) {
+                    let segments = row.count + 1;
+                    coords.push({ x: (100 / segments) * (i + 1), y: row.y });
+                }
+            });
+
+            squad.forEach((name, index) => {
+                let x, y;
+                if (index < coords.length) {
+                    x = coords[index].x;
+                    y = coords[index].y;
+                } else {
+                    x = 20 + Math.random() * 60;
+                    y = 25 + Math.random() * 20;
+                }
+
+                if (!isTopHalf) y = 100 - y;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = `player-wrapper`;
+                wrapper.style.left = `${x}%`;
+                wrapper.style.top = `${y}%`;
+
+                const jerseyContainer = document.createElement('div');
+                jerseyContainer.className = 'jersey-container';
+
+                const body = document.createElement('div');
+                body.className = 'jersey-body';
+                body.style.backgroundColor = teamColor;
+
+                const collar = document.createElement('div');
+                collar.className = 'jersey-collar';
+                collar.style.backgroundColor = trimColor;
+
+                const leftSleeve = document.createElement('div');
+                leftSleeve.className = 'sleeve-left';
+                leftSleeve.style.backgroundColor = teamColor;
+                leftSleeve.style.borderBottomColor = trimColor;
+
+                const rightSleeve = document.createElement('div');
+                rightSleeve.className = 'sleeve-right';
+                rightSleeve.style.backgroundColor = teamColor;
+                rightSleeve.style.borderBottomColor = trimColor;
+
+                const badge = document.createElement('div');
+                badge.className = 'jersey-badge';
+
+                jerseyContainer.appendChild(leftSleeve);
+                jerseyContainer.appendChild(rightSleeve);
+                jerseyContainer.appendChild(body);
+                jerseyContainer.appendChild(collar);
+                jerseyContainer.appendChild(badge);
+
+                const label = document.createElement('div');
+                label.className = 'player-name';
+                label.innerText = name;
+
+                wrapper.appendChild(jerseyContainer);
+                wrapper.appendChild(label);
+
+                enableDrag(wrapper);
+                pitch.appendChild(wrapper);
+            });
+        }
+
+        function enableDrag(el) {
+            let startX = 0, startY = 0;
+            el.addEventListener('mousedown', dragStart);
+            el.addEventListener('touchstart', dragStart, { passive: false });
+
+            function dragStart(e) {
+                e.preventDefault();
+                const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+                const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+                startX = clientX - el.offsetLeft;
+                startY = clientY - el.offsetTop;
+                document.addEventListener('mousemove', dragging);
+                document.addEventListener('touchmove', dragging, { passive: false });
+                document.addEventListener('mouseup', dragEnd);
+                document.addEventListener('touchend', dragEnd);
+            }
+
+            function dragging(e) {
+                const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+                const clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
+                let newLeft = clientX - startX;
+                let newTop = clientY - startY;
+                const pitch = document.getElementById('pitch');
+                
+                if (newLeft < 0) newLeft = 0;
+                if (newLeft > pitch.clientWidth) newLeft = pitch.clientWidth;
+                if (newTop < 0) newTop = 0;
+                if (newTop > pitch.clientHeight) newTop = pitch.clientHeight;
+
+                el.style.left = `${(newLeft / pitch.clientWidth) * 100}%`;
+                el.style.top = `${(newTop / pitch.clientHeight) * 100}%`;
+            }
+
+            function dragEnd() {
+                document.removeEventListener('mousemove', dragging);
+                document.removeEventListener('touchmove', dragging);
+                document.removeEventListener('mouseup', dragEnd);
+                document.removeEventListener('touchend', dragEnd);
+            }
+        }
+
+        window.onload = generateTeams;
+    </script>
+</body>
+</html>
