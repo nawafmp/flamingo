@@ -9,16 +9,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-app: #f1f5f9;
-            --surface: rgba(255, 255, 255, 0.95);
-            --surface-border: rgba(15, 23, 42, 0.08);
+            --bg-app: #f8fafc;
+            --surface: #ffffff;
+            --surface-border: #e2e8f0;
             --text-main: #0f172a;
             --text-muted: #64748b;
             --input-bg: #f8fafc;
             
-            --brand-primary: #0284c7;
+            --brand-primary: #4f46e5;
             --brand-success: #16a34a;
-            --brand-warning: #b45309;
+            --brand-warning: #ea580c;
             --brand-danger: #dc2626;
             
             --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
@@ -36,7 +36,7 @@
             background: var(--bg-app);
             color: var(--text-main);
             min-height: 100vh;
-            padding: 10px;
+            padding: 16px 12px;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
@@ -47,95 +47,97 @@
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 14px;
         }
 
         header {
-            padding: 4px;
+            padding: 4px 2px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         header h1 {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 800;
-            letter-spacing: -0.02em;
-            color: var(--brand-primary);
+            letter-spacing: -0.03em;
+            color: var(--text-main);
         }
 
         header p {
             color: var(--text-muted);
             font-size: 0.75rem;
-            font-weight: 500;
+            font-weight: 600;
+            margin-top: 1px;
         }
 
         .btn-clear {
-            background: transparent;
+            background: #fff;
             border: 1px solid var(--surface-border);
-            color: var(--text-muted);
-            font-size: 0.7rem;
+            color: var(--brand-danger);
+            font-size: 0.75rem;
             font-weight: 700;
-            padding: 4px 8px;
-            border-radius: 6px;
+            padding: 6px 12px;
+            border-radius: 8px;
             cursor: pointer;
-            background-color: #fff;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+        
+        .btn-clear:active {
+            transform: scale(0.97);
+            background-color: #fff1f2;
         }
 
         .card {
             background: var(--surface);
             border: 1px solid var(--surface-border);
-            border-radius: 14px;
-            padding: 12px;
+            border-radius: 16px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            gap: 14px;
+            box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.04);
         }
 
-        .input-row-three {
+        .grid-3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
+            gap: 8px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
         }
 
         .control-group {
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 5px;
         }
 
-        .slider-stepper-row {
+        .label-row {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
-            margin-top: 2px;
-        }
-
-        .step-btn {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            border: 1px solid var(--surface-border);
-            background: var(--input-bg);
-            color: var(--text-main);
-            font-size: 0.85rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
         }
 
         label {
-            font-size: 0.62rem;
+            font-size: 0.68rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.02em;
+            letter-spacing: 0.03em;
             color: var(--text-muted);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        .badge-value {
+            font-size: 0.68rem;
+            font-weight: 700;
         }
 
         .input-wrapper {
@@ -143,33 +145,35 @@
             align-items: center;
             background: var(--input-bg);
             border: 1px solid var(--surface-border);
-            border-radius: 8px;
+            border-radius: 10px;
             width: 100%;
+            transition: all 0.2s ease;
         }
 
         .input-wrapper:focus-within {
             border-color: var(--brand-primary);
             background: #fff;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
         }
 
         .input-prefix, .input-suffix {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 700;
             color: var(--text-muted);
             user-select: none;
         }
-        .input-prefix { padding-left: 6px; }
-        .input-suffix { padding-right: 6px; }
+        .input-prefix { padding-left: 10px; }
+        .input-suffix { padding-right: 10px; }
 
         input[type="number"] {
             width: 100%;
-            height: 36px;
+            height: 40px;
             background: transparent;
             border: none;
             color: var(--text-main);
-            padding: 0 4px;
+            padding: 0 8px;
             font-family: var(--font-sans);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
         }
 
@@ -177,51 +181,29 @@
             outline: none;
         }
 
-        .slider-control {
-            flex-grow: 1;
-            height: 4px;
-            background: var(--input-bg);
-            border-radius: 2px;
-            outline: none;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-
-        .slider-control::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: var(--brand-primary);
-            cursor: pointer;
-        }
-
         .results-panel-three {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
+            gap: 8px;
         }
 
         .metric-tile {
             background: var(--surface);
             border: 1px solid var(--surface-border);
-            border-radius: 10px;
-            padding: 8px;
+            border-radius: 12px;
+            padding: 12px 10px;
             display: flex;
             flex-direction: column;
-            gap: 2px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            gap: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
 
         .metric-label {
-            font-size: 0.58rem;
+            font-size: 0.62rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.02em;
+            letter-spacing: 0.03em;
             color: var(--text-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .metric-value {
@@ -236,38 +218,40 @@
         .chart-container {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 10px;
             background: var(--surface);
             border: 1px solid var(--surface-border);
-            border-radius: 12px;
-            padding: 10px;
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
 
         .chart-bar-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 5px;
         }
 
         .chart-bar-label-row {
             display: flex;
             justify-content: space-between;
-            font-size: 0.65rem;
-            font-weight: 600;
+            font-size: 0.7rem;
+            font-weight: 700;
             color: var(--text-muted);
         }
 
         .chart-bar-bg {
-            height: 4px;
+            height: 6px;
             background: var(--input-bg);
-            border-radius: 2px;
+            border-radius: 3px;
             overflow: hidden;
         }
 
         .chart-bar-fill {
             height: 100%;
             width: 0%;
-            transition: width 0.2s ease;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 3px;
         }
 
         .chart-bar-fill.cost { background: var(--brand-warning); }
@@ -296,11 +280,12 @@
     </header>
 
     <div class="card">
-        <div class="input-row-three">
+        <!-- Top Row: Sizes & Costs -->
+        <div class="grid-3">
             <div class="control-group">
                 <label>Outer Size</label>
                 <div class="input-wrapper">
-                    <input type="number" id="outerSize" inputmode="numeric" pattern="[0-9]*" placeholder="0">
+                    <input type="number" id="outerSize" value="1" inputmode="numeric" pattern="[0-9]*" placeholder="1">
                 </div>
             </div>
             <div class="control-group">
@@ -319,53 +304,46 @@
             </div>
         </div>
 
-        <div class="control-group">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <label>Supplier Discount</label>
-                <span style="font-size:0.7rem; font-weight:700; color:var(--brand-primary);" id="txtCostDiscount">0%</span>
+        <!-- Middle Row: Discounts & Rebates Combined -->
+        <div class="grid-2">
+            <div class="control-group">
+                <div class="label-row">
+                    <label>Supplier Discount</label>
+                    <span class="badge-value" style="color:var(--brand-primary);" id="txtCostDiscount">0%</span>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="costDiscount" inputmode="decimal" min="0" max="100" step="0.1" placeholder="0.0">
+                    <span class="input-suffix">%</span>
+                </div>
             </div>
-            <div class="input-wrapper">
-                <input type="number" id="costDiscount" inputmode="decimal" min="0" max="100" step="0.1" placeholder="0.0">
-                <span class="input-suffix">%</span>
-            </div>
-            <div class="slider-stepper-row">
-                <button class="step-btn" onclick="stepValue('costDiscount', -1)">-</button>
-                <input type="range" id="rngCostDiscount" class="slider-control" min="0" max="100" step="0.5" value="0">
-                <button class="step-btn" onclick="stepValue('costDiscount', 1)">+</button>
+
+            <div class="control-group">
+                <div class="label-row">
+                    <label>Rebate</label>
+                    <span class="badge-value" style="color:var(--brand-warning);" id="txtDeduction">0%</span>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="salesDeduction" value="18" inputmode="decimal" min="0" max="100" step="0.1" placeholder="0.0">
+                    <span class="input-suffix">%</span>
+                </div>
             </div>
         </div>
 
-        <div class="input-row-three" style="margin-top: 4px;">
+        <!-- Bottom Row: Margin & Price Overrides -->
+        <div class="grid-2">
             <div class="control-group">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="label-row">
                     <label>Margin</label>
-                    <span style="font-size:0.6rem; font-weight:700; color:var(--brand-success);" id="txtMargin">0%</span>
+                    <span class="badge-value" style="color:var(--brand-success);" id="txtMargin">0%</span>
                 </div>
                 <div class="input-wrapper">
                     <input type="number" id="targetMargin" inputmode="decimal" min="0" max="100" step="0.1" placeholder="0.0">
                     <span class="input-suffix">%</span>
                 </div>
-                <div class="slider-stepper-row">
-                    <input type="range" id="rngMargin" class="slider-control" min="0" max="90" step="0.5" value="0">
-                </div>
             </div>
 
             <div class="control-group">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <label>Rebate</label>
-                    <span style="font-size:0.6rem; font-weight:700; color:var(--brand-warning);" id="txtDeduction">0%</span>
-                </div>
-                <div class="input-wrapper">
-                    <input type="number" id="salesDeduction" inputmode="decimal" min="0" max="100" step="0.1" placeholder="0.0">
-                    <span class="input-suffix">%</span>
-                </div>
-                <div class="slider-stepper-row">
-                    <input type="range" id="rngDeduction" class="slider-control" min="0" max="50" step="0.5" value="0">
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label>Override</label>
+                <label>Override Price</label>
                 <div class="input-wrapper">
                     <span class="input-prefix">AED</span>
                     <input type="number" id="sellingPrice" inputmode="decimal" min="0" step="0.01" placeholder="0.00">
@@ -374,6 +352,7 @@
         </div>
     </div>
 
+    <!-- Outputs -->
     <div class="results-panel-three">
         <div class="metric-tile" style="border-top: 3px solid var(--brand-primary)">
             <span class="metric-label">Net Cost</span>
@@ -391,6 +370,7 @@
         </div>
     </div>
 
+    <!-- Charts -->
     <div class="chart-container">
         <div class="chart-bar-wrapper">
             <div class="chart-bar-label-row">
@@ -422,13 +402,10 @@
         outerCost: document.getElementById('outerCost'),
         unitCost: document.getElementById('unitCost'),
         costDiscount: document.getElementById('costDiscount'),
-        rngCostDiscount: document.getElementById('rngCostDiscount'),
         txtCostDiscount: document.getElementById('txtCostDiscount'),
         targetMargin: document.getElementById('targetMargin'),
-        rngMargin: document.getElementById('rngMargin'),
         txtMargin: document.getElementById('txtMargin'),
         salesDeduction: document.getElementById('salesDeduction'),
-        rngDeduction: document.getElementById('rngDeduction'),
         txtDeduction: document.getElementById('txtDeduction'),
         sellingPrice: document.getElementById('sellingPrice'),
         
@@ -450,23 +427,18 @@
         return num(el.unitCost.value) * (1 - num(el.costDiscount.value) / 100);
     }
 
-    function syncSliders(inputEl, sliderEl, textEl, suffix = "%") {
-        sliderEl.value = num(inputEl.value);
-        textEl.textContent = num(inputEl.value).toFixed(0) + suffix;
-    }
-
-    function stepValue(inputId, direction) {
-        const inputElement = el[inputId];
-        let currentVal = num(inputElement.value);
-        currentVal = Math.max(0, currentVal + direction);
-        inputElement.value = currentVal;
-        inputElement.dispatchEvent(new Event('input'));
+    function updateLabelBadges() {
+        el.txtCostDiscount.textContent = num(el.costDiscount.value).toFixed(1) + "%";
+        el.txtDeduction.textContent = num(el.salesDeduction.value).toFixed(1) + "%";
+        el.txtMargin.textContent = num(el.targetMargin.value).toFixed(1) + "%";
     }
 
     function resetCalculator() {
-        ['outerSize', 'outerCost', 'unitCost', 'costDiscount', 'targetMargin', 'salesDeduction', 'sellingPrice'].forEach(id => {
+        ['outerCost', 'unitCost', 'costDiscount', 'targetMargin', 'salesDeduction', 'sellingPrice'].forEach(id => {
             el[id].value = "";
         });
+        el.outerSize.value = "1";
+        updateLabelBadges();
         runEngineFromCoreParameters();
     }
 
@@ -506,7 +478,7 @@
 
         if (price <= 0) {
             el.targetMargin.value = "";
-            syncSliders(el.targetMargin, el.rngMargin, el.txtMargin);
+            el.txtMargin.textContent = "0.0%";
             el.valSellingPrice.textContent = "AED 0.00";
             el.valProfitAmount.textContent = "AED 0.00";
             updateVisualCharts(0, 0, 0, 0);
@@ -517,8 +489,8 @@
         const profit = price - rebateAmount - cost;
         const marginPct = (price > 0) ? (profit / price) * 100 : 0;
 
-        el.targetMargin.value = marginPct.toFixed(0);
-        syncSliders(el.targetMargin, el.rngMargin, el.txtMargin);
+        el.targetMargin.value = marginPct.toFixed(1);
+        el.txtMargin.textContent = marginPct.toFixed(1) + "%";
 
         el.valSellingPrice.textContent = `AED ${price.toFixed(2)}`;
         el.valProfitAmount.textContent = `AED ${profit.toFixed(2)}`;
@@ -564,22 +536,9 @@
         runEngineFromCoreParameters();
     });
 
-    [['costDiscount', 'rngCostDiscount', 'txtCostDiscount'],
-     ['targetMargin', 'rngMargin', 'txtMargin'],
-     ['salesDeduction', 'rngDeduction', 'txtDeduction']].forEach(([inputID, sliderID, textID]) => {
-        const inputElement = el[inputID];
-        const sliderElement = el[sliderID];
-        const textElement = el[textID];
-
-        inputElement.addEventListener('input', () => {
-            sliderElement.value = num(inputElement.value);
-            textElement.textContent = num(inputElement.value).toFixed(0) + "%";
-            runEngineFromCoreParameters();
-        });
-
-        sliderElement.addEventListener('input', () => {
-            inputElement.value = sliderElement.value;
-            textElement.textContent = num(sliderElement.value).toFixed(0) + "%";
+    ['costDiscount', 'targetMargin', 'salesDeduction'].forEach(id => {
+        el[id].addEventListener('input', () => {
+            updateLabelBadges();
             runEngineFromCoreParameters();
         });
     });
@@ -587,6 +546,7 @@
     el.sellingPrice.addEventListener('input', runEngineFromOverridingPrice);
 
     window.onload = () => {
+        updateLabelBadges();
         runEngineFromCoreParameters();
     };
 </script>
