@@ -2,43 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tactics Board & Team Maker</title>
+    <!-- Industry standard client-side screenshot library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-       
+        /* --- DESIGN CORE SYSTEM --- */
         :root {
-            --bg-gradient: radial-gradient(circle, #eceff1 0%, #cfd8dc 100%);
-            --sidebar-bg: #ffffff;
-            --sidebar-text: #263238;
-            --input-bg: #f0f4f5;
-            --input-border: #b0bec5;
-            --input-text: #263238;
-            --primary-light: #2e7d32;
-            --primary-hover: #1b5e20;
-            --divider-color: #cfd8dc;
-            --pitch-shadow: rgba(38,50,56,0.2);
-            --pane-bg: rgba(255, 255, 255, 0.9);
-            --item-hover: #e0f2f1;
+            --bg-gradient: radial-gradient(circle at center, #eceff1 0%, #cfd8dc 100%);
+            --sidebar-bg: rgba(255, 255, 255, 0.85);
+            --sidebar-text: #1e293b;
+            --input-bg: #f8fafc;
+            --input-border: #cbd5e1;
+            --input-text: #0f172a;
+            --primary-light: #16a34a;
+            --primary-hover: #15803d;
+            --divider-color: #e2e8f0;
+            --pitch-shadow: rgba(15, 23, 42, 0.15);
+            --pane-bg: rgba(255, 255, 255, 0.85);
+            --item-hover: #f0fdf4;
+            --glass-blur: blur(12px);
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
         }
 
         [data-theme="dark"] {
-            --bg-gradient: radial-gradient(circle, #222 0%, #111 100%);
-            --sidebar-bg: #1e1e24;
-            --sidebar-text: #f5f5f7;
-            --input-bg: #2a2a32;
-            --input-border: #444;
-            --input-text: #fff;
-            --primary-light: #4caf50;
-            --primary-hover: #1b5e20;
-            --divider-color: #3a3a45;
-            --pitch-shadow: rgba(0,0,0,0.5);
-            --pane-bg: rgba(30, 30, 36, 0.9);
-            --item-hover: #3a3a45;
+            --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            --sidebar-bg: rgba(30, 41, 59, 0.85);
+            --sidebar-text: #f8fafc;
+            --input-bg: #1e293b;
+            --input-border: #334155;
+            --input-text: #f8fafc;
+            --primary-light: #22c55e;
+            --primary-hover: #16a34a;
+            --divider-color: #334155;
+            --pitch-shadow: rgba(0, 0, 0, 0.6);
+            --pane-bg: rgba(30, 41, 59, 0.85);
+            --item-hover: #1e293b;
+            --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
         }
 
         [data-theme="cyberpunk"] {
             --bg-gradient: linear-gradient(135deg, #0d081b 0%, #1b0d33 100%);
-            --sidebar-bg: #05030a;
+            --sidebar-bg: rgba(5, 3, 10, 0.85);
             --sidebar-text: #00ffcc;
             --input-bg: #120a24;
             --input-border: #ff007f;
@@ -46,14 +51,15 @@
             --primary-light: #ff007f;
             --primary-hover: #b30059;
             --divider-color: #ff007f;
-            --pitch-shadow: rgba(255, 0, 127, 0.4);
+            --pitch-shadow: rgba(255, 0, 127, 0.3);
             --pane-bg: rgba(5, 3, 10, 0.85);
             --item-hover: #25123e;
+            --card-shadow: 0 0 15px rgba(255, 0, 127, 0.2);
         }
 
         [data-theme="vintage"] {
             --bg-gradient: radial-gradient(circle, #4e342e 0%, #2d1b18 100%);
-            --sidebar-bg: #3e2723;
+            --sidebar-bg: rgba(62, 39, 35, 0.9);
             --sidebar-text: #d7ccc8;
             --input-bg: #4e342e;
             --input-border: #8d6e63;
@@ -61,16 +67,17 @@
             --primary-light: #8d6e63;
             --primary-hover: #5d4037;
             --divider-color: #5d4037;
-            --pitch-shadow: rgba(0,0,0,0.7);
+            --pitch-shadow: rgba(0,0,0,0.6);
             --pane-bg: rgba(62, 39, 35, 0.9);
             --item-hover: #5d4037;
+            --card-shadow: 0 15px 30px rgba(0,0,0,0.5);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -80,35 +87,79 @@
             width: 100vw;
             display: flex;
             overflow: hidden;
+            color: var(--sidebar-text);
         }
 
-        /* Sidebar Styling (Master Pool Only) */
+        /* --- MOBILE NAVIGATION TABS --- */
+        .mobile-tabs {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100vw;
+            height: 60px;
+            background: var(--sidebar-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-top: 1px solid var(--divider-color);
+            z-index: 100;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            color: var(--sidebar-text);
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0.5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            width: 50%;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .tab-button.active {
+            opacity: 1;
+            color: var(--primary-light);
+        }
+
+        /* --- SIDEBAR --- */
         .sidebar {
-            width: 260px;
-            min-width: 260px;
+            width: 280px;
+            min-width: 280px;
             background-color: var(--sidebar-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             color: var(--sidebar-text);
             display: flex;
             flex-direction: column;
-            border-right: 2px solid var(--divider-color);
+            border-right: 1px solid var(--divider-color);
             height: 100%;
-            padding: 15px;
-            gap: 12px;
+            padding: 20px;
+            gap: 16px;
             z-index: 20;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         h2 {
-            font-size: 1.2rem;
-            font-weight: 600;
+            font-size: 1.25rem;
+            font-weight: 700;
             letter-spacing: -0.5px;
         }
 
         label {
             font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.05em;
             opacity: 0.8;
-            font-weight: bold;
+            font-weight: 700;
+            margin-bottom: 2px;
         }
 
         textarea {
@@ -116,19 +167,23 @@
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
             color: var(--input-text);
-            padding: 8px;
-            border-radius: 6px;
+            padding: 10px;
+            border-radius: 8px;
             resize: none;
             font-family: inherit;
             font-size: 0.9rem;
+            line-height: 1.4;
+            transition: all 0.2s;
+        }
+
+        textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
         }
 
         .main-roster {
             flex-grow: 1;
-        }
-
-        textarea:focus, select:focus {
-            outline: 2px solid var(--primary-light);
         }
 
         .form-group {
@@ -140,26 +195,24 @@
         .color-row {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            width: 100%;
         }
 
         input[type="color"] {
             -webkit-appearance: none;
             border: none;
-            width: 32px;
-            height: 30px;
-            border-radius: 6px;
+            width: 36px;
+            height: 34px;
+            border-radius: 8px;
             cursor: pointer;
             background: none;
         }
 
-        input[type="color"]::-webkit-color-swatch-wrapper {
-            padding: 0;
-        }
-
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
         input[type="color"]::-webkit-color-swatch {
             border: 1px solid var(--input-border);
-            border-radius: 6px;
+            border-radius: 8px;
         }
 
         select {
@@ -167,9 +220,10 @@
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
             color: var(--input-text);
-            padding: 6px 8px;
-            border-radius: 6px;
+            padding: 8px 12px;
+            border-radius: 8px;
             font-size: 0.85rem;
+            font-weight: 500;
             cursor: pointer;
         }
 
@@ -177,115 +231,113 @@
             background-color: var(--primary-light);
             color: white;
             border: none;
-            padding: 10px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            border-radius: 6px;
+            padding: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 8px;
             cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            transition: all 0.2s;
         }
 
         .btn-primary:hover {
             background-color: var(--primary-hover);
-        }
-
-        .hint {
-            font-size: 0.7rem;
-            opacity: 0.6;
-            line-height: 1.3;
-            text-align: center;
+            transform: translateY(-1px);
         }
 
         .divider {
             height: 1px;
             background-color: var(--divider-color);
-            margin: 5px 0;
+            margin: 4px 0;
         }
 
-        /* --- THREE COLUMN LAYOUT ENVIRONMENT --- */
+        /* --- WORKING SCREEN VIEW --- */
         .main-content {
             flex-grow: 1;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 20px;
-            gap: 20px;
+            padding: 24px;
+            gap: 24px;
+            overflow-y: auto;
         }
 
-        /* Side Control Panes */
         .team-pane {
-            width: 240px;
+            width: 250px;
             height: 100%;
             max-height: 780px;
             background-color: var(--pane-bg);
-            color: var(--sidebar-text);
-            border: 1px solid var(--input-border);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--divider-color);
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
         }
 
-        /* Interactive Dynamic Lists */
+        .team-pane label {
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
         .player-list-container {
             flex-grow: 1;
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
-            border-radius: 6px;
+            border-radius: 8px;
             overflow-y: auto;
-            padding: 5px;
+            padding: 6px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
 
         .list-player-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 6px 10px;
-            background-color: rgba(0,0,0,0.05);
-            border-radius: 4px;
+            padding: 8px 12px;
+            background-color: var(--sidebar-bg);
+            border: 1px solid var(--divider-color);
+            border-radius: 6px;
             color: var(--input-text);
             font-size: 0.9rem;
-            font-weight: 500;
+            font-weight: 600;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .list-player-item:hover {
             background-color: var(--item-hover);
+            border-color: var(--primary-light);
         }
 
-        /* Swap Button Activation on Hover */
         .swap-btn {
             background-color: var(--primary-light);
             color: white;
             border: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 0.85rem;
-            display: none;
+            font-size: 0.9rem;
+            display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .list-player-item:hover .swap-btn {
-            display: flex;
-        }
-
-        .swap-btn:hover {
-            background-color: var(--primary-hover);
-        }
+        .swap-btn:hover { background-color: var(--primary-hover); }
 
         .pitch-wrapper {
             flex-grow: 1;
             height: 100%;
-            max-width: 620px; 
-            max-height: 780px; 
+            max-width: 600px; 
+            max-height: 750px; 
             aspect-ratio: 4 / 5;
             position: relative;
         }
@@ -293,23 +345,50 @@
         .pitch {
             width: 100%;
             height: 100%;
-            background-color: #2e7d32;
-            border: 4px solid rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
+            background-color: #1e6b27;
+            border: 4px solid rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
             position: relative;
-            box-shadow: 0 10px 30px var(--pitch-shadow);
-            background-image: linear-gradient(to bottom, #2e7d32 50%, #276b2b 50%);
+            box-shadow: var(--pitch-shadow);
+            background-image: linear-gradient(to bottom, #1e6b27 50%, #17571f 50%);
             background-size: 100% 20%;
         }
 
-        /* Pitch Markings */
+        /* --- SAVING LINK BUTTON --- */
+        .download-pitch-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background-color: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.2s ease;
+        }
+
+        .download-pitch-btn:hover {
+            background-color: rgba(15, 23, 42, 0.85);
+            transform: scale(1.03);
+        }
+
         .halfway-line {
             position: absolute;
             top: 50%;
             left: 0;
             width: 100%;
             height: 4px;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.95);
             transform: translateY(-50%);
         }
 
@@ -319,7 +398,7 @@
             left: 50%;
             width: 25%;
             height: 20%;
-            border: 4px solid rgba(255, 255, 255, 0.8);
+            border: 4px solid rgba(255, 255, 255, 0.95);
             border-radius: 50%;
             transform: translate(-50%, -50%);
         }
@@ -330,7 +409,7 @@
             left: 20%;
             width: 60%;
             height: 16%;
-            border: 4px solid rgba(255, 255, 255, 0.8);
+            border: 4px solid rgba(255, 255, 255, 0.95);
             border-top: none;
         }
 
@@ -340,15 +419,15 @@
             left: 20%;
             width: 60%;
             height: 16%;
-            border: 4px solid rgba(255, 255, 255, 0.8);
+            border: 4px solid rgba(255, 255, 255, 0.95);
             border-bottom: none;
         }
 
-        /* --- STYLIZED JERSEY ICON --- */
+        /* --- DRAGGABLE JERSEY --- */
         .player-wrapper {
             position: absolute;
-            width: 68px;
-            height: 80px;
+            width: 48px;
+            height: 62px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -356,25 +435,26 @@
             user-select: none;
             z-index: 10;
             transform: translate(-50%, -50%);
+            touch-action: none;
         }
 
-        .player-wrapper:active {
-            z-index: 1000;
-        }
+        .player-wrapper:active { z-index: 1000; }
 
         .jersey-container {
             position: relative;
-            width: 64px;
-            height: 56px;
-            filter: drop-shadow(0px 4px 5px rgba(0,0,0,0.3));
+            width: 44px;
+            height: 38px;
+            filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.25));
+            transition: transform 0.2s;
         }
+        .player-wrapper:active .jersey-container { transform: scale(1.1); }
 
         .jersey-body {
             position: absolute;
-            left: 14px;
-            top: 4px;
-            width: 36px;
-            height: 50px;
+            left: 10px;
+            top: 3px;
+            width: 24px;
+            height: 34px;
             border-radius: 3px 3px 0 0;
             overflow: hidden;
         }
@@ -384,7 +464,7 @@
             position: absolute;
             left: 0;
             top: 0;
-            width: 4px;
+            width: 3px;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.12);
         }
@@ -393,7 +473,7 @@
             position: absolute;
             right: 0;
             top: 0;
-            width: 4px;
+            width: 3px;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.12);
         }
@@ -401,80 +481,203 @@
         .jersey-collar {
             position: absolute;
             top: 0px;
-            left: 24px;
-            width: 16px;
-            height: 9px;
-            border-radius: 0 0 8px 8px;
+            left: 17px;
+            width: 10px;
+            height: 6px;
+            border-radius: 0 0 6px 6px;
             z-index: 4;
             display: flex;
             justify-content: center;
         }
         .jersey-collar::before {
             content: '';
-            width: 10px;
-            height: 5px;
+            width: 6px;
+            height: 3px;
             background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 0 0 5px 5px;
+            border-radius: 0 0 3px 3px;
         }
 
         .sleeve-left {
             position: absolute;
-            top: 4px;
+            top: 3px;
             left: 1px;
-            width: 18px;
-            height: 20px;
-            border-radius: 4px 2px 0 2px;
+            width: 12px;
+            height: 14px;
+            border-radius: 3px 1px 0 1px;
             transform: rotate(-32deg);
             transform-origin: top right;
         }
 
         .sleeve-right {
             position: absolute;
-            top: 4px;
+            top: 3px;
             right: 1px;
-            width: 18px;
-            height: 20px;
-            border-radius: 2px 4px 2px 0;
+            width: 12px;
+            height: 14px;
+            border-radius: 1px 3px 1px 0;
             transform: rotate(32deg);
             transform-origin: top left;
         }
 
         .jersey-badge {
             position: absolute;
-            top: 14px;
-            left: 36px;
-            width: 8px;
-            height: 10px;
+            top: 9px;
+            left: 25px;
+            width: 5px;
+            height: 6px;
             background-color: #fff;
-            border: 1px solid rgba(0,0,0,0.2);
-            border-radius: 0 0 4px 4px;
+            border: 1px solid rgba(0,0,0,0.15);
+            border-radius: 0 0 2px 2px;
             z-index: 3;
-            box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
         .player-name {
-            background-color: rgba(0, 0, 0, 0.85);
-            color: #fff;
-            font-size: 10px;
-            font-weight: bold;
+            background-color: #d1fae5;
+            color: #4b5563;
+            font-size: 9px;
+            font-weight: 700;
             padding: 2px 6px;
-            border-radius: 4px;
-            margin-top: 4px;
+            border-radius: 5px;
+            margin-top: 3px;
             white-space: nowrap;
-            max-width: 82px;
+            max-width: 68px;
             overflow: hidden;
             text-overflow: ellipsis;
-            border: 1px solid rgba(255,255,255,0.15);
-            text-shadow: 1px 1px 0px #000;
+            border: 1px solid #a7f3d0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        /* --- POP-UP MODAL WINDOW --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-card {
+            background-color: var(--sidebar-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--divider-color);
+            width: 90%;
+            max-width: 380px;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transform: translateY(20px);
+            transition: transform 0.2s ease;
+        }
+        .modal-overlay.active .modal-card { transform: translateY(0); }
+        .modal-list {
+            max-height: 200px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .modal-item {
+            padding: 10px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--input-text);
+            text-align: center;
+        }
+        .modal-item:hover {
+            background-color: var(--item-hover);
+            border-color: var(--primary-light);
+        }
+        .modal-cancel {
+            background-color: transparent;
+            border: 1px solid var(--input-border);
+            color: var(--sidebar-text);
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 1024px) {
+            body { 
+                flex-direction: column; 
+                overflow-y: auto; 
+            }
+            .mobile-tabs { display: flex; }
+            .sidebar {
+                width: 100vw;
+                height: calc(100vh - 60px);
+                position: fixed;
+                top: 0;
+                left: 0;
+                transform: translateX(-100%);
+            }
+            .sidebar.active-tab { transform: translateX(0); }
+            .main-content {
+                width: 100vw;
+                height: auto;
+                min-height: calc(100vh - 60px);
+                padding: 16px;
+                padding-bottom: 80px;
+                gap: 20px;
+                flex-direction: column;
+                justify-content: flex-start;
+                position: absolute;
+                top: 0;
+                left: 0;
+                transform: translateX(100%);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .main-content.active-tab { transform: translateX(0); }
+            .team-pane { 
+                display: flex; 
+                width: 100%; 
+                max-width: 600px;
+                height: 320px; 
+            }
+            .pitch-wrapper { 
+                height: auto;
+                width: 100%; 
+                max-width: 600px;
+            }
         }
     </style>
 </head>
 <body data-theme="stadium">
 
-    <!-- Sidebar: Master Pool Control -->
-    <div class="sidebar">
+    <div class="mobile-tabs">
+        <button id="btnSetupTab" class="tab-button active" onclick="switchMobileTab('setup')">📝 Setup Pool</button>
+        <button id="btnPitchTab" class="tab-button" onclick="switchMobileTab('pitch')">⚽ Tactics Board</button>
+    </div>
+
+    <div id="replacementModal" class="modal-overlay">
+        <div class="modal-card">
+            <h3 style="font-size: 1.1rem; text-align: center;" id="modalTitle">Select Replacement</h3>
+            <div id="modalListContainer" class="modal-list"></div>
+            <button class="modal-cancel" onclick="closeModal()">Cancel Trade</button>
+        </div>
+    </div>
+
+    <div id="sidebarView" class="sidebar active-tab">
         <h2>Squad Setup</h2>
-        
         <div class="form-group">
             <label for="themeSelector">🎨 Theme</label>
             <select id="themeSelector" onchange="changeAppTheme(this.value)">
@@ -484,30 +687,24 @@
                 <option value="vintage">Vintage Leather</option>
             </select>
         </div>
-
         <div class="divider"></div>
-
         <div class="form-group" style="flex-grow: 1; display: flex; flex-direction: column;">
             <label for="playerInput">Master Player Pool</label>
             <textarea id="playerInput" class="main-roster" placeholder="Enter one name per line..."></textarea>
         </div>
-
-        <button class="btn-primary" onclick="generateTeams()">🎲 Split Teams</button>
+        <button class="btn-primary" onclick="generateTeams(); switchMobileTab('pitch')">🎲 Split Teams</button>
     </div>
 
-    <!-- On-Field Dashboard Area -->
-    <div class="main-content">
-        
-        <!-- Left Column: Home Team (Yellow) -->
+    <div id="mainContentView" class="main-content">
         <div class="team-pane">
-            <label style="color:#b59410;">🏠 Home Team</label>
+            <label style="color:#b45309;">🏠 Home Team</label>
             <div id="homePlayerList" class="player-list-container"></div>
             <div class="form-group">
                 <label>Kit / Formation</label>
                 <div class="color-row">
-                    <input type="color" id="homeColor" value="#ffeb3b" onchange="updatePitch()">
-                    <input type="color" id="homeTrimColor" value="#1b5e20" onchange="updatePitch()">
-                    <select id="homeFormation" onchange="updatePitch()">
+                    <input type="color" id="homeColor" value="#ffeb3b" onchange="updatePitch(false)">
+                    <input type="color" id="homeTrimColor" value="#16a34a" onchange="updatePitch(false)">
+                    <select id="homeFormation" onchange="updatePitch(true)">
                         <option value="auto">Auto Formation</option>
                         <option value="4-4-2">4-4-2</option>
                         <option value="4-3-3">4-3-3</option>
@@ -517,9 +714,9 @@
             </div>
         </div>
 
-        <!-- Center Column: Pitch Viewport Grid -->
         <div class="pitch-wrapper">
             <div class="pitch" id="pitch">
+                <button class="download-pitch-btn" onclick="exportPitchToImage()">📸 Save Board</button>
                 <div class="halfway-line"></div>
                 <div class="center-circle"></div>
                 <div class="penalty-box-top"></div>
@@ -527,16 +724,15 @@
             </div>
         </div>
 
-        <!-- Right Column: Away Team (Blue) -->
         <div class="team-pane">
-            <label style="color:#1e88e5;">✈️ Away Team</label>
+            <label style="color:#2563eb;">✈️ Away Team</label>
             <div id="awayPlayerList" class="player-list-container"></div>
             <div class="form-group">
                 <label>Kit / Formation</label>
                 <div class="color-row">
-                    <input type="color" id="awayColor" value="#1e88e5" onchange="updatePitch()">
-                    <input type="color" id="awayTrimColor" value="#ffffff" onchange="updatePitch()">
-                    <select id="awayFormation" onchange="updatePitch()">
+                    <input type="color" id="awayColor" value="#2563eb" onchange="updatePitch(false)">
+                    <input type="color" id="awayTrimColor" value="#ffffff" onchange="updatePitch(false)">
+                    <select id="awayFormation" onchange="updatePitch(true)">
                         <option value="auto">Auto Formation</option>
                         <option value="4-4-2">4-4-2</option>
                         <option value="4-3-3" selected>4-3-3</option>
@@ -545,7 +741,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <script>
@@ -558,12 +753,32 @@
             '3-5-2': { gk: {y: 7}, rows: [{ y: 18, count: 3 }, { y: 34, count: 5 }, { y: 46, count: 2 }] }
         };
 
-        // State arrays to keep track of players currently in teams
         let currentHomeSquad = [];
         let currentAwaySquad = [];
+        let customPositions = {}; 
+        let pendingSwapTarget = null;
 
         function changeAppTheme(themeName) {
             document.body.setAttribute('data-theme', themeName);
+        }
+
+        function switchMobileTab(tab) {
+            const sidebar = document.getElementById('sidebarView');
+            const content = document.getElementById('mainContentView');
+            const btnSetup = document.getElementById('btnSetupTab');
+            const btnPitch = document.getElementById('btnPitchTab');
+
+            if (tab === 'setup') {
+                sidebar.classList.add('active-tab');
+                content.classList.remove('active-tab');
+                btnSetup.classList.add('active-tab');
+                btnPitch.classList.remove('active-tab');
+            } else {
+                sidebar.classList.remove('active-tab');
+                content.classList.add('active-tab');
+                btnSetup.classList.remove('active-tab');
+                btnPitch.classList.add('active-tab');
+            }
         }
 
         function cleanPlayerNames(rawText) {
@@ -599,7 +814,6 @@
             return layout;
         }
 
-        // Action: Randomly splits pool into state arrays
         function generateTeams() {
             const rawInput = document.getElementById('playerInput').value;
             const players = cleanPlayerNames(rawInput);
@@ -617,25 +831,63 @@
             const half = Math.ceil(players.length / 2);
             currentHomeSquad = players.slice(0, half);
             currentAwaySquad = players.slice(half);
+            
+            customPositions = {}; 
 
             renderTeamLists();
-            updatePitch();
+            updatePitch(true);
         }
 
-        // Moves a single player from one side to another
-        function swapTeam(playerName, currentTeam) {
-            if (currentTeam === 'home') {
-                currentHomeSquad = currentHomeSquad.filter(p => p !== playerName);
-                currentAwaySquad.push(playerName);
+        function initiateSwap(playerName, currentTeam) {
+            pendingSwapTarget = { name: playerName, team: currentTeam };
+            const modal = document.getElementById('replacementModal');
+            const listContainer = document.getElementById('modalListContainer');
+            const title = document.getElementById('modalTitle');
+            
+            title.innerText = `Replace ${playerName} with:`;
+            listContainer.innerHTML = '';
+
+            const oppositions = currentTeam === 'home' ? currentAwaySquad : currentHomeSquad;
+
+            oppositions.forEach(oppPlayer => {
+                const item = document.createElement('div');
+                item.className = 'modal-item';
+                item.innerText = oppPlayer;
+                item.onclick = () => executeSwapTrade(oppPlayer);
+                listContainer.appendChild(item);
+            });
+
+            modal.classList.add('active');
+        }
+
+        function executeSwapTrade(chosenReplacement) {
+            const playerA = pendingSwapTarget.name;
+            const playerB = chosenReplacement;
+
+            if (pendingSwapTarget.team === 'home') {
+                currentHomeSquad = currentHomeSquad.map(p => p === playerA ? playerB : p);
+                currentAwaySquad = currentAwaySquad.map(p => p === playerB ? playerA : p);
             } else {
-                currentAwaySquad = currentAwaySquad.filter(p => p !== playerName);
-                currentHomeSquad.push(playerName);
+                currentAwaySquad = currentAwaySquad.map(p => p === playerA ? playerB : p);
+                currentHomeSquad = currentHomeSquad.map(p => p === playerB ? playerA : p);
             }
+
+            if (customPositions[playerA] && customPositions[playerB]) {
+                const tempPos = { ...customPositions[playerA] };
+                customPositions[playerA] = { ...customPositions[playerB] };
+                customPositions[playerB] = tempPos;
+            }
+
+            closeModal();
             renderTeamLists();
-            updatePitch();
+            updatePitch(false);
         }
 
-        // Renders HTML lists with hover controls
+        function closeModal() {
+            document.getElementById('replacementModal').classList.remove('active');
+            pendingSwapTarget = null;
+        }
+
         function renderTeamLists() {
             const homeContainer = document.getElementById('homePlayerList');
             const awayContainer = document.getElementById('awayPlayerList');
@@ -662,16 +914,14 @@
             const btn = document.createElement('button');
             btn.className = 'swap-btn';
             btn.innerHTML = '⇄';
-            btn.title = `Move to ${team === 'home' ? 'Away' : 'Home'} team`;
-            btn.onclick = () => swapTeam(name, team);
+            btn.onclick = () => initiateSwap(name, team);
 
             item.appendChild(nameSpan);
             item.appendChild(btn);
             return item;
         }
 
-        // Re-projects components onto the map
-        function updatePitch() {
+        function updatePitch(resetFormations = false) {
             document.querySelectorAll('.player-wrapper').forEach(el => el.remove());
 
             const homeFormSelection = document.getElementById('homeFormation').value;
@@ -690,17 +940,15 @@
                 ? calculateAdaptiveLayout(currentAwaySquad.length) 
                 : standardFormations[awayFormSelection];
 
-            renderSquadOnPitch(currentHomeSquad, true, homeColor, homeTrim, homeLayout);
-            renderSquadOnPitch(currentAwaySquad, false, awayColor, awayTrim, awayLayout);
+            renderSquadOnPitch(currentHomeSquad, true, homeColor, homeTrim, homeLayout, resetFormations);
+            renderSquadOnPitch(currentAwaySquad, false, awayColor, awayTrim, awayLayout, resetFormations);
         }
 
-        function renderSquadOnPitch(squad, isTopHalf, teamColor, trimColor, formationLayout) {
+        function renderSquadOnPitch(squad, isTopHalf, teamColor, trimColor, formationLayout, resetFormations) {
             const pitch = document.getElementById('pitch');
             let coords = [];
 
-            if (formationLayout.gk) {
-                coords.push({ x: 50, y: formationLayout.gk.y });
-            }
+            if (formationLayout.gk) coords.push({ x: 50, y: formationLayout.gk.y });
 
             formationLayout.rows.forEach(row => {
                 for (let i = 0; i < row.count; i++) {
@@ -711,18 +959,26 @@
 
             squad.forEach((name, index) => {
                 let x, y;
-                if (index < coords.length) {
-                    x = coords[index].x;
-                    y = coords[index].y;
+                
+                if (customPositions[name] && !resetFormations) {
+                    x = customPositions[name].x;
+                    y = customPositions[name].y;
                 } else {
-                    x = 20 + Math.random() * 60;
-                    y = 25 + Math.random() * 20;
+                    if (index < coords.length) {
+                        x = coords[index].x;
+                        y = coords[index].y;
+                    } else {
+                        x = 20 + Math.random() * 60;
+                        y = 25 + Math.random() * 20;
+                    }
+                    if (!isTopHalf) y = 100 - y;
+                    
+                    customPositions[name] = { x: x, y: y };
                 }
-
-                if (!isTopHalf) y = 100 - y;
 
                 const wrapper = document.createElement('div');
                 wrapper.className = `player-wrapper`;
+                wrapper.setAttribute('data-name', name);
                 wrapper.style.left = `${x}%`;
                 wrapper.style.top = `${y}%`;
 
@@ -763,22 +1019,26 @@
                 wrapper.appendChild(jerseyContainer);
                 wrapper.appendChild(label);
 
-                enableDrag(wrapper);
+                enableDrag(wrapper, name);
                 pitch.appendChild(wrapper);
             });
         }
 
-        function enableDrag(el) {
+        function enableDrag(el, playerName) {
             let startX = 0, startY = 0;
+            
             el.addEventListener('mousedown', dragStart);
             el.addEventListener('touchstart', dragStart, { passive: false });
 
             function dragStart(e) {
-                e.preventDefault();
+                if (e.type === 'touchstart') e.preventDefault();
+                
                 const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
                 const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+                
                 startX = clientX - el.offsetLeft;
                 startY = clientY - el.offsetTop;
+
                 document.addEventListener('mousemove', dragging);
                 document.addEventListener('touchmove', dragging, { passive: false });
                 document.addEventListener('mouseup', dragEnd);
@@ -788,8 +1048,10 @@
             function dragging(e) {
                 const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
                 const clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
+                
                 let newLeft = clientX - startX;
                 let newTop = clientY - startY;
+
                 const pitch = document.getElementById('pitch');
                 
                 if (newLeft < 0) newLeft = 0;
@@ -797,8 +1059,13 @@
                 if (newTop < 0) newTop = 0;
                 if (newTop > pitch.clientHeight) newTop = pitch.clientHeight;
 
-                el.style.left = `${(newLeft / pitch.clientWidth) * 100}%`;
-                el.style.top = `${(newTop / pitch.clientHeight) * 100}%`;
+                let pctLeft = (newLeft / pitch.clientWidth) * 100;
+                let pctTop = (newTop / pitch.clientHeight) * 100;
+
+                el.style.left = `${pctLeft}%`;
+                el.style.top = `${pctTop}%`;
+
+                customPositions[playerName] = { x: pctLeft, y: pctTop };
             }
 
             function dragEnd() {
@@ -807,6 +1074,60 @@
                 document.removeEventListener('mouseup', dragEnd);
                 document.removeEventListener('touchend', dragEnd);
             }
+        }
+
+        /* --- OVERHAULED POSITION-SAFE SNAPSHOT ENGINE --- */
+        function exportPitchToImage() {
+            const pitchElement = document.getElementById('pitch');
+            const saveBtn = pitchElement.querySelector('.download-pitch-btn');
+            
+            // Hide screenshot button from capture file
+            if (saveBtn) saveBtn.style.visibility = 'hidden';
+
+            // Exact base desktop measurements to resolve aspect configuration ratio bounds
+            const desktopWidth = pitchElement.clientWidth;
+            const desktopHeight = pitchElement.clientHeight;
+
+            html2canvas(pitchElement, {
+                width: desktopWidth,
+                height: desktopHeight,
+                scale: 2, // High resolution pixel matrix super-sampling
+                logging: false,
+                useCORS: true,
+                backgroundColor: null,
+                onclone: (clonedDoc) => {
+                    const clonedPitch = clonedDoc.getElementById('pitch');
+                    
+                    // Reset CSS styles to prevent responsive shrinking artifacts on mobile devices
+                    clonedPitch.style.width = `${desktopWidth}px`;
+                    clonedPitch.style.height = `${desktopHeight}px`;
+                    clonedPitch.style.transform = 'none';
+                    clonedPitch.style.position = 'relative';
+
+                    // Maintain exact token scales to prevent layout overlapping bugs
+                    const players = clonedPitch.querySelectorAll('.player-wrapper');
+                    players.forEach(p => {
+                        const name = p.getAttribute('data-name');
+                        if (customPositions[name]) {
+                            // Enforce exact positions without expanding outer bounds
+                            p.style.left = `${(customPositions[name].x / 100) * desktopWidth}px`;
+                            p.style.top = `${(customPositions[name].y / 100) * desktopHeight}px`;
+                            p.style.transform = 'translate(-50%, -50%)'; // Removed token scale boost to completely fix overlap
+                        }
+                    });
+                }
+            }).then(canvas => {
+                if (saveBtn) saveBtn.style.visibility = 'visible';
+
+                // Save out PNG capture bundle attachment hook
+                const link = document.createElement('a');
+                link.download = 'football_tactics_board.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(err => {
+                if (saveBtn) saveBtn.style.visibility = 'visible';
+                alert("Error rendering image on this device.");
+            });
         }
 
         window.onload = generateTeams;
