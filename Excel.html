@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel & Image Extractor Pro</title>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
+    <style>
+        :root {
+            --bg-main: #f8fafc;
+            --surface: #ffffff;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: #e0e7ff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --danger: #ef4444;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* Side Menu Layout */
+        .sidebar {
+            width: 320px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 40px;
+            box-sizing: border-box;
+            overflow-x: auto;
+            background-color: var(--bg-main);
+        }
+
+        .header h2 {
+            margin: 0 0 8px 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* File Uploader in Sidebar */
+        .dropzone-wrapper {
+            position: relative;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-md);
+            background: #fbfcfe;
+            transition: var(--transition);
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .dropzone-wrapper:hover, .dropzone-wrapper.dragover {
+            border-color: var(--primary);
+            background: #f5f3ff;
+        }
+
+        .dropzone-inner {
+            padding: 20px 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .dropzone-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .dropzone-text {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-main);
+            word-break: break-all;
+        }
+
+        .dropzone-wrapper input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Controls Section */
+        .controls-panel {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .panel-header-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        /* Select All Feature Styling */
+        .select-all-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .select-all-label input[type="checkbox"] {
+            accent-color: var(--primary);
+            width: 14px;
+            height: 14px;
+            margin: 0;
+        }
+
+        /* Checklist Grid */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+
+        .checkbox-label:hover {
+            border-color: #cbd5e1;
+            background: #f1f5f9;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            accent-color: var(--primary);
+            margin: 0;
+            width: 16px;
+            height: 16px;
+        }
+
+        .action-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .action-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Data Presentation Table Grid */
+        .output-container {
+            display: none;
+            flex-direction: column;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .table-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+
+        .copy-all-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .copy-all-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            text-align: left;
+            background-color: var(--surface);
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: var(--text-main);
+            font-weight: 600;
+            padding: 12px 16px;
+            border-bottom: 2px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .th-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-main);
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        /* Tiny Copy Buttons Inside Headers */
+        .copy-col-btn {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .copy-col-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .copy-col-btn.copied, .copy-all-btn.copied {
+            background-color: var(--success);
+            color: white;
+        }
+
+        /* Image OCR Output Styling */
+        .ocr-textarea {
+            width: 100%;
+            height: 300px;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            resize: vertical;
+            box-sizing: border-box;
+            background-color: #fafbfc;
+        }
+
+        /* Utility Styles */
+        .spinner {
+            display: none;
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--primary-light);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 40px auto;
+        }
+
+        #ocrProgressDisplay {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-top: -30px;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error {
+            color: var(--danger);
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 12px;
+            background: #fef2f2;
+            border-radius: 8px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+            .main-content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="header">
+        <h2>Excel & Image Extractor Pro</h2>
+        <p>Isolate and process targeted spreadsheet columns cleanly</p>
+    </div>
+    
+    <div class="dropzone-wrapper" id="dropzone">
+        <input type="file" id="excelFile" accept=".xlsx, .xls, .ods" />
+        <div class="dropzone-inner">
+            <div class="dropzone-icon">📂</div>
+            <div class="dropzone-text" id="fileNameDisplay">Drop Excel file here or browse</div>
+        </div>
+    </div>
+
+    <div class="dropzone-wrapper" id="imageDropzone">
+        <input type="file" id="imageFile" accept="image/*" />
+        <div class="dropzone-inner">
+            <div class="dropzone-icon">📷</div>
+            <div class="dropzone-text" id="imageNameDisplay">Drop image or paste screenshot here</div>
+        </div>
+    </div>
+
+    <div id="errorMessage" class="error"></div>
+
+    <div class="controls-panel" id="controlsPanel">
+        <div class="panel-header-box">
+            <div class="panel-title">Columns Detected:</div>
+            <label class="select-all-label" id="selectAllLabel">
+                <input type="checkbox" id="toggleAllCheckbox" />
+                <span>Select All</span>
+            </label>
+        </div>
+        
+        <button class="action-btn" id="loadDataBtn">Load Selected Fields</button>
+        
+        <div class="checkbox-group" id="checkboxContainer"></div>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="spinner" id="loadingSpinner"></div>
+    <div id="ocrProgressDisplay">Processing Image OCR: 0%</div>
+
+    <div class="output-container" id="outputContainer">
+        <div class="table-actions">
+            <button class="copy-all-btn" id="copyAllBtn">Copy All Selected Columns</button>
+        </div>
+        <div class="table-wrapper">
+            <table id="dataTable">
+                <thead id="tableHead"></thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="output-container" id="imageOutputContainer">
+        <div class="table-actions">
+            <button class="copy-all-btn" id="copyOcrTextBtn">Copy Extracted Text</button>
+        </div>
+        <textarea class="ocr-textarea" id="ocrTextArea" readonly placeholder="Extracted image text will display here..."></textarea>
+    </div>
+</div>
+
+<script>
+    const fileInput = document.getElementById('excelFile');
+    const dropzone = document.getElementById('dropzone');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    const controlsPanel = document.getElementById('controlsPanel');
+    const checkboxContainer = document.getElementById('checkboxContainer');
+    const toggleAllCheckbox = document.getElementById('toggleAllCheckbox');
+    const selectAllLabelText = document.querySelector('#selectAllLabel span');
+    const loadDataBtn = document.getElementById('loadDataBtn');
+    const outputContainer = document.getElementById('outputContainer');
+    const tableHead = document.getElementById('tableHead');
+    const tableBody = document.getElementById('tableBody');
+    const spinner = document.getElementById('loadingSpinner');
+    const errorDiv = document.getElementById('errorMessage');
+    const copyAllBtn = document.getElementById('copyAllBtn');
+
+    // Added elements for Image Extraction
+    const imageFileInput = document.getElementById('imageFile');
+    const imageDropzone = document.getElementById('imageDropzone');
+    const imageNameDisplay = document.getElementById('imageNameDisplay');
+    const imageOutputContainer = document.getElementById('imageOutputContainer');
+    const ocrTextArea = document.getElementById('ocrTextArea');
+    const copyOcrTextBtn = document.getElementById('copyOcrTextBtn');
+    const ocrProgressDisplay = document.getElementById('ocrProgressDisplay');
+
+    let parsedSheetData = []; 
+    let orderedColumnsList = []; 
+
+    // Setup drag and drop visual listeners for Excel
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, () => dropzone.classList.add('dragover'), false);
+    });
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, () => dropzone.classList.remove('dragover'), false);
+    });
+
+    // Setup drag and drop visual listeners for Image Dropzone
+    ['dragenter', 'dragover'].forEach(eventName => {
+        imageDropzone.addEventListener(eventName, () => imageDropzone.classList.add('dragover'), false);
+    });
+    ['dragleave', 'drop'].forEach(eventName => {
+        imageDropzone.addEventListener(eventName, () => imageDropzone.classList.remove('dragover'), false);
+    });
+
+    // Helper to Reset all layouts universally
+    function resetUILayouts() {
+        errorDiv.textContent = '';
+        errorDiv.style.display = 'none';
+        controlsPanel.style.display = 'none';
+        outputContainer.style.display = 'none';
+        imageOutputContainer.style.display = 'none';
+        ocrProgressDisplay.style.display = 'none';
+        spinner.style.display = 'none';
+    }
+
+    // core Image File Processing logic decoupled for multi-input invocation (file change & paste)
+    function processImageFile(file) {
+        // Reset Excel inputs/states cleanly
+        fileInput.value = '';
+        fileNameDisplay.textContent = "Drop Excel file here or browse";
+        resetUILayouts();
+        ocrTextArea.value = '';
+
+        if (!file) {
+            imageNameDisplay.textContent = "Drop image or paste screenshot here";
+            return;
+        }
+
+        imageNameDisplay.textContent = file.name || "Pasted Screenshot.png";
+        spinner.style.display = 'block';
+        ocrProgressDisplay.style.display = 'block';
+        ocrProgressDisplay.textContent = "Initializing OCR Engine...";
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = function() {
+            // Invoke Tesseract OCR Worker
+            Tesseract.recognize(
+                reader.result,
+                'eng',
+                {
+                    logger: m => {
+                        if (m.status === 'recognizing') {
+                            ocrProgressDisplay.textContent = `Processing Image OCR: ${Math.round(m.progress * 100)}%`;
+                        }
+                    }
+                }
+            ).then(({ data: { text } }) => {
+                spinner.style.display = 'none';
+                ocrProgressDisplay.style.display = 'none';
+                
+                if (!text || text.trim() === '') {
+                    ocrTextArea.value = "OCR execution completed, but no legible text characters were found.";
+                } else {
+                    ocrTextArea.value = text.trim();
+                }
+                imageOutputContainer.style.display = 'flex';
+            }).catch(error => {
+                spinner.style.display = 'none';
+                ocrProgressDisplay.style.display = 'none';
+                errorDiv.textContent = "OCR Pipeline Processing Error: Failed to scan image.";
+                errorDiv.style.display = 'block';
+                console.error(error);
+            });
+        };
+    }
+
+    // Global Paste Event Listener implementation for targeting clipboard screenshots
+    window.addEventListener('paste', function(e) {
+        const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+        
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf('image') !== -1) {
+                const blob = items[i].getAsFile();
+                // Clear file input value to make sure UI is in sync
+                imageFileInput.value = '';
+                processImageFile(blob);
+                break;
+            }
+        }
+    });
+
+    // Excel Processing Pipeline
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        
+        parsedSheetData = [];
+        orderedColumnsList = [];
+        checkboxContainer.innerHTML = '';
+        tableHead.innerHTML = '';
+        tableBody.innerHTML = '';
+        toggleAllCheckbox.checked = false;
+        selectAllLabelText.textContent = "Select All";
+        imageFileInput.value = '';
+        imageNameDisplay.textContent = "Drop image or paste screenshot here";
+        resetUILayouts();
+
+        if (!file) {
+            fileNameDisplay.textContent = "Drop Excel file here or browse";
+            return;
+        }
+
+        fileNameDisplay.textContent = file.name;
+        spinner.style.display = 'block';
+
+        const reader = new FileReader();
+        reader.readAsArrayBuffer(file);
+
+        reader.onload = function(e) {
+            try {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                
+                parsedSheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                
+                if (parsedSheetData.length === 0) {
+                    throw new Error("The selected document structure contains no operational rows.");
+                }
+
+                const headers = parsedSheetData[0];
+                if (!headers || headers.length === 0) {
+                    throw new Error("No usable header configuration was captured in row 1.");
+                }
+
+                orderedColumnsList = headers.map((header, index) => {
+                    const name = (header !== undefined && header !== null) ? header.toString().trim() : `Column ${index + 1}`;
+                    return { originalIndex: index, name: name };
+                });
+
+                orderedColumnsList.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+
+                orderedColumnsList.forEach((col) => {
+                    const label = document.createElement('label');
+                    label.className = 'checkbox-label';
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.name = 'excelHeader';
+                    checkbox.value = col.originalIndex;
+                    checkbox.checked = false; 
+
+                    label.appendChild(checkbox);
+                    label.appendChild(document.createTextNode(col.name));
+                    checkboxContainer.appendChild(label);
+                });
+
+                spinner.style.display = 'none';
+                controlsPanel.style.display = 'flex';
+
+            } catch (error) {
+                spinner.style.display = 'none';
+                errorDiv.textContent = error.message || "Error parsing document structure.";
+                errorDiv.style.display = 'block';
+            }
+        };
+    });
+
+    // Master Toggle Checklist Listener
+    toggleAllCheckbox.addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('input[name="excelHeader"]');
+        checkboxes.forEach(cb => cb.checked = toggleAllCheckbox.checked);
+        selectAllLabelText.textContent = toggleAllCheckbox.checked ? "Unselect All" : "Select All";
+    });
+
+    // Assemble dynamic multi-column preview dataset table
+    loadDataBtn.addEventListener('click', function() {
+        const checkedBoxes = document.querySelectorAll('input[name="excelHeader"]:checked');
+        if (checkedBoxes.length === 0 || parsedSheetData.length === 0) return;
+
+        tableHead.innerHTML = '';
+        tableBody.innerHTML = '';
+
+        const targetedColumns = Array.from(checkedBoxes).map(cb => {
+            const origIdx = parseInt(cb.value, 10);
+            const foundObj = orderedColumnsList.find(c => c.originalIndex === origIdx);
+            return {
+                index: origIdx,
+                name: foundObj ? foundObj.name : `Column ${origIdx + 1}`
+            };
+        });
+
+        const trHead = document.createElement('tr');
+        targetedColumns.forEach(col => {
+            const th = document.createElement('th');
+            const innerWrapper = document.createElement('div');
+            innerWrapper.className = 'th-content';
+            
+            const titleSpan = document.createElement('span');
+            titleSpan.textContent = col.name;
+
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-col-btn';
+            copyBtn.textContent = 'Copy';
+            copyBtn.onclick = () => copyColumnToClipboard(col.index, copyBtn);
+
+            innerWrapper.appendChild(titleSpan);
+            innerWrapper.appendChild(copyBtn);
+            th.appendChild(innerWrapper);
+            trHead.appendChild(th);
+        });
+        tableHead.appendChild(trHead);
+
+        const totalRows = parsedSheetData.length;
+        for (let r = 1; r < totalRows; r++) {
+            const rowData = parsedSheetData[r];
+            if (!rowData || rowData.length === 0) continue;
+
+            const standardRowValidity = targetedColumns.some(col => rowData[col.index] !== undefined && rowData[col.index] !== null && rowData[col.index].toString().trim() !== '');
+            if (!standardRowValidity) continue;
+
+            const trRow = document.createElement('tr');
+            targetedColumns.forEach(col => {
+                const td = document.createElement('td');
+                const value = rowData[col.index];
+                td.textContent = (value !== undefined && value !== null) ? value.toString().trim() : '';
+                trRow.appendChild(td);
+            });
+            tableBody.appendChild(trRow);
+        }
+
+        outputContainer.style.display = 'flex';
+    });
+
+    // Strategy implementation for single text column selection arrays
+    function copyColumnToClipboard(colIndex, buttonElement) {
+        const lines = [];
+        for (let i = 1; i < parsedSheetData.length; i++) {
+            const row = parsedSheetData[i];
+            if (row && row[colIndex] !== undefined && row[colIndex] !== null) {
+                const strVal = row[colIndex].toString().trim();
+                if(strVal) lines.push(strVal);
+            }
+        }
+        executeClipboardWrite(lines.join('\n'), buttonElement);
+    }
+
+    // Tab-separated multi-column master data table parsing macro
+    copyAllBtn.addEventListener('click', function() {
+        const checkedBoxes = document.querySelectorAll('input[name="excelHeader"]:checked');
+        if (checkedBoxes.length === 0) return;
+
+        const indexes = Array.from(checkedBoxes).map(cb => parseInt(cb.value, 10));
+        const allLines = [];
+
+        for (let i = 1; i < parsedSheetData.length; i++) {
+            const row = parsedSheetData[i];
+            if (row) {
+                const rowContent = indexes.map(idx => (row[idx] !== undefined && row[idx] !== null) ? row[idx].toString().trim() : '').join('\t');
+                if(rowContent.replace(/\t/g, '').trim() !== '') {
+                    allLines.push(rowContent);
+                }
+            }
+        }
+        executeClipboardWrite(allLines.join('\n'), copyAllBtn);
+    });
+
+    // Image Processing File Input Pipeline Listener
+    imageFileInput.addEventListener('change', function(e) {
+        processImageFile(e.target.files[0]);
+    });
+
+    // Added: Single Clipboard write listener for Extracted Image Text
+    copyOcrTextBtn.addEventListener('click', function() {
+        executeClipboardWrite(ocrTextArea.value, copyOcrTextBtn);
+    });
+
+    function executeClipboardWrite(textBlob, buttonElement) {
+        if (!textBlob) return;
+        navigator.clipboard.writeText(textBlob).then(() => {
+            const originalText = buttonElement.innerHTML;
+            buttonElement.textContent = 'Copied!';
+            buttonElement.classList.add('copied');
+            
+            setTimeout(() => {
+                buttonElement.innerHTML = originalText;
+                buttonElement.classList.remove('copied');
+            }, 1800);
+        }).catch(err => console.error('Clipboard pipeline execution failure: ', err));
+    }
+</script>
+
+</body>
+</html>
