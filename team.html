@@ -8,18 +8,19 @@
     <style>
         /* --- DESIGN CORE SYSTEM --- */
         :root {
-            --bg-gradient: radial-gradient(circle at center, #eceff1 0%, #cfd8dc 100%);
-            --sidebar-bg: rgba(255, 255, 255, 0.85);
-            --sidebar-text: #1e293b;
-            --input-bg: #f8fafc;
-            --input-border: #cbd5e1;
-            --input-text: #0f172a;
-            --primary-light: #16a34a;
-            --primary-hover: #15803d;
-            --divider-color: #e2e8f0;
-            --pitch-shadow: rgba(15, 23, 42, 0.15);
-            --item-hover: #f0fdf4;
-            --glass-blur: blur(12px);
+            --bg-gradient: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+            --sidebar-bg: rgba(15, 23, 42, 0.6);
+            --sidebar-text: #f8fafc;
+            --input-bg: #1e293b;
+            --input-border: #334155;
+            --input-text: #f8fafc;
+            --primary-light: #10b981;
+            --primary-hover: #059669;
+            --divider-color: #334155;
+            --pitch-shadow: rgba(0, 0, 0, 0.5);
+            --item-hover: #1e293b;
+            --glass-blur: blur(16px);
+            --border-glow: rgba(16, 185, 129, 0.15);
         }
 
         * {
@@ -80,8 +81,8 @@
 
         /* --- SIDEBAR --- */
         .sidebar {
-            width: 300px;
-            min-width: 300px;
+            width: 320px;
+            min-width: 320px;
             background-color: var(--sidebar-bg);
             backdrop-filter: var(--glass-blur);
             -webkit-backdrop-filter: var(--glass-blur);
@@ -91,7 +92,7 @@
             border-right: 1px solid var(--divider-color);
             height: 100%;
             padding: 20px;
-            gap: 16px;
+            gap: 14px;
             z-index: 20;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -100,13 +101,14 @@
             font-size: 1.25rem;
             font-weight: 700;
             letter-spacing: -0.5px;
+            color: #ffffff;
         }
 
         label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            opacity: 0.8;
+            opacity: 0.6;
             font-weight: 700;
             margin-bottom: 2px;
         }
@@ -116,19 +118,19 @@
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
             color: var(--input-text);
-            padding: 10px;
+            padding: 8px 10px;
             border-radius: 8px;
             resize: none;
             font-family: inherit;
-            font-size: 0.9rem;
-            line-height: 1.4;
+            font-size: 0.8rem;
+            line-height: 1.3;
             transition: all 0.2s;
         }
 
         textarea:focus {
             outline: none;
             border-color: var(--primary-light);
-            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+            box-shadow: 0 0 0 3px var(--border-glow);
         }
 
         .main-roster {
@@ -141,29 +143,38 @@
             gap: 4px;
         }
 
+        /* --- CONSOLIDATED ONE-ROW KIT CONFIG --- */
+        .kit-customizer-row {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .kit-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
         .color-row {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 6px;
             width: 100%;
             background-color: var(--input-bg);
             border: 1px solid var(--input-border);
-            padding: 8px 12px;
+            padding: 6px;
             border-radius: 8px;
-        }
-
-        .color-inputs {
-            display: flex;
-            gap: 6px;
-            align-items: center;
+            justify-content: center;
         }
 
         input[type="color"] {
             -webkit-appearance: none;
             border: none;
-            width: 34px;
-            height: 30px;
-            border-radius: 6px;
+            width: 28px;
+            height: 26px;
+            border-radius: 4px;
             cursor: pointer;
             background: none;
         }
@@ -171,12 +182,7 @@
         input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
         input[type="color"]::-webkit-color-swatch {
             border: 1px solid var(--input-border);
-            border-radius: 6px;
-        }
-
-        .color-label-text {
-            font-size: 0.85rem;
-            font-weight: 600;
+            border-radius: 4px;
         }
 
         .btn-primary {
@@ -188,7 +194,7 @@
             font-weight: 700;
             border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
             transition: all 0.2s;
         }
 
@@ -200,7 +206,7 @@
         .divider {
             height: 1px;
             background-color: var(--divider-color);
-            margin: 4px 0;
+            margin: 2px 0;
         }
 
         /* --- DISPLAY LAYOUT ENVIRONMENT --- */
@@ -225,12 +231,12 @@
         .pitch {
             width: 100%;
             height: 100%;
-            background-color: #1e6b27;
-            border: 4px solid rgba(255, 255, 255, 0.95);
+            background-color: #045318;
+            border: 4px solid #ffffff;
             border-radius: 12px;
             position: relative;
             box-shadow: var(--pitch-shadow);
-            background-image: linear-gradient(to bottom, #1e6b27 50%, #17571f 50%);
+            background-image: linear-gradient(to bottom, #045318 50%, #034618 50%);
             background-size: 100% 20%;
         }
 
@@ -239,11 +245,11 @@
             position: absolute;
             top: 12px;
             right: 12px;
-            background-color: rgba(15, 23, 42, 0.65);
+            background-color: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             padding: 8px 12px;
             font-size: 0.8rem;
             font-weight: 700;
@@ -253,13 +259,13 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             transition: all 0.2s ease;
         }
 
         .download-pitch-btn:hover {
-            background-color: rgba(15, 23, 42, 0.85);
-            transform: scale(1.03);
+            background-color: rgba(15, 23, 42, 0.9);
+            transform: scale(1.02);
         }
 
         .halfway-line {
@@ -303,7 +309,7 @@
             border-bottom: none;
         }
 
-        /* --- DRAGGABLE JERSEY (DESKTOP DEFAULT) --- */
+        /* --- DRAGGABLE JERSEY --- */
         .player-wrapper {
             position: absolute;
             width: 48px;
@@ -315,7 +321,7 @@
             user-select: none;
             z-index: 10;
             transform: translate(-50%, -50%);
-            touch-action: none; /* Crucial to block mobile screen scrolling during drags */
+            touch-action: none;
         }
 
         .player-wrapper:active { z-index: 1000; }
@@ -411,8 +417,8 @@
         }
 
         .player-name {
-            background-color: #d1fae5;
-            color: #4b5563;
+            background-color: #e2e8f0;
+            color: #334155;
             font-size: 9px;
             font-weight: 700;
             padding: 2px 6px;
@@ -422,7 +428,7 @@
             max-width: 68px;
             overflow: hidden;
             text-overflow: ellipsis;
-            border: 1px solid #a7f3d0;
+            border: 1px solid #cbd5e1;
             box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         }
 
@@ -458,7 +464,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: rgba(15, 23, 42, 0.4);
+            background-color: rgba(2, 6, 23, 0.6);
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
             z-index: 200;
@@ -470,15 +476,13 @@
         }
         .modal-overlay.active { display: flex; opacity: 1; }
         .modal-card {
-            background-color: var(--sidebar-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--divider-color);
+            background-color: #0f172a;
+            border: 1px solid var(--input-border);
             width: 90%;
             max-width: 380px;
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -501,7 +505,7 @@
             cursor: pointer;
             font-weight: 600;
             font-size: 0.9rem;
-            color: var(--input-text);
+            color: var(--sidebar-text);
             text-align: center;
         }
         .modal-item:hover {
@@ -547,9 +551,16 @@
                 transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
             .main-content.active-tab { transform: translateX(0); }
-            .pitch-wrapper { height: auto; width: 100%; max-width: 600px; }
+            
+            /* Enhanced Pitch Sizing Metrics for Mobile Displays */
+            .pitch-wrapper { 
+                height: auto; 
+                width: 100%; 
+                max-width: 520px; 
+                aspect-ratio: 4 / 5.4; /* Expanded vertical viewport space ratio */
+            }
 
-            /* --- SCALED DOWN MOBILE PLAYER SIZE OVERRIDES --- */
+            /* --- SCALED DOWN MOBILE PLAYER PLACEMENTS --- */
             .player-wrapper {
                 width: 36px;
                 height: 48px;
@@ -624,25 +635,20 @@
             <textarea id="playerInput" class="main-roster" placeholder="Enter one name per line..."></textarea>
         </div>
 
-        <div class="form-group">
-            <label>Home Kit Customizer</label>
-            <div class="color-row">
-                <div class="color-inputs">
+        <div class="kit-customizer-row">
+            <div class="kit-column">
+                <label>Home Kit</label>
+                <div class="color-row">
                     <input type="color" id="homeColor" value="#ffeb3b" onchange="updatePitch()">
                     <input type="color" id="homeTrimColor" value="#16a34a" onchange="updatePitch()">
                 </div>
-                <span class="color-label-text" style="color:#b45309;">🏠 Home Team</span>
             </div>
-        </div>
-
-        <div class="form-group">
-            <label>Away Kit Customizer</label>
-            <div class="color-row">
-                <div class="color-inputs">
+            <div class="kit-column">
+                <label>Away Kit</label>
+                <div class="color-row">
                     <input type="color" id="awayColor" value="#2563eb" onchange="updatePitch()">
                     <input type="color" id="awayTrimColor" value="#ffffff" onchange="updatePitch()">
                 </div>
-                <span class="color-label-text" style="color:#2563eb;">✈️ Away Team</span>
             </div>
         </div>
 
@@ -999,7 +1005,6 @@
                         if (customPositions[name]) {
                             p.style.left = `${(customPositions[name].x / 100) * desktopWidth}px`;
                             p.style.top = `${(customPositions[name].y / 100) * desktopHeight}px`;
-                            // Force explicit structural defaults back onto components within clone matrix maps
                             p.style.width = '48px';
                             p.style.height = '62px';
                             p.style.transform = 'translate(-50%, -50%)';
