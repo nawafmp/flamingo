@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tactics Board & Team Maker</title>
+    <!-- Industry standard client-side screenshot library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         /* --- PREMIUM FOREST DESIGN SYSTEM --- */
@@ -35,7 +36,16 @@
             flex-direction: column;
             overflow: hidden;
             color: var(--sidebar-text);
-            padding: 10px;
+            padding: 10px 10px 0 10px; /* Removed bottom padding, handled by wrapper height */
+        }
+
+        /* App Wrapper restricted strictly to 90% vertical height to fit all UI safely */
+        .app-container {
+            height: 90vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
         /* --- TOP HEADER NAVIGATION --- */
@@ -98,7 +108,6 @@
             border-radius: 4px;
         }
 
-        /* Streamlined Icon-Only Paste Button */
         .btn-paste {
             background-color: var(--primary-light);
             color: white;
@@ -129,15 +138,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding-bottom: calc(10px + env(safe-area-inset-bottom, 15px)); 
             overflow: hidden;
+            padding-bottom: 5px;
         }
 
         .pitch-wrapper {
             width: 100%;
             height: 100%;
             max-width: 600px; 
-            max-height: 100%; /* Dynamically limits layout footprint to prevent running past footer */
+            max-height: 100%; 
             aspect-ratio: 4 / 5.4;
             position: relative;
             display: flex;
@@ -438,9 +447,6 @@
                 margin-bottom: 6px;
                 padding: 6px 10px;
             }
-            .main-content {
-                padding-bottom: calc(5px + env(safe-area-inset-bottom, 12px));
-            }
             .pitch-wrapper { 
                 max-width: 100%;
                 max-height: 100%;
@@ -450,40 +456,48 @@
 </head>
 <body>
 
-    <div class="top-nav">
-        <button class="btn-paste" onclick="pasteAndSplitPool()" title="Paste & Split">📋</button>
-        <div class="kit-selectors-container">
-            <div class="color-group">
-                <label>Home</label>
-                <input type="color" id="homeColor" value="#ffeb3b" onchange="applyLiveKitColors()">
-                <input type="color" id="homeTrimColor" value="#11381b" onchange="applyLiveKitColors()">
-            </div>
-            <div class="color-group">
-                <label>Away</label>
-                <input type="color" id="awayColor" value="#2563eb" onchange="applyLiveKitColors()">
-                <input type="color" id="awayTrimColor" value="#ffffff" onchange="applyLiveKitColors()">
+    <!-- App boundary container containing layout constraints to 90% vertical space -->
+    <div class="app-container">
+        
+        <!-- Top Navigation Control Row -->
+        <div class="top-nav">
+            <button class="btn-paste" onclick="pasteAndSplitPool()" title="Paste & Split">📋</button>
+            <div class="kit-selectors-container">
+                <div class="color-group">
+                    <label>Home</label>
+                    <input type="color" id="homeColor" value="#ffeb3b" onchange="applyLiveKitColors()">
+                    <input type="color" id="homeTrimColor" value="#11381b" onchange="applyLiveKitColors()">
+                </div>
+                <div class="color-group">
+                    <label>Away</label>
+                    <input type="color" id="awayColor" value="#2563eb" onchange="applyLiveKitColors()">
+                    <input type="color" id="awayTrimColor" value="#ffffff" onchange="applyLiveKitColors()">
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="replacementModal" class="modal-overlay">
-        <div class="modal-card">
-            <h3 style="font-size: 1.1rem; text-align: center;" id="modalTitle">Select Replacement</h3>
-            <div id="modalListContainer" class="modal-list"></div>
-            <button class="modal-cancel" onclick="closeModal()">Cancel Trade</button>
-        </div>
-    </div>
-
-    <div class="main-content">
-        <div class="pitch-wrapper">
-            <div class="pitch" id="pitch" onclick="clearFocus(event)">
-                <button class="download-pitch-btn" onclick="exportPitchToImage()">📸 Save Board</button>
-                <div class="halfway-line"></div>
-                <div class="center-circle"></div>
-                <div class="penalty-box-top"></div>
-                <div class="penalty-box-bottom"></div>
+        <!-- Replacement Trade Option Modal Pop-up -->
+        <div id="replacementModal" class="modal-overlay">
+            <div class="modal-card">
+                <h3 style="font-size: 1.1rem; text-align: center;" id="modalTitle">Select Replacement</h3>
+                <div id="modalListContainer" class="modal-list"></div>
+                <button class="modal-cancel" onclick="closeModal()">Cancel Trade</button>
             </div>
         </div>
+
+        <!-- Main Game Board Container -->
+        <div class="main-content">
+            <div class="pitch-wrapper">
+                <div class="pitch" id="pitch" onclick="clearFocus(event)">
+                    <button class="download-pitch-btn" onclick="exportPitchToImage()">📸 Save Board</button>
+                    <div class="halfway-line"></div>
+                    <div class="center-circle"></div>
+                    <div class="penalty-box-top"></div>
+                    <div class="penalty-box-bottom"></div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
