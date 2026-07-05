@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Tactics Board & Team Maker</title>
+    <!-- Industry standard client-side screenshot library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         /* --- PREMIUM FOREST DESIGN SYSTEM --- */
@@ -29,7 +30,6 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: var(--bg-gradient);
-            /* PERMANENT FIX: Uses dynamic viewport height to adapt to mobile browser toolbars */
             height: 100vh;
             height: 100dvh; 
             width: 100vw;
@@ -37,7 +37,7 @@
             flex-direction: column;
             overflow: hidden;
             color: var(--sidebar-text);
-            padding: 10px calc(10px + env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) calc(10px + env(safe-area-inset-left, 0px));
+            padding: 10px calc(10px + env(safe-area-inset-right, 0px)) calc(15px + env(safe-area-inset-bottom, 0px)) calc(10px + env(safe-area-inset-left, 0px));
         }
 
         /* --- TOP HEADER NAVIGATION --- */
@@ -130,15 +130,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden; /* Locks out scrolling and clipping */
+            overflow: hidden;
         }
 
         .pitch-wrapper {
             width: 100%;
-            height: 100%;
-            max-width: 600px; 
-            max-height: 100%; 
-            aspect-ratio: 4 / 5.4;
+            /* FIXED: Force size context based dynamically on toolbar height gaps */
+            height: calc(100vh - 80px);
+            height: calc(100dvh - 80px);
+            max-width: 550px; 
             position: relative;
             display: flex;
             align-items: center;
@@ -447,6 +447,7 @@
 </head>
 <body>
 
+    <!-- Top Navigation Control Row -->
     <div class="top-nav">
         <button class="btn-paste" onclick="pasteAndSplitPool()" title="Paste & Split">📋</button>
         <div class="kit-selectors-container">
@@ -463,6 +464,7 @@
         </div>
     </div>
 
+    <!-- Replacement Trade Option Modal Pop-up -->
     <div id="replacementModal" class="modal-overlay">
         <div class="modal-card">
             <h3 style="font-size: 1.1rem; text-align: center;" id="modalTitle">Select Replacement</h3>
@@ -471,6 +473,7 @@
         </div>
     </div>
 
+    <!-- Main Game Board Container -->
     <div class="main-content">
         <div class="pitch-wrapper">
             <div class="pitch" id="pitch" onclick="clearFocus(event)">
@@ -870,7 +873,7 @@
             });
         }
 
-        processPlayerInputAndSplit("Cr7\nRonaldo\nCristiano\nSiuuuu!\nCristiano Ronaldo\nCr7\nRonaldo\nSiuuuu!");
+        processPlayerInputAndSplit("Messi\nRonaldo\nDe Bruyne\nHaaland\nVan Dijk\nNeymar\nEderson\nRodri");
     </script>
 </body>
 </html>
