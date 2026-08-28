@@ -608,6 +608,7 @@
 
         .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
         .dot-active { background-color: #10b981; box-shadow: 0 0 4px #10b981; }
+        .dot-regular { background-color: #3b82f6; box-shadow: 0 0 4px #3b82f6; }
         .dot-blocked { background-color: #dc2626; box-shadow: 0 0 4px #dc2626; }
         
         .action-cell { display: flex; gap: 6px; align-items: center; }
@@ -693,6 +694,7 @@
                                 <select id="statusFilter" onchange="renderTable()">
                                     <option value="All">All Status</option>
                                     <option value="Active">Active</option>
+                                    <option value="Regular">Regular</option>
                                     <option value="Blocked">Blocked</option>
                                 </select>
 
@@ -802,7 +804,11 @@
                         <div class="form-unit">
                             <div class="form-group">
                                 <label>Status</label>
-                                <select id="status"><option value="Active">Active</option><option value="Blocked">Blocked</option></select>
+                                <select id="status">
+                                    <option value="Active">Active</option>
+                                    <option value="Regular">Regular</option>
+                                    <option value="Blocked">Blocked</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-unit" style="margin-top: 4px; display: flex; gap: 8px; flex-direction: row;">
@@ -899,7 +905,6 @@
         toolkitPanel: document.getElementById("toolkitTabPanel")
     };
 
-    // Global toolkit references
     const scanStatus = document.getElementById('scanStatus');
     const toolkitTextarea = document.getElementById('barcodeInput');
     let toolkitLiveScanner = null;
@@ -911,7 +916,6 @@
             elements.statusFilter.value = "Active";
         }
 
-        // Initialize theme configurations
         const savedTheme = localStorage.getItem('flamingo_app_theme') || 'default';
         setTheme(savedTheme);
 
@@ -923,7 +927,6 @@
             if(menu) menu.classList.remove("show");
         });
 
-        // Keyboard Shortcut: Esc Key
         document.addEventListener("keydown", (e) => {
             if (e.key === "Escape") {
                 const scannerModal = document.getElementById('scannerModal');
@@ -942,7 +945,6 @@
         });
     };
 
-    // Keyboard Shortcut: Enter Key in Search Box to add top item to orders
     function handleSearchKeydown(e) {
         if (e.key === "Enter") {
             const currentMatches = getFilteredInventory();
@@ -953,7 +955,6 @@
         }
     }
 
-    // Global Theme Switcher Engine logic
     function setTheme(themeName) {
         document.body.classList.remove('theme-flamingo', 'theme-forest');
         if (themeName !== 'default') {
@@ -1278,9 +1279,8 @@
             elements.price.value = item.price;
             elements.rsp.value = item.rsp;
             elements.stock.value = item.stock;
-            elements.status.value = item.status;
+            elements.status.value = item.status || "Active";
             
-            // Set Edit visual state
             if (elements.btnSaveItem) elements.btnSaveItem.innerText = "Update Item";
             if (elements.btnCancelEdit) elements.btnCancelEdit.style.display = "inline-flex";
 
@@ -1354,7 +1354,12 @@
         let htmlBuffer = '';
 
         filtered.forEach(i => {
-            const dotClass = i.status === 'Active' ? 'dot-active' : 'dot-blocked';
+            let dotClass = 'dot-active';
+            if (i.status === 'Blocked') {
+                dotClass = 'dot-blocked';
+            } else if (i.status === 'Regular') {
+                dotClass = 'dot-regular';
+            }
             
             const idStyle = visibleColumns.id ? 'table-cell' : 'none';
             const barcodeStyle = visibleColumns.barcode ? 'table-cell' : 'none';
@@ -1394,19 +1399,16 @@
         elements.inventoryTbody.innerHTML = htmlBuffer;
     }
 
-    // Handles Adding to Order (No Duplicates + Prepend to Top)
     function addTrans(code) {
         const item = inventory.find(i => i.code === code);
         if (!item) return;
 
         const existingIndex = transactions.findIndex(t => t.code === item.code);
         if (existingIndex !== -1) {
-            // Increment existing line item qty & move to top
             const existingItem = transactions.splice(existingIndex, 1)[0];
             existingItem.qty = (Number(existingItem.qty) || 0) + 12;
             transactions.unshift(existingItem);
         } else {
-            // Prepend new line item to the top
             transactions.unshift({
                 code: item.code,
                 desc: item.desc,
@@ -1441,7 +1443,6 @@
     }
 
     function renderTransactions() {
-        // Update live order badge
         if (elements.orderCountBadge) {
             elements.orderCountBadge.innerText = transactions.length;
         }
