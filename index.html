@@ -12,40 +12,38 @@
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <style>
         :root {
-            /* Extracted Color Palette Reference Tokens - Default Theme (Ocean Blue) */
+            /* Default Theme (Ocean Blue) */
             --md-sys-color-bg: #e5f1f6; 
             --md-sys-color-surface: #ffffff;
             --md-sys-color-surface-variant: #cedee5;
-            --md-sys-color-primary: #023047; /* Dark Navy Blue */
-            --md-sys-color-primary-container: #8ecae6; /* Light Blue */
+            --md-sys-color-primary: #023047; 
+            --md-sys-color-primary-container: #8ecae6; 
             --md-sys-color-on-primary-container: #011621;
-            --md-sys-color-accent: #fb8500; /* Vibrant Orange */
-            --md-sys-color-accent-container: #ffb703; /* Bright Yellow */
+            --md-sys-color-accent: #fb8500; 
+            --md-sys-color-accent-container: #ffb703; 
             --md-sys-color-error: #ba1a1a;
             --md-sys-color-error-container: #ffdad6;
             --md-sys-color-on-error-container: #410002;
-            --md-sys-color-outline: #219ebc; /* Teal/Cyan */
+            --md-sys-color-outline: #219ebc; 
             --md-sys-color-text: #023047;
             --md-sys-color-text-secondary: #219ebc;
-            
-            /* High Contrast Custom Highlights */
             --price-highlight-text: #fb8500;
         }
 
-        /* Sunset Bronze Theme Variables */
-        body.theme-sunset {
-            --md-sys-color-bg: #fdf6f0; 
+        /* Flamingo Theme (Emerald & Gold) */
+        body.theme-flamingo {
+            --md-sys-color-bg: #f4f8f5; 
             --md-sys-color-surface: #ffffff;
-            --md-sys-color-surface-variant: #f1e4dc;
-            --md-sys-color-primary: #5c2504; 
-            --md-sys-color-primary-container: #ffdfcb; 
-            --md-sys-color-on-primary-container: #260c00;
-            --md-sys-color-accent: #d97706; 
-            --md-sys-color-accent-container: #fef3c7; 
-            --md-sys-color-outline: #b45309; 
-            --md-sys-color-text: #5c2504;
-            --md-sys-color-text-secondary: #b45309;
-            --price-highlight-text: #d97706;
+            --md-sys-color-surface-variant: #d8e6dc;
+            --md-sys-color-primary: #064e3b; 
+            --md-sys-color-primary-container: #d1fae5; 
+            --md-sys-color-on-primary-container: #022c22;
+            --md-sys-color-accent: #d4af37; 
+            --md-sys-color-accent-container: #fef9c3; 
+            --md-sys-color-outline: #b48a1c; 
+            --md-sys-color-text: #064e3b;
+            --md-sys-color-text-secondary: #b48a1c;
+            --price-highlight-text: #b48a1c;
         }
 
         /* Forest Mint Theme Variables */
@@ -92,7 +90,6 @@
         }
         .header h2 { margin: 0; font-size: 1.1rem; color: var(--md-sys-color-primary); font-weight: 700; letter-spacing: -0.2px; }
 
-        /* Theme Dropdown Container Styles */
         .theme-dropdown-container {
             display: inline-flex;
             align-items: center;
@@ -336,6 +333,10 @@
             flex: 1 0 auto;
             text-align: center;
             opacity: 0.7;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
         .tab-btn.active {
             color: var(--md-sys-color-primary);
@@ -351,6 +352,16 @@
             height: 3px;
             background: var(--md-sys-color-accent);
             border-radius: 3px 3px 0 0;
+        }
+
+        .tab-badge {
+            background: var(--md-sys-color-accent);
+            color: #ffffff;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-weight: bold;
+            line-height: 1;
         }
         
         .form-grid { 
@@ -418,7 +429,6 @@
             opacity: 1;
         }
 
-        /* Continuous Barcode Scanning UI Elements */
         .camera-btn {
             display: block;
             width: 100%;
@@ -566,13 +576,13 @@
         .btn:active { filter: brightness(0.85); transform: scale(0.98); }
         
         .btn-save { background: var(--md-sys-color-primary); color: white; width: 100%; height: 46px; font-size: 0.9rem; }
+        .btn-cancel { background: var(--md-sys-color-error-container); color: var(--md-sys-color-error); width: 100%; height: 46px; font-size: 0.9rem; }
         .btn-plus { background: var(--md-sys-color-outline); color: white; width: 34px; height: 34px; min-height: 34px; padding: 0; font-size: 0.85rem; border-radius: 8px; flex-shrink: 0; }
-        .btn-edit { background: #b45309; color: white; width: 36px; height: 36px; min-height: 36px; padding: 0; border-radius: 8px; }
+        .btn-edit { background: var(--md-sys-color-accent); color: white; width: 36px; height: 36px; min-height: 36px; padding: 0; border-radius: 8px; }
         .btn-delete { background: var(--md-sys-color-error-container); color: var(--md-sys-color-error); width: 36px; height: 36px; min-height: 36px; padding: 0; border-radius: 8px; }
         .btn-excel { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-primary); }
         .btn-export-all { background: var(--md-sys-color-primary); color: white; }
 
-        /* Interactive row contextual inline layout styles */
         .btn-inline-delete {
             background: var(--md-sys-color-error);
             color: #ffffff;
@@ -597,7 +607,7 @@
         .qty-input { width: 64px !important; text-align: center; border: 1px solid var(--md-sys-color-outline) !important; font-weight: bold; height: 36px; padding: 4px; border-radius: 6px; font-size: 0.9rem; }
 
         .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; }
-        .dot-active { background-color: #16a34a; box-shadow: 0 0 4px #16a34a; }
+        .dot-active { background-color: #10b981; box-shadow: 0 0 4px #10b981; }
         .dot-blocked { background-color: #dc2626; box-shadow: 0 0 4px #dc2626; }
         
         .action-cell { display: flex; gap: 6px; align-items: center; }
@@ -652,7 +662,7 @@
         <div class="theme-dropdown-container">
             <select id="themeSelector" class="theme-select" onchange="setTheme(this.value)">
                 <option value="default">Ocean Theme</option>
-                <option value="sunset">Sunset Theme</option>
+                <option value="flamingo">Flamingo Theme</option>
                 <option value="forest">Forest Theme</option>
             </select>
         </div>
@@ -702,7 +712,7 @@
 
                 <div class="filter-search-wrapper" id="searchFieldWrapper">
                     <div class="filter-search-container">
-                        <input type="text" id="tableFilter" placeholder="Search" oninput="renderTable()" onfocus="focusAndScrollSearch()">
+                        <input type="text" id="tableFilter" placeholder="Search (Press Enter to add top match)" oninput="renderTable()" onkeydown="handleSearchKeydown(event)" onfocus="focusAndScrollSearch()">
                         <button class="btn-clear-search" onclick="clearSearchField()" title="Clear Search">✕</button>
                         <button class="btn-scan-barcode" onclick="triggerBarcodeScanner()" title="Scan Barcode">
                             <svg viewBox="0 0 24 24">
@@ -735,7 +745,9 @@
         <div id="targetWorkspaceCard" class="top-full">
             <div class="card" style="padding-bottom: 14px;">
                 <div class="tab-container">
-                    <button class="tab-btn active" id="tabOrderBtn" onclick="switchWorkspaceTab('order')">📦 Orders</button>
+                    <button class="tab-btn active" id="tabOrderBtn" onclick="switchWorkspaceTab('order')">
+                        📦 Orders <span class="tab-badge" id="orderCountBadge">0</span>
+                    </button>
                     <button class="tab-btn" id="tabEntryBtn" onclick="switchWorkspaceTab('entry')">📝 Entry</button>
                     <button class="tab-btn" id="tabToolkitBtn" onclick="switchWorkspaceTab('toolkit')">🖨️ Print</button>
                 </div>
@@ -752,7 +764,8 @@
                         <table id="transactionTable">
                             <thead>
                                 <tr>
-                                    <th style="width: 30%;">Code</th>
+                                    <th style="width: 5%; text-align: center;">#</th>
+                                    <th style="width: 25%;">Code</th>
                                     <th style="width: 45%;">Description</th>
                                     <th style="width: 15%;" class="text-center">Qty</th>
                                     <th style="width: 10%;" class="text-right">Total</th>
@@ -761,15 +774,15 @@
                             <tbody></tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="3" class="text-right footer-metric-label">Total:</td>
+                                    <td colspan="4" class="text-right footer-metric-label">Total:</td>
                                     <td class="text-right footer-metric-val" id="footerTotalVal">0.00</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="3" class="text-right footer-metric-label">VAT (5%):</td>
+                                    <td colspan="4" class="text-right footer-metric-label">VAT (5%):</td>
                                     <td class="text-right footer-metric-val" id="footerVatVal">0.00</td>
                                 </tr>
                                 <tr class="grand-total-row">
-                                    <td colspan="3" class="text-right footer-metric-label">Grand Total:</td>
+                                    <td colspan="4" class="text-right footer-metric-label">Grand Total:</td>
                                     <td class="text-right footer-metric-val" id="footerGrandTotalVal">0.00</td>
                                 </tr>
                             </tfoot>
@@ -792,8 +805,9 @@
                                 <select id="status"><option value="Active">Active</option><option value="Blocked">Blocked</option></select>
                             </div>
                         </div>
-                        <div class="form-unit" style="margin-top: 4px;">
-                            <button class="btn btn-save" onclick="addItem()">Save Item</button>
+                        <div class="form-unit" style="margin-top: 4px; display: flex; gap: 8px; flex-direction: row;">
+                            <button class="btn btn-save" id="btnSaveItem" onclick="addItem()" style="flex: 2;">Save Item</button>
+                            <button class="btn btn-cancel" id="btnCancelEdit" onclick="cancelEdit()" style="flex: 1; display: none;">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -843,6 +857,7 @@
 <script>
     let inventory = JSON.parse(localStorage.getItem('flamingo_db_v3')) || [];
     let transactions = JSON.parse(localStorage.getItem('flamingo_trans_v3')) || [];
+    let editingUniqueRef = null;
 
     let visibleColumns = {
         id: false,
@@ -869,7 +884,10 @@
         footerGrandTotalVal: document.getElementById('footerGrandTotalVal'),
         csvInput: document.getElementById('csvInput'),
         toolkitExcelInput: document.getElementById('toolkitExcelInput'),
-        themeSelector: document.getElementById('themeSelector')
+        themeSelector: document.getElementById('themeSelector'),
+        orderCountBadge: document.getElementById('orderCountBadge'),
+        btnSaveItem: document.getElementById('btnSaveItem'),
+        btnCancelEdit: document.getElementById('btnCancelEdit')
     };
 
     const calcEl = {
@@ -904,11 +922,40 @@
             const menu = document.getElementById("columnVisibilityMenu");
             if(menu) menu.classList.remove("show");
         });
+
+        // Keyboard Shortcut: Esc Key
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                const scannerModal = document.getElementById('scannerModal');
+                if (scannerModal && scannerModal.style.display === 'flex') {
+                    closeBarcodeScanner();
+                } else if (toolkitLiveScanner) {
+                    stopToolkitScanner();
+                } else {
+                    const menu = document.getElementById("columnVisibilityMenu");
+                    if (menu) menu.classList.remove("show");
+                    if (document.activeElement === elements.tableFilter) {
+                        clearSearchField();
+                    }
+                }
+            }
+        });
     };
+
+    // Keyboard Shortcut: Enter Key in Search Box to add top item to orders
+    function handleSearchKeydown(e) {
+        if (e.key === "Enter") {
+            const currentMatches = getFilteredInventory();
+            if (currentMatches.length > 0) {
+                addTrans(currentMatches[0].code);
+                clearSearchField();
+            }
+        }
+    }
 
     // Global Theme Switcher Engine logic
     function setTheme(themeName) {
-        document.body.classList.remove('theme-sunset', 'theme-forest');
+        document.body.classList.remove('theme-flamingo', 'theme-forest');
         if (themeName !== 'default') {
             document.body.classList.add('theme-' + themeName);
         }
@@ -962,7 +1009,7 @@
                     currentVal += "\n";
                 }
                 toolkitTextarea.value = currentVal + parsedCodes.join("\n") + "\n";
-                scanStatus.style.color = "#16a34a";
+                scanStatus.style.color = "#10b981";
                 scanStatus.innerText = `📊 Successfully imported ${parsedCodes.length} barcode inputs from Column F.`;
                 
                 generateBarcodes();
@@ -1003,7 +1050,7 @@
                 clearTimeout(throttleTimeout);
                 throttleTimeout = setTimeout(() => { lastScannedCode = ""; }, 2500);
 
-                scanStatus.style.color = "#16a34a";
+                scanStatus.style.color = "#10b981";
                 scanStatus.innerText = `✅ Added: ${scannedClean}`;
 
                 let currentValue = toolkitTextarea.value;
@@ -1057,6 +1104,8 @@
 
         if (lines.length === 0) return;
 
+        const currentThemeColor = getComputedStyle(document.body).getPropertyValue('--md-sys-color-primary').trim() || '#023047';
+
         lines.forEach((code, index) => {
             const container = document.createElement('div');
             container.className = 'barcode-container';
@@ -1070,7 +1119,7 @@
             try {
                 JsBarcode("#barcode-render-" + index, code, {
                     format: "CODE128",
-                    lineColor: "#023047",
+                    lineColor: currentThemeColor,
                     width: 2,
                     height: 70,
                     displayValue: true,
@@ -1173,7 +1222,6 @@
         }
     }
 
-    // Handles row element conversion to a transient delete action layout state
     function prepareRowDeletion(elementId, referenceId) {
         const container = document.getElementById(elementId);
         if(!container) return;
@@ -1216,6 +1264,7 @@
     function editItem(barcode) {
         const item = inventory.find(i => i.barcode === barcode);
         if (item) {
+            editingUniqueRef = item.uniqueRef;
             if(!visibleColumns.actions) {
                 const chk = document.getElementById('chkToggleActions');
                 if(chk) chk.checked = true;
@@ -1230,11 +1279,20 @@
             elements.rsp.value = item.rsp;
             elements.stock.value = item.stock;
             elements.status.value = item.status;
+            
+            // Set Edit visual state
+            if (elements.btnSaveItem) elements.btnSaveItem.innerText = "Update Item";
+            if (elements.btnCancelEdit) elements.btnCancelEdit.style.display = "inline-flex";
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }
 
-    // Business Logic context item structures 
+    function cancelEdit() {
+        clearEntryForm();
+        switchWorkspaceTab('order');
+    }
+
     function addItem() {
         const codeVal = elements.itemCode.value.toUpperCase().trim();
         const barcodeVal = elements.barcode.value.trim();
@@ -1242,7 +1300,7 @@
         if (!codeVal || !barcodeVal) return alert("Required: Code & Barcode");
 
         const item = {
-            uniqueRef: Date.now(),
+            uniqueRef: editingUniqueRef || (Date.now() + Math.random()),
             id: elements.itemID.value.trim(),
             code: codeVal,
             barcode: barcodeVal,
@@ -1253,7 +1311,7 @@
             status: elements.status.value
         };
 
-        inventory = inventory.filter(i => i.barcode !== item.barcode);
+        inventory = inventory.filter(i => i.barcode !== item.barcode && i.uniqueRef !== item.uniqueRef);
         inventory.push(item);
         sync();
         clearEntryForm();
@@ -1265,6 +1323,9 @@
             if(elements[id]) elements[id].value = "";
         });
         if(elements.status) elements.status.value = "Active";
+        editingUniqueRef = null;
+        if (elements.btnSaveItem) elements.btnSaveItem.innerText = "Save Item";
+        if (elements.btnCancelEdit) elements.btnCancelEdit.style.display = "none";
     }
 
     function delItem(ref) { 
@@ -1275,19 +1336,22 @@
         } 
     }
 
-    function renderTable() {
+    function getFilteredInventory() {
         const filterInput = elements.tableFilter.value.toLowerCase().trim();
         const searchTokens = filterInput.split(/\s+/).filter(t => t.length > 0);
         const stat = elements.statusFilter.value;
-        
-        let htmlBuffer = '';
 
-        const filtered = inventory.filter(i => {
+        return inventory.filter(i => {
             if (stat !== "All" && i.status !== stat) return false;
             if (searchTokens.length === 0) return true;
             const itemString = `${i.code} ${i.barcode} ${i.desc} ${i.id}`.toLowerCase();
             return searchTokens.every(token => itemString.includes(token));
         });
+    }
+
+    function renderTable() {
+        const filtered = getFilteredInventory();
+        let htmlBuffer = '';
 
         filtered.forEach(i => {
             const dotClass = i.status === 'Active' ? 'dot-active' : 'dot-blocked';
@@ -1330,10 +1394,28 @@
         elements.inventoryTbody.innerHTML = htmlBuffer;
     }
 
+    // Handles Adding to Order (No Duplicates + Prepend to Top)
     function addTrans(code) {
         const item = inventory.find(i => i.code === code);
         if (!item) return;
-        transactions.push({ code: item.code, desc: item.desc, qty: 12, price: item.price, ref: Date.now() });
+
+        const existingIndex = transactions.findIndex(t => t.code === item.code);
+        if (existingIndex !== -1) {
+            // Increment existing line item qty & move to top
+            const existingItem = transactions.splice(existingIndex, 1)[0];
+            existingItem.qty = (Number(existingItem.qty) || 0) + 12;
+            transactions.unshift(existingItem);
+        } else {
+            // Prepend new line item to the top
+            transactions.unshift({
+                code: item.code,
+                desc: item.desc,
+                qty: 12,
+                price: item.price,
+                ref: Date.now() + Math.random()
+            });
+        }
+
         syncTransactions();
         scrollToOrders();
     }
@@ -1359,7 +1441,12 @@
     }
 
     function renderTransactions() {
-        elements.transactionTbody.innerHTML = transactions.map(t => {
+        // Update live order badge
+        if (elements.orderCountBadge) {
+            elements.orderCountBadge.innerText = transactions.length;
+        }
+
+        elements.transactionTbody.innerHTML = transactions.map((t, index) => {
             const currentItem = inventory.find(i => i.code === t.code);
             const unitPrice = currentItem ? Number(currentItem.price) : (Number(t.price) || 0);
             const lineTotal = unitPrice * Number(t.qty);
@@ -1367,6 +1454,7 @@
             
             return `
                 <tr>
+                    <td class="text-center" style="color: var(--md-sys-color-text-secondary); font-weight: bold; font-size: 0.75rem;">${index + 1}</td>
                     <td style="font-weight:700; font-family:monospace; cursor:pointer; user-select:none; height:44px;" id="${inlineCellId}" onclick="prepareRowDeletion('${inlineCellId}', ${t.ref})">
                         ${t.code}
                     </td>
@@ -1459,7 +1547,7 @@
 
             for (let i = 1; i < lines.length; i++) {
                 const lineClean = lines[i].trim();
-                if (!lineClean) continue;
+                if (!lineClean) continue; 
                 
                 const c = parseCSVLine(lineClean);
                 if (c.length >= 6) {
