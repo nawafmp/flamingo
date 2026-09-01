@@ -9,19 +9,20 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     body {
       display: flex;
+      width: 100vw;
       height: 100vh;
       overflow: hidden;
-      background-color: #1a1a1a;
+      background-color: #121212;
       color: #eaeaea;
     }
     #sidebar {
-      width: 380px;
-      min-width: 340px;
-      background: #242424;
+      width: 360px;
+      min-width: 320px;
+      background: #1e1e1e;
       padding: 20px;
       display: flex;
       flex-direction: column;
@@ -29,10 +30,9 @@
       overflow-y: auto;
       border-right: 1px solid #333;
       z-index: 10;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.5);
     }
     h2 {
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       color: #fff;
       border-bottom: 2px solid #3b82f6;
       padding-bottom: 8px;
@@ -43,9 +43,9 @@
       gap: 6px;
     }
     label {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
-      color: #a0aec0;
+      color: #94a3b8;
     }
     .input-row {
       display: grid;
@@ -53,27 +53,27 @@
       gap: 8px;
     }
     input, select {
-      background: #111;
-      border: 1px solid #444;
+      background: #0f0f0f;
+      border: 1px solid #383838;
       color: #fff;
       padding: 8px 10px;
       border-radius: 4px;
       font-size: 0.9rem;
-      outline: none;
-      transition: border-color 0.2s;
+      width: 100%;
     }
     input:focus, select:focus {
       border-color: #3b82f6;
+      outline: none;
     }
     .stats-card {
-      background: #161616;
-      border: 1px solid #333;
+      background: #171717;
+      border: 1px solid #2d2d2d;
       border-radius: 6px;
       padding: 14px;
-      margin-top: 5px;
+      margin-top: 6px;
     }
     .stats-title {
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -84,8 +84,8 @@
       display: flex;
       justify-content: space-between;
       font-size: 0.85rem;
-      padding: 4px 0;
-      border-bottom: 1px solid #222;
+      padding: 5px 0;
+      border-bottom: 1px solid #262626;
     }
     .stat-row:last-child {
       border-bottom: none;
@@ -97,17 +97,22 @@
     #viewport-container {
       flex: 1;
       position: relative;
-      background: radial-gradient(circle at center, #2a2a2a 0%, #111 100%);
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, #262626 0%, #0d0d0d 100%);
     }
     #canvas-container {
       width: 100%;
       height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
     #controls-hint {
       position: absolute;
       bottom: 15px;
       right: 15px;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.7);
       padding: 8px 14px;
       border-radius: 4px;
       font-size: 0.75rem;
@@ -115,8 +120,8 @@
       pointer-events: none;
     }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
 
@@ -126,9 +131,9 @@
     <div class="form-group">
       <label for="containerType">Container Standard</label>
       <select id="containerType">
-        <option value="20ft">20 ft Standard (5.89m x 2.35m x 2.39m)</option>
-        <option value="40ft" selected>40 ft Standard (12.03m x 2.35m x 2.39m)</option>
-        <option value="40ftHC">40 ft High Cube (12.03m x 2.35m x 2.69m)</option>
+        <option value="20ft">20 ft Standard (5.89m × 2.35m × 2.39m)</option>
+        <option value="40ft" selected>40 ft Standard (12.03m × 2.35m × 2.39m)</option>
+        <option value="40ftHC">40 ft High Cube (12.03m × 2.35m × 2.69m)</option>
       </select>
     </div>
 
@@ -137,15 +142,15 @@
       <div class="input-row">
         <div>
           <label style="font-size:0.75rem;">Length (L)</label>
-          <input type="number" id="boxL" value="40" min="1" step="0.5">
+          <input type="number" id="boxL" value="31.5" min="1" step="0.5">
         </div>
         <div>
           <label style="font-size:0.75rem;">Width (W)</label>
-          <input type="number" id="boxW" value="30" min="1" step="0.5">
+          <input type="number" id="boxW" value="46.5" min="1" step="0.5">
         </div>
         <div>
           <label style="font-size:0.75rem;">Height (H)</label>
-          <input type="number" id="boxH" value="30" min="1" step="0.5">
+          <input type="number" id="boxH" value="35.0" min="1" step="0.5">
         </div>
       </div>
     </div>
@@ -182,177 +187,144 @@
 
   <div id="viewport-container">
     <div id="canvas-container"></div>
-    <div id="controls-hint">Left Click + Drag: Rotate | Right Click + Drag: Pan | Scroll: Zoom</div>
+    <div id="controls-hint">Left Click: Rotate | Right Click: Pan | Scroll: Zoom</div>
   </div>
 
   <script>
-    // Standard ISO Internal Dimensions in Meters (L x W x H)
-    const CONTAINERS = {
-      "20ft":   { l: 5.898,  w: 2.352, h: 2.393 },
-      "40ft":   { l: 12.032, w: 2.352, h: 2.393 },
-      "40ftHC": { l: 12.032, w: 2.352, h: 2.698 }
-    };
+    window.addEventListener('DOMContentLoaded', () => {
+      const CONTAINERS = {
+        "20ft":   { l: 5.898,  w: 2.352, h: 2.393 },
+        "40ft":   { l: 12.032, w: 2.352, h: 2.393 },
+        "40ftHC": { l: 12.032, w: 2.352, h: 2.698 }
+      };
 
-    // Three.js Setup
-    const containerEl = document.getElementById('canvas-container');
-    const scene = new THREE.Scene();
-    
-    const camera = new THREE.PerspectiveCamera(45, containerEl.clientWidth / containerEl.clientHeight, 0.1, 100);
-    camera.position.set(10, 8, 14);
+      const containerEl = document.getElementById('canvas-container');
+      const width = containerEl.clientWidth || (window.innerWidth - 360);
+      const height = containerEl.clientHeight || window.innerHeight;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(containerEl.clientWidth, containerEl.clientHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.shadowMap.enabled = true;
-    containerEl.appendChild(renderer.domElement);
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+      camera.position.set(12, 10, 16);
 
-    const controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(window.devicePixelRatio);
+      containerEl.appendChild(renderer.domElement);
 
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
-    scene.add(ambientLight);
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.7);
-    dirLight.position.set(15, 20, 10);
-    scene.add(dirLight);
+      // Lights
+      scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+      const dLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      dLight.position.set(20, 30, 20);
+      scene.add(dLight);
 
-    const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.3);
-    dirLight2.position.set(-15, -10, -10);
-    scene.add(dirLight2);
+      // Floor grid
+      const grid = new THREE.GridHelper(25, 25, 0x444444, 0x222222);
+      scene.add(grid);
 
-    // Groups for dynamic meshes
-    let containerFrameGroup = new THREE.Group();
-    let boxesInstancedMesh = null;
-    scene.add(containerFrameGroup);
+      const containerFrameGroup = new THREE.Group();
+      let boxesInstancedMesh = null;
+      scene.add(containerFrameGroup);
 
-    // Coordinate Grid Helper
-    const gridHelper = new THREE.GridHelper(20, 20, 0x444444, 0x222222);
-    gridHelper.position.y = 0;
-    scene.add(gridHelper);
+      function updateSimulator() {
+        const cType = document.getElementById('containerType').value;
+        const cDim = CONTAINERS[cType];
 
-    function updateSimulator() {
-      // 1. Fetch input values
-      const cType = document.getElementById('containerType').value;
-      const cDim = CONTAINERS[cType];
+        const boxL = Math.max(0.01, parseFloat(document.getElementById('boxL').value) / 100);
+        const boxW = Math.max(0.01, parseFloat(document.getElementById('boxW').value) / 100);
+        const boxH = Math.max(0.01, parseFloat(document.getElementById('boxH').value) / 100);
+        const gap  = Math.max(0, parseFloat(document.getElementById('gap').value) / 100);
 
-      // Convert Box & Gap inputs from cm to meters
-      const boxL = Math.max(0.01, parseFloat(document.getElementById('boxL').value) / 100);
-      const boxW = Math.max(0.01, parseFloat(document.getElementById('boxW').value) / 100);
-      const boxH = Math.max(0.01, parseFloat(document.getElementById('boxH').value) / 100);
-      const gap  = Math.max(0, parseFloat(document.getElementById('gap').value) / 100);
+        while(containerFrameGroup.children.length > 0){ 
+          containerFrameGroup.remove(containerFrameGroup.children[0]); 
+        }
+        if (boxesInstancedMesh) {
+          scene.remove(boxesInstancedMesh);
+          boxesInstancedMesh.geometry.dispose();
+          boxesInstancedMesh.material.dispose();
+          boxesInstancedMesh = null;
+        }
 
-      // 2. Clear old visuals
-      while(containerFrameGroup.children.length > 0){ 
-        containerFrameGroup.remove(containerFrameGroup.children[0]); 
-      }
-      if (boxesInstancedMesh) {
-        scene.remove(boxesInstancedMesh);
-        boxesInstancedMesh.geometry.dispose();
-        boxesInstancedMesh.material.dispose();
-        boxesInstancedMesh = null;
-      }
+        // Render Container Outline
+        const contGeo = new THREE.BoxGeometry(cDim.l, cDim.h, cDim.w);
+        const edges = new THREE.EdgesGeometry(contGeo);
+        const wireframe = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x3b82f6, linewidth: 2 }));
+        const walls = new THREE.Mesh(contGeo, new THREE.MeshBasicMaterial({ color: 0x1e3a8a, transparent: true, opacity: 0.08, depthWrite: false }));
 
-      // 3. Render Transparent Container Boundary Box
-      const contGeo = new THREE.BoxGeometry(cDim.l, cDim.h, cDim.w);
-      const edges = new THREE.EdgesGeometry(contGeo);
-      const lineMaterial = new THREE.LineBasicMaterial({ color: 0x3b82f6, linewidth: 2 });
-      const wireframe = new THREE.LineSegments(edges, lineMaterial);
-      
-      const wallMat = new THREE.MeshBasicMaterial({
-        color: 0x1e3a8a,
-        transparent: true,
-        opacity: 0.1,
-        depthWrite: false
-      });
-      const walls = new THREE.Mesh(contGeo, wallMat);
+        wireframe.position.set(0, cDim.h / 2, 0);
+        walls.position.set(0, cDim.h / 2, 0);
+        containerFrameGroup.add(wireframe);
+        containerFrameGroup.add(walls);
 
-      // Shift position so floor sits directly on Y = 0 and centered in X/Z
-      wireframe.position.set(0, cDim.h / 2, 0);
-      walls.position.set(0, cDim.h / 2, 0);
-      containerFrameGroup.add(wireframe);
-      containerFrameGroup.add(walls);
+        // Calculate Packing
+        const countX = Math.floor((cDim.l + gap) / (boxL + gap));
+        const countY = Math.floor((cDim.h + gap) / (boxH + gap));
+        const countZ = Math.floor((cDim.w + gap) / (boxW + gap));
+        const totalBoxes = Math.max(0, countX * countY * countZ);
 
-      // 4. Calculate Maximum Quantities along each axis
-      // Effective step size per box is dimension + gap
-      const countX = Math.floor((cDim.l + gap) / (boxL + gap));
-      const countY = Math.floor((cDim.h + gap) / (boxH + gap));
-      const countZ = Math.floor((cDim.w + gap) / (boxW + gap));
-      const totalBoxes = Math.max(0, countX * countY * countZ);
+        if (totalBoxes > 0) {
+          const boxGeo = new THREE.BoxGeometry(boxL, boxH, boxW);
+          const boxMat = new THREE.MeshLambertMaterial({ color: 0xd97706, transparent: true, opacity: 0.9 });
+          boxesInstancedMesh = new THREE.InstancedMesh(boxGeo, boxMat, totalBoxes);
+          const dummy = new THREE.Object3D();
 
-      // 5. Render Packed Boxes efficiently with InstancedMesh
-      if (totalBoxes > 0) {
-        const boxGeo = new THREE.BoxGeometry(boxL, boxH, boxW);
-        const boxMat = new THREE.MeshLambertMaterial({ 
-          color: 0xd97706, 
-          transparent: true, 
-          opacity: 0.9 
-        });
+          const startX = -(countX * boxL + (countX - 1) * gap) / 2 + boxL / 2;
+          const startY = boxH / 2;
+          const startZ = -(countZ * boxW + (countZ - 1) * gap) / 2 + boxW / 2;
 
-        boxesInstancedMesh = new THREE.InstancedMesh(boxGeo, boxMat, totalBoxes);
-        const dummy = new THREE.Object3D();
-
-        // Calculate start corners to center the block within the container
-        const totalBlockL = countX * boxL + (countX - 1) * gap;
-        const totalBlockH = countY * boxH + (countY - 1) * gap;
-        const totalBlockW = countZ * boxW + (countZ - 1) * gap;
-
-        const startX = -totalBlockL / 2 + boxL / 2;
-        const startY = boxH / 2; // start from the floor
-        const startZ = -totalBlockW / 2 + boxW / 2;
-
-        let index = 0;
-        for (let x = 0; x < countX; x++) {
-          for (let y = 0; y < countY; y++) {
-            for (let z = 0; z < countZ; z++) {
-              const posX = startX + x * (boxL + gap);
-              const posY = startY + y * (boxH + gap);
-              const posZ = startZ + z * (boxW + gap);
-
-              dummy.position.set(posX, posY, posZ);
-              dummy.updateMatrix();
-              boxesInstancedMesh.setMatrixAt(index++, dummy.matrix);
+          let idx = 0;
+          for (let x = 0; x < countX; x++) {
+            for (let y = 0; y < countY; y++) {
+              for (let z = 0; z < countZ; z++) {
+                dummy.position.set(
+                  startX + x * (boxL + gap),
+                  startY + y * (boxH + gap),
+                  startZ + z * (boxW + gap)
+                );
+                dummy.updateMatrix();
+                boxesInstancedMesh.setMatrixAt(idx++, dummy.matrix);
+              }
             }
           }
+          boxesInstancedMesh.instanceMatrix.needsUpdate = true;
+          scene.add(boxesInstancedMesh);
         }
-        boxesInstancedMesh.instanceMatrix.needsUpdate = true;
-        scene.add(boxesInstancedMesh);
+
+        // Analytics
+        const contVol = cDim.l * cDim.w * cDim.h;
+        const cargoVol = totalBoxes * (boxL * boxW * boxH);
+        document.getElementById('totalBoxes').innerText = totalBoxes.toLocaleString();
+        document.getElementById('gridCount').innerText = `${countX} × ${countZ} × ${countY}`;
+        document.getElementById('containerVol').innerText = `${contVol.toFixed(2)} m³`;
+        document.getElementById('cargoVol').innerText = `${cargoVol.toFixed(2)} m³`;
+        document.getElementById('volUtilization').innerText = `${((cargoVol / contVol) * 100).toFixed(1)}%`;
       }
 
-      // 6. Update Analytics & Text Output
-      const contVolume = cDim.l * cDim.w * cDim.h;
-      const cargoVolume = totalBoxes * (boxL * boxW * boxH);
-      const utilization = (cargoVolume / contVolume) * 100;
+      ['containerType', 'boxL', 'boxW', 'boxH', 'gap'].forEach(id => {
+        document.getElementById(id).addEventListener('input', updateSimulator);
+      });
 
-      document.getElementById('totalBoxes').innerText = totalBoxes.toLocaleString();
-      document.getElementById('gridCount').innerText = `${countX} × ${countZ} × ${countY}`;
-      document.getElementById('containerVol').innerText = `${contVolume.toFixed(2)} m³`;
-      document.getElementById('cargoVol').innerText = `${cargoVolume.toFixed(2)} m³`;
-      document.getElementById('volUtilization').innerText = `${utilization.toFixed(1)}%`;
-    }
+      function onResize() {
+        const w = containerEl.clientWidth || (window.innerWidth - 360);
+        const h = containerEl.clientHeight || window.innerHeight;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+      }
+      window.addEventListener('resize', onResize);
 
-    // Event Listeners for UI
-    ['containerType', 'boxL', 'boxW', 'boxH', 'gap'].forEach(id => {
-      document.getElementById(id).addEventListener('input', updateSimulator);
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+      }
+
+      updateSimulator();
+      animate();
+      setTimeout(onResize, 100);
     });
-
-    window.addEventListener('resize', () => {
-      camera.aspect = containerEl.clientWidth / containerEl.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(containerEl.clientWidth, containerEl.clientHeight);
-    });
-
-    // Render Loop
-    function animate() {
-      requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
-    }
-
-    // Initial Execution
-    updateSimulator();
-    animate();
   </script>
 </body>
 </html>
