@@ -117,8 +117,6 @@
             background-color: var(--md-sys-color-surface);
             cursor: pointer;
         }
-		
-		
 
         .btn-header-shortcut {
             background: var(--md-sys-color-primary);
@@ -220,6 +218,71 @@
         }
         .dropdown-item-label:hover { background-color: var(--md-sys-color-bg); }
         .dropdown-item-label input[type="checkbox"] { width: 14px; height: 14px; accent-color: var(--md-sys-color-accent); margin: 0; }
+
+        /* Saved Orders Custom Dropdown with Delete Option per item */
+        .saved-orders-dropdown-wrap { position: relative; display: inline-block; }
+        .saved-orders-trigger {
+            height: 34px;
+            background: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 6px;
+            padding: 0 10px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--md-sys-color-primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .saved-orders-trigger::after {
+            content: '';
+            width: 0; height: 0;
+            border-left: 3px solid transparent;
+            border-right: 3px solid transparent;
+            border-top: 4px solid var(--md-sys-color-primary);
+        }
+        .saved-orders-panel {
+            display: none;
+            position: absolute;
+            top: 38px;
+            left: 0;
+            min-width: 200px;
+            max-height: 220px;
+            overflow-y: auto;
+            background: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-surface-variant);
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            z-index: 150;
+            padding: 4px 0;
+        }
+        .saved-orders-panel.show { display: block; }
+        .saved-order-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 10px;
+            font-size: 0.72rem;
+            color: var(--md-sys-color-primary);
+            cursor: pointer;
+            gap: 8px;
+        }
+        .saved-order-row:hover { background-color: var(--md-sys-color-bg); }
+        .saved-order-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+        .saved-order-delete-btn {
+            background: transparent;
+            border: none;
+            color: var(--md-sys-color-error);
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 2px 5px;
+            border-radius: 4px;
+            line-height: 1;
+        }
+        .saved-order-delete-btn:hover { background: var(--md-sys-color-error-container); }
 
         /* Sticky Search Filter Header */
         .filter-search-wrapper {
@@ -458,7 +521,7 @@
             margin-top: 2px; 
         }
 
-        .col-id, .col-barcode, .col-stock, .col-actions { display: none; }
+        .col-id, .col-actions { display: none; }
 
         /* Compact Status Indicator Dot */
         .status-dot {
@@ -471,6 +534,7 @@
             flex-shrink: 0;
         }
         .status-dot.green { background-color: #10b981; box-shadow: 0 0 4px #10b981; }
+        .status-dot.orange { background-color: #f59e0b; box-shadow: 0 0 4px #f59e0b; }
         .status-dot.red { background-color: #ef4444; box-shadow: 0 0 4px #ef4444; }
 
         /* Compact Stepper UX */
@@ -556,7 +620,7 @@
         .header-controls-left, .header-controls-right { display: flex; gap: 6px; width: 100%; align-items: center; flex-wrap: wrap; }
         .header-controls-right select { width: calc(50% - 3px); height: 36px; border-radius: 8px; }
         
-        .order-summary-wrapper { display: flex; align-items: center; gap: 6px; width: 100%; justify-content: space-between; }
+        .order-summary-wrapper { display: flex; align-items: center; gap: 6px; width: 100%; justify-content: space-between; flex-wrap: wrap; }
         .text-right { text-align: right; }
         .text-center { text-align: center; }
 
@@ -616,27 +680,26 @@
         .custom-dialog p { margin: 0 0 12px 0; font-size: 0.78rem; color: var(--md-sys-color-text-secondary); line-height: 1.35; }
         .custom-dialog-actions { display: flex; gap: 8px; justify-content: flex-end; }
 
-		
-		.btn-order-delete {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--md-sys-color-error);
-    font-size: 0.85rem;
-    padding: 2px 4px;
-    border-radius: 4px;
-    line-height: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    opacity: 0.7;
-    transition: opacity 0.15s, background-color 0.15s;
-}
-.btn-order-delete:hover {
-    opacity: 1;
-    background-color: var(--md-sys-color-error-container);
-}
+        .btn-order-delete {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--md-sys-color-error);
+            font-size: 0.85rem;
+            padding: 2px 4px;
+            border-radius: 4px;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            opacity: 0.7;
+            transition: opacity 0.15s, background-color 0.15s;
+        }
+        .btn-order-delete:hover {
+            opacity: 1;
+            background-color: var(--md-sys-color-error-container);
+        }
 
         @media (min-width: 768px) {
             body { padding: 14px; }
@@ -704,8 +767,8 @@
                             <div class="header-controls-right">
                                 <select id="statusFilter" onchange="renderTable()">
                                     <option value="All">All Status</option>
-                                    <option value="Active">Active</option>
-                                    <option value="Regular">Regular</option>
+                                    <option value="Active">Active & Regular</option>
+                                    <option value="Regular">Regular Only</option>
                                     <option value="Blocked">Blocked</option>
                                 </select>
 
@@ -713,8 +776,6 @@
                                     <button class="dropdown-trigger-btn" onclick="toggleVisibilityDropdown(event)">Columns</button>
                                     <div class="dropdown-menu-panel" id="columnVisibilityMenu">
                                         <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleId" onchange="toggleColumnVisibility('id', this.checked)"> ID</label>
-                                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleBarcode" onchange="toggleColumnVisibility('barcode', this.checked)"> Barcode</label>
-                                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleStock" onchange="toggleColumnVisibility('stock', this.checked)"> Stock</label>
                                         <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleActions" onchange="toggleColumnVisibility('actions', this.checked)"> Actions</label>
                                     </div>
                                 </div>
@@ -736,6 +797,13 @@
                     </div>
                 </div>
 
+                <!-- Regular Filter Quick Action Bar -->
+                <div id="regularQuickActionPanel" style="display: none; margin-bottom: 8px;">
+                    <button class="btn" style="background: var(--md-sys-color-accent); color: white; width: 100%;" onclick="addAllRegularItems()">
+                        ➕ Add All Filtered Regular Items to Worksheet (Lot-based)
+                    </button>
+                </div>
+
                 <div class="inventory-table-container">
                     <table id="inventoryTable">
                         <thead>
@@ -743,8 +811,6 @@
                                 <th class="col-id" style="width: 8%;">ID</th>
                                 <th style="width: 35%;">Code</th>
                                 <th style="width: 65%;">Description</th>
-                                <th class="col-barcode" style="width: 20%;">Barcode</th>
-                                <th class="col-stock" style="width: 12%;">Stock</th>
                                 <th class="col-actions" style="width: 10%;">Actions</th>
                             </tr>
                         </thead>
@@ -770,8 +836,20 @@
                     <div class="order-tab-header">
                         <div class="order-tab-title">Procurement Order Items</div>
                         <div class="order-summary-wrapper">
-                            <button class="btn btn-excel" onclick="exportToExcel()">📈 Export CSV</button>
-                            <button class="btn" style="background:var(--md-sys-color-surface-variant); color:var(--md-sys-color-primary);" onclick="confirmClearTransactions()">Clear</button>
+                            <!-- Custom Saved Orders Dropdown Panel with inline delete buttons -->
+                            <div style="display: flex; gap: 4px; align-items: center; flex-wrap: wrap;">
+                                <div class="saved-orders-dropdown-wrap">
+                                    <div class="saved-orders-trigger" onclick="toggleSavedOrdersPanel(event)">
+                                        <span id="savedOrdersTriggerLabel">📂 Saved Orders</span>
+                                    </div>
+                                    <div class="saved-orders-panel" id="savedOrdersMenuPanel">
+                                        <div id="savedOrdersListContainer"></div>
+                                    </div>
+                                </div>
+                                <button class="btn" style="background: var(--md-sys-color-surface-variant); color: var(--md-sys-color-primary);" onclick="promptSaveCurrentOrder()">💾 Save</button>
+                                <button class="btn btn-excel" onclick="exportToExcel()">📈 Export CSV</button>
+                                <button class="btn" style="background:var(--md-sys-color-surface-variant); color:var(--md-sys-color-primary);" onclick="confirmClearTransactions()">Clear</button>
+                            </div>
                         </div>
                     </div>
                     <div class="table-container">
@@ -888,15 +966,13 @@
 <script>
     let inventory = JSON.parse(localStorage.getItem('flamingo_db_v3')) || [];
     let transactions = JSON.parse(localStorage.getItem('flamingo_trans_v3')) || [];
+    let savedOrdersMap = JSON.parse(localStorage.getItem('flamingo_saved_orders_map')) || {};
     let editingUniqueRef = null;
     let searchDebounceTimer = null;
     let pendingConfirmCallback = null;
 
-    // Stock hidden by default
     let visibleColumns = {
         id: false,
-        barcode: false,
-        stock: false,
         actions: false
     };
 
@@ -922,7 +998,9 @@
         themeSelector: document.getElementById('themeSelector'),
         orderCountBadge: document.getElementById('orderCountBadge'),
         btnSaveItem: document.getElementById('btnSaveItem'),
-        btnCancelEdit: document.getElementById('btnCancelEdit')
+        btnCancelEdit: document.getElementById('btnCancelEdit'),
+        savedOrdersListContainer: document.getElementById('savedOrdersListContainer'),
+        regularQuickActionPanel: document.getElementById('regularQuickActionPanel')
     };
 
     const calcEl = {
@@ -946,17 +1024,19 @@
         const savedTheme = localStorage.getItem('flamingo_app_theme') || 'default';
         setTheme(savedTheme);
 
-        // Keep stock unchecked by default
-        const chkStock = document.getElementById('chkToggleStock');
-        if (chkStock) chkStock.checked = false;
-        toggleColumnVisibility('stock', false);
-
         renderTable(); 
         renderTransactions(); 
+        updateSavedOrdersDropdown();
         
-        document.addEventListener("click", () => {
+        document.addEventListener("click", (e) => {
             const menu = document.getElementById("columnVisibilityMenu");
             if(menu) menu.classList.remove("show");
+
+            const savedOrdersMenu = document.getElementById("savedOrdersMenuPanel");
+            const savedOrdersWrap = document.querySelector(".saved-orders-dropdown-wrap");
+            if (savedOrdersMenu && savedOrdersWrap && !savedOrdersWrap.contains(e.target)) {
+                savedOrdersMenu.classList.remove("show");
+            }
         });
 
         document.addEventListener("keydown", (e) => {
@@ -969,6 +1049,8 @@
                 } else {
                     const menu = document.getElementById("columnVisibilityMenu");
                     if (menu) menu.classList.remove("show");
+                    const savedMenu = document.getElementById("savedOrdersMenuPanel");
+                    if (savedMenu) savedMenu.classList.remove("show");
                     if (document.activeElement === elements.tableFilter) {
                         clearSearchField();
                     }
@@ -1054,6 +1136,12 @@
         event.stopPropagation();
         const menu = document.getElementById("columnVisibilityMenu");
         if(menu) menu.classList.toggle("show");
+    }
+
+    function toggleSavedOrdersPanel(event) {
+        event.stopPropagation();
+        const panel = document.getElementById("savedOrdersMenuPanel");
+        if (panel) panel.classList.toggle("show");
     }
 
     function stopPropagation(event) {
@@ -1191,8 +1279,19 @@
         const searchTokens = filterInput.split(/\s+/).filter(t => t.length > 0);
         const stat = elements.statusFilter.value;
 
+        if (elements.regularQuickActionPanel) {
+            elements.regularQuickActionPanel.style.display = (stat === "Regular") ? "block" : "none";
+        }
+
         return inventory.filter(i => {
-            if (stat !== "All" && i.status !== stat) return false;
+            if (stat === "Active") {
+                if (i.status !== "Active" && i.status !== "Regular") return false;
+            } else if (stat === "Regular") {
+                if (i.status !== "Regular") return false;
+            } else if (stat === "Blocked") {
+                if (i.status !== "Blocked") return false;
+            }
+
             if (searchTokens.length === 0) return true;
             const itemString = `${i.code} ${i.barcode} ${i.desc} ${i.id}`.toLowerCase();
             return searchTokens.every(token => itemString.includes(token));
@@ -1204,16 +1303,16 @@
         let htmlBuffer = '';
 
         filtered.forEach(i => {
-            // Green dot for Active and Regular, Red dot for Blocked
-            const dotClass = i.status === 'Blocked' ? 'status-dot red' : 'status-dot green';
+            let dotClass = 'status-dot green';
+            if (i.status === 'Blocked') dotClass = 'status-dot red';
+            else if (i.status === 'Regular') dotClass = 'status-dot orange';
             
             const idStyle = visibleColumns.id ? 'table-cell' : 'none';
-            const barcodeStyle = visibleColumns.barcode ? 'table-cell' : 'none';
-            const stockStyle = visibleColumns.stock ? 'table-cell' : 'none';
             const actionsStyle = visibleColumns.actions ? 'table-cell' : 'none';
 
             const priceNum = Number(i.price).toFixed(2);
             const rspNum = Number(i.rsp).toFixed(2);
+            const stockVal = i.stock || "0";
 
             htmlBuffer += `
                 <tr>
@@ -1227,14 +1326,12 @@
                             <div>
                                 <span class="${dotClass}" title="${i.status}"></span>${i.desc}
                                 <span class="sub-meta-text">
-                                    <span style="color:var(--price-highlight-text); font-weight:700;">${priceNum}</span> | ${rspNum}
+                                    <span style="color:var(--price-highlight-text); font-weight:700;">${priceNum}</span> | ${rspNum} (${stockVal})
                                 </span>
                             </div>
                             <button class="btn btn-plus" title="Add to Order Worksheet" onclick="addTrans('${i.code}')">➕</button>
                         </div>
                     </td>
-                    <td class="col-barcode" style="display: ${barcodeStyle}; font-family:'JetBrains Mono', monospace;">${i.barcode}</td>
-                    <td class="col-stock" style="display: ${stockStyle};"><strong>${i.stock}</strong></td>
                     <td class="col-actions" style="display: ${actionsStyle};">
                         <div class="action-cell">
                             <button class="btn btn-edit" title="Edit" onclick="editItem('${i.barcode}')">✏️</button>
@@ -1270,6 +1367,36 @@
 
         syncTransactions();
         showToast(`+${lotIncrement} added: ${item.code}`, "success");
+    }
+
+    function addAllRegularItems() {
+        const filtered = getFilteredInventory();
+        if (filtered.length === 0) {
+            showToast("No regular items matching current filter", "error");
+            return;
+        }
+
+        const lotIncrement = parseInt(elements.lotSizeSelector.value) || 12;
+
+        filtered.forEach(item => {
+            if (item.status === "Regular") {
+                const existingIndex = transactions.findIndex(t => t.code === item.code);
+                if (existingIndex !== -1) {
+                    transactions[existingIndex].qty = (Number(transactions[existingIndex].qty) || 0) + lotIncrement;
+                } else {
+                    transactions.push({
+                        code: item.code,
+                        desc: item.desc,
+                        qty: lotIncrement,
+                        price: item.price,
+                        ref: Date.now() + Math.random()
+                    });
+                }
+            }
+        });
+
+        syncTransactions();
+        showToast(`Added all regular items (Lot: ${lotIncrement})`, "success");
     }
 
     function changeQtyStep(ref, delta) {
@@ -1310,40 +1437,40 @@
     }
 
     function renderTransactions() {
-    if (elements.orderCountBadge) {
-        elements.orderCountBadge.innerText = transactions.length;
-    }
+        if (elements.orderCountBadge) {
+            elements.orderCountBadge.innerText = transactions.length;
+        }
 
-    elements.transactionTbody.innerHTML = transactions.map((t, index) => {
-        const currentItem = inventory.find(i => i.code === t.code);
-        const unitPrice = currentItem ? Number(currentItem.price) : (Number(t.price) || 0);
-        const lineTotal = unitPrice * Number(t.qty);
+        elements.transactionTbody.innerHTML = transactions.map((t, index) => {
+            const currentItem = inventory.find(i => i.code === t.code);
+            const unitPrice = currentItem ? Number(currentItem.price) : (Number(t.price) || 0);
+            const lineTotal = unitPrice * Number(t.qty);
+            
+            return `
+                <tr>
+                    <td class="text-center" style="color: var(--md-sys-color-text-secondary); font-weight: 700; font-size: 0.7rem;">${index + 1}</td>
+                    <td style="font-weight:700; font-family:'JetBrains Mono', monospace; font-size:0.75rem;">${t.code}</td>
+                    <td class="wrap-cell">
+                        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                            <span>${t.desc}</span>
+                            <button class="btn-order-delete" title="Remove Item" onclick="remTrans(${t.ref})">✕</button>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <div class="stepper-container">
+                            <button class="stepper-btn" onclick="changeQtyStep(${t.ref}, -1)">−</button>
+                            <input type="number" id="qty-input-${t.ref}" class="stepper-input" value="${t.qty}" min="1" onchange="updateQty(${t.ref}, this.value)">
+                            <button class="stepper-btn" onclick="changeQtyStep(${t.ref}, 1)">+</button>
+                        </div>
+                    </td>
+                    <td class="text-right" style="font-weight:700; color:var(--md-sys-color-primary); font-family:'JetBrains Mono', monospace;">
+                        <span id="row-total-${t.ref}">${lineTotal.toFixed(2)}</span>
+                    </td>
+                </tr>`;
+        }).join('');
         
-        return `
-            <tr>
-                <td class="text-center" style="color: var(--md-sys-color-text-secondary); font-weight: 700; font-size: 0.7rem;">${index + 1}</td>
-                <td style="font-weight:700; font-family:'JetBrains Mono', monospace; font-size:0.75rem;">${t.code}</td>
-                <td class="wrap-cell">
-                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
-                        <span>${t.desc}</span>
-                        <button class="btn-order-delete" title="Remove Item" onclick="remTrans(${t.ref})">✕</button>
-                    </div>
-                </td>
-                <td class="text-center">
-                    <div class="stepper-container">
-                        <button class="stepper-btn" onclick="changeQtyStep(${t.ref}, -1)">−</button>
-                        <input type="number" id="qty-input-${t.ref}" class="stepper-input" value="${t.qty}" min="1" onchange="updateQty(${t.ref}, this.value)">
-                        <button class="stepper-btn" onclick="changeQtyStep(${t.ref}, 1)">+</button>
-                    </div>
-                </td>
-                <td class="text-right" style="font-weight:700; color:var(--md-sys-color-primary); font-family:'JetBrains Mono', monospace;">
-                    <span id="row-total-${t.ref}">${lineTotal.toFixed(2)}</span>
-                </td>
-            </tr>`;
-    }).join('');
-    
-    calculateGrandTotal();
-}
+        calculateGrandTotal();
+    }
 
     function calculateGrandTotal() {
         let subtotal = 0;
@@ -1386,18 +1513,76 @@
         });
     }
 
+    // Multiple Saved Orders Logic with In-dropdown Delete Buttons
+    function promptSaveCurrentOrder() {
+        if (!transactions.length) {
+            showToast("Worksheet is empty!", "error");
+            return;
+        }
+        let orderName = prompt("Enter a name for this saved order:", "Order_" + new Date().toLocaleDateString());
+        if (!orderName) return;
+        orderName = orderName.trim();
+        
+        savedOrdersMap[orderName] = JSON.parse(JSON.stringify(transactions));
+        localStorage.setItem('flamingo_saved_orders_map', JSON.stringify(savedOrdersMap));
+        updateSavedOrdersDropdown();
+        showToast(`Order "${orderName}" saved successfully!`, "success");
+    }
+
+    function updateSavedOrdersDropdown() {
+        if (!elements.savedOrdersListContainer) return;
+        let keys = Object.keys(savedOrdersMap);
+        
+        if (keys.length === 0) {
+            elements.savedOrdersListContainer.innerHTML = '<div style="padding: 8px 10px; font-size: 0.72rem; color: var(--md-sys-color-text-secondary); text-align: center;">No saved orders</div>';
+            return;
+        }
+
+        let html = '';
+        keys.forEach(k => {
+            html += `
+                <div class="saved-order-row">
+                    <span class="saved-order-name" onclick="loadSavedOrder('${k.replace(/'/g, "\\'")}')" title="Click to load">${k} (${savedOrdersMap[k].length})</span>
+                    <button class="saved-order-delete-btn" title="Delete Saved Order" onclick="deleteSavedOrder(event, '${k.replace(/'/g, "\\'")}')">✕</button>
+                </div>`;
+        });
+        elements.savedOrdersListContainer.innerHTML = html;
+    }
+
+    function loadSavedOrder(orderName) {
+        if (savedOrdersMap[orderName]) {
+            transactions = JSON.parse(JSON.stringify(savedOrdersMap[orderName]));
+            syncTransactions();
+            showToast(`Loaded order: "${orderName}"`, "success");
+        }
+        const panel = document.getElementById("savedOrdersMenuPanel");
+        if (panel) panel.classList.remove("show");
+    }
+
+    function deleteSavedOrder(event, orderName) {
+        event.stopPropagation();
+        openConfirmDialog("Delete Saved Order", `Are you sure you want to delete the saved order "${orderName}"?`, () => {
+            delete savedOrdersMap[orderName];
+            localStorage.setItem('flamingo_saved_orders_map', JSON.stringify(savedOrdersMap));
+            updateSavedOrdersDropdown();
+            showToast(`Saved order "${orderName}" deleted`, "info");
+        });
+    }
+
+    // Export Filtered Backup Only
     function exportInventoryCSV() {
-        if (!inventory.length) return showToast("Inventory is empty!", "error");
+        const filtered = getFilteredInventory();
+        if (!filtered.length) return showToast("No inventory items matching current filter to export!", "error");
         let csv = "ID,Code,Barcode,Description,Price,RSP,Stock,Status\n";
-        inventory.forEach(i => {
+        filtered.forEach(i => {
             csv += `"${i.id}","${i.code}","${i.barcode}","${i.desc}","${i.price}","${i.rsp}","${i.stock}","${i.status}"\n`;
         });
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = `Inventory_Backup_${new Date().toLocaleDateString()}.csv`;
+        link.download = `Filtered_Inventory_Backup_${new Date().toLocaleDateString()}.csv`;
         link.click();
-        showToast("Inventory exported", "success");
+        showToast("Filtered inventory exported", "success");
     }
 
     function exportToExcel() {
