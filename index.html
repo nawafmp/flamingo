@@ -7,7 +7,7 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <style>
@@ -71,13 +71,18 @@
             --card-shadow-hover: 0 10px 20px rgba(17, 63, 38, 0.06);
         }
 
+        /* Font Families */
+        body.font-jakarta { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; }
+        body.font-inter { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        body.font-roboto { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif; }
+        body.font-mono { font-family: 'JetBrains Mono', monospace; }
+
         * {
             box-sizing: border-box;
             transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body { 
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; 
             background: var(--md-sys-color-bg); 
             margin: 0; 
             padding: 8px; 
@@ -624,6 +629,31 @@
         .text-right { text-align: right; }
         .text-center { text-align: center; }
 
+        /* Floating Scroll Arrow Button */
+        .floating-scroll-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--md-sys-color-primary);
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 2400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .floating-scroll-btn:hover {
+            transform: scale(1.08);
+        }
+
         /* Toast Notifications */
         #toastContainer {
             position: fixed;
@@ -741,6 +771,15 @@
                 </select>
             </div>
 
+            <div class="theme-dropdown-container">
+                <select id="fontSelector" class="theme-select" onchange="setFont(this.value)">
+                    <option value="jakarta">Jakarta</option>
+                    <option value="inter">Inter</option>
+                    <option value="roboto">Roboto</option>
+                    <option value="mono">Mono</option>
+                </select>
+            </div>
+
             <button class="btn btn-header-shortcut" onclick="scrollToOrders()">Orders</button>
         </div>
     </div>
@@ -787,7 +826,7 @@
                 <div class="filter-search-wrapper" id="searchFieldWrapper">
                     <div class="filter-search-container">
                         <span class="search-icon-prefix">🔍</span>
-                        <input type="text" id="tableFilter" placeholder="Search Code, Name or Barcode..." oninput="debouncedRenderTable()" onkeydown="handleSearchKeydown(event)" onfocus="focusAndScrollSearch()">
+                        <input type="text" id="tableFilter" placeholder="Search Code, Name or Barcode..." oninput="debouncedRenderTable()" onkeydown="handleSearchKeydown(event)">
                         <button class="btn-clear-search" onclick="clearSearchField()" title="Clear Search">✕</button>
                         <button class="btn-scan-barcode" onclick="triggerBarcodeScanner()" title="Scan Barcode">
                             <svg viewBox="0 0 24 24">
@@ -941,6 +980,9 @@
     </div>
 </div>
 
+<!-- Floating Scroll Arrow Button -->
+<button id="floatingScrollBtn" class="floating-scroll-btn" onclick="handleFloatingScroll()" title="Scroll">↓</button>
+
 <div id="toastContainer"></div>
 
 <!-- Confirmation Modal Dialog -->
@@ -996,6 +1038,7 @@
         csvInput: document.getElementById('csvInput'),
         toolkitExcelInput: document.getElementById('toolkitExcelInput'),
         themeSelector: document.getElementById('themeSelector'),
+        fontSelector: document.getElementById('fontSelector'),
         orderCountBadge: document.getElementById('orderCountBadge'),
         btnSaveItem: document.getElementById('btnSaveItem'),
         btnCancelEdit: document.getElementById('btnCancelEdit'),
@@ -1024,9 +1067,13 @@
         const savedTheme = localStorage.getItem('flamingo_app_theme') || 'default';
         setTheme(savedTheme);
 
+        const savedFont = localStorage.getItem('flamingo_app_font') || 'jakarta';
+        setFont(savedFont);
+
         renderTable(); 
         renderTransactions(); 
         updateSavedOrdersDropdown();
+        updateFloatingScrollButton();
         
         document.addEventListener("click", (e) => {
             const menu = document.getElementById("columnVisibilityMenu");
@@ -1037,6 +1084,10 @@
             if (savedOrdersMenu && savedOrdersWrap && !savedOrdersWrap.contains(e.target)) {
                 savedOrdersMenu.classList.remove("show");
             }
+        });
+
+        window.addEventListener("scroll", () => {
+            updateFloatingScrollButton();
         });
 
         document.addEventListener("keydown", (e) => {
@@ -1114,6 +1165,41 @@
         if (elements.themeSelector) elements.themeSelector.value = themeName;
     }
 
+    function setFont(fontName) {
+        document.body.classList.remove('font-jakarta', 'font-inter', 'font-roboto', 'font-mono');
+        document.body.classList.add('font-' + fontName);
+        localStorage.setItem('flamingo_app_font', fontName);
+        if (elements.fontSelector) elements.fontSelector.value = fontName;
+    }
+
+    function handleFloatingScroll() {
+        const scrollMiddle = (document.documentElement.scrollHeight - window.innerHeight) / 2;
+        if (window.scrollY < scrollMiddle) {
+            window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    function updateFloatingScrollButton() {
+        const btn = document.getElementById('floatingScrollBtn');
+        if (!btn) return;
+        const totalScrollable = document.documentElement.scrollHeight - window.innerHeight;
+        if (totalScrollable <= 0) {
+            btn.style.display = 'none';
+            return;
+        }
+        btn.style.display = 'flex';
+        const scrollMiddle = totalScrollable / 2;
+        if (window.scrollY < scrollMiddle) {
+            btn.innerText = '↓';
+            btn.title = 'Scroll to bottom';
+        } else {
+            btn.innerText = '↑';
+            btn.title = 'Scroll to top';
+        }
+    }
+
     function toggleControlPanel() {
         const panel = document.getElementById('inventoryControlPanel');
         const btn = document.getElementById('btnToggleControls');
@@ -1153,15 +1239,6 @@
             elements.tableFilter.value = "";
             renderTable();
             elements.tableFilter.focus();
-        }
-    }
-
-    function focusAndScrollSearch() {
-        const target = document.getElementById('searchFieldWrapper');
-        if (target) {
-            setTimeout(() => {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 250);
         }
     }
 
@@ -1677,7 +1754,6 @@
                 elements.tableFilter.value = decodedText.trim();
                 renderTable();
                 closeBarcodeScanner();
-                focusAndScrollSearch();
             },
             () => {}
         ).catch(err => {
