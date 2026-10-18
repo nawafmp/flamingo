@@ -71,6 +71,63 @@
             --card-shadow-hover: 0 10px 20px rgba(17, 63, 38, 0.06);
         }
 
+        /* Dark Green Theme (#006039) */
+        body.theme-darkgreen {
+            --md-sys-color-bg: #f2f7f4; 
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-trans: rgba(255, 255, 255, 0.92);
+            --md-sys-color-surface-variant: #d5e5dc;
+            --md-sys-color-primary: #006039; 
+            --md-sys-color-primary-container: #c8e6d9; 
+            --md-sys-color-on-primary-container: #004d2e;
+            --md-sys-color-accent: #006039; 
+            --md-sys-color-accent-container: #d0eddF; 
+            --md-sys-color-outline: #b9d5c7; 
+            --md-sys-color-text: #004d2e;
+            --md-sys-color-text-secondary: #006039;
+            --price-highlight-text: #006039;
+            --card-shadow: 0 4px 12px rgba(0, 96, 57, 0.05);
+            --card-shadow-hover: 0 10px 20px rgba(0, 96, 57, 0.08);
+        }
+
+        /* Black Theme */
+        body.theme-black {
+            --md-sys-color-bg: #f4f4f5; 
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-trans: rgba(255, 255, 255, 0.92);
+            --md-sys-color-surface-variant: #e4e4e7;
+            --md-sys-color-primary: #09090b; 
+            --md-sys-color-primary-container: #e4e4e7; 
+            --md-sys-color-on-primary-container: #18181b;
+            --md-sys-color-accent: #18181b; 
+            --md-sys-color-accent-container: #d4d4d8; 
+            --md-sys-color-outline: #a1a1aa; 
+            --md-sys-color-text: #09090b;
+            --md-sys-color-text-secondary: #52525b;
+            --price-highlight-text: #09090b;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dark Blue Theme */
+        body.theme-darkblue {
+            --md-sys-color-bg: #f0f4f9; 
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-trans: rgba(255, 255, 255, 0.92);
+            --md-sys-color-surface-variant: #dbe4ef;
+            --md-sys-color-primary: #0f2744; 
+            --md-sys-color-primary-container: #cfe0f5; 
+            --md-sys-color-on-primary-container: #0b1f36;
+            --md-sys-color-accent: #174276; 
+            --md-sys-color-accent-container: #d5e5fa; 
+            --md-sys-color-outline: #aec3dc; 
+            --md-sys-color-text: #0f2744;
+            --md-sys-color-text-secondary: #2b4c73;
+            --price-highlight-text: #174276;
+            --card-shadow: 0 4px 12px rgba(15, 39, 68, 0.05);
+            --card-shadow-hover: 0 10px 20px rgba(15, 39, 68, 0.08);
+        }
+
         /* Font Families */
         body.font-jakarta { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; }
         body.font-inter { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
@@ -105,33 +162,175 @@
             border-radius: 12px; 
             border: 1px solid var(--md-sys-color-surface-variant);
             box-shadow: var(--card-shadow);
+            position: relative;
+            z-index: 500;
             flex-wrap: wrap;
             gap: 8px;
         }
         .header h2 { margin: 0; font-size: 0.95rem; color: var(--md-sys-color-primary); font-weight: 700; display: flex; align-items: center; gap: 6px; }
-
-        .theme-dropdown-container { display: inline-flex; align-items: center; gap: 6px; }
-        .theme-select {
-            height: 32px;
-            padding: 0 24px 0 8px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--md-sys-color-primary);
-            border: 1px solid var(--md-sys-color-outline);
-            border-radius: 8px;
-            background-color: var(--md-sys-color-surface);
-            cursor: pointer;
-        }
 
         .btn-header-shortcut {
             background: var(--md-sys-color-primary);
             color: #ffffff;
             min-height: 32px !important;
             height: 32px;
-            padding: 0 10px !important;
+            padding: 0 12px !important;
             font-size: 0.75rem !important;
             border-radius: 8px;
         }
+
+        /* Actions Dropdown Wrapper in Header */
+        .header-actions-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .btn-toggle-actions {
+            background: var(--md-sys-color-surface-variant);
+            border: none;
+            color: var(--md-sys-color-primary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 0 12px;
+            height: 32px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            gap: 4px;
+        }
+        .btn-toggle-actions:hover {
+            filter: brightness(0.96);
+        }
+
+        .actions-popover-panel {
+            display: none;
+            position: absolute;
+            top: 38px;
+            right: 0;
+            width: min(340px, 92vw);
+            background: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-surface-variant);
+            border-radius: 12px;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
+            z-index: 1000;
+            padding: 10px;
+        }
+        .actions-popover-panel.show {
+            display: block;
+        }
+
+        /* 2-Control Grid: Equal Width in Every Row */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            width: 100%;
+        }
+
+        .actions-grid .btn,
+        .actions-grid .ctrl-item,
+        .actions-grid .dropdown-trigger-btn {
+            width: 100% !important;
+            height: 34px !important;
+            min-height: 34px !important;
+            margin: 0 !important;
+            padding: 0 8px !important;
+            font-size: 0.74rem !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-sizing: border-box !important;
+            border-radius: 8px !important;
+        }
+
+        .actions-select-unit {
+            width: 100%;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--md-sys-color-bg);
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 8px;
+            padding: 0 6px;
+            box-sizing: border-box;
+        }
+        .actions-select-unit label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--md-sys-color-text-secondary);
+            margin: 0;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+        .actions-select-unit select {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: transparent;
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: var(--md-sys-color-primary);
+            cursor: pointer;
+            padding: 0 18px 0 2px;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f172a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 2px center;
+            background-size: 10px;
+        }
+
+        .columns-panel-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .dropdown-trigger-btn {
+            background: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-outline);
+            font-weight: 600;
+            color: var(--md-sys-color-primary);
+            cursor: pointer;
+            justify-content: space-between !important;
+        }
+        .dropdown-trigger-btn::after {
+            content: '';
+            width: 0; height: 0;
+            border-left: 3px solid transparent;
+            border-right: 3px solid transparent;
+            border-top: 4px solid var(--md-sys-color-primary);
+            margin-left: 6px;
+        }
+        .dropdown-menu-panel {
+            display: none;
+            position: absolute;
+            top: 38px;
+            left: 0;
+            width: 160px;
+            background: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-surface-variant);
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            z-index: 1100;
+            padding: 4px 0;
+        }
+        .dropdown-menu-panel.show { display: block; }
+        .dropdown-item-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            font-size: 0.74rem;
+            font-weight: 500;
+            color: var(--md-sys-color-primary);
+            cursor: pointer;
+            margin: 0;
+        }
+        .dropdown-item-label:hover { background-color: var(--md-sys-color-bg); }
+        .dropdown-item-label input[type="checkbox"] { width: 14px; height: 14px; accent-color: var(--md-sys-color-accent); margin: 0; }
 
         .workspace-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
         .top-full, .bottom-full { width: 100%; }
@@ -147,82 +346,15 @@
         h3 { 
             margin-top: 0; 
             color: var(--md-sys-color-primary); 
-            font-size: 0.78rem; 
+            font-size: 0.82rem; 
             border-bottom: 1px solid var(--md-sys-color-surface-variant); 
             padding-bottom: 8px; 
-            letter-spacing: 0.04em; 
+            letter-spacing: 0.02em; 
             display: flex; 
-            flex-direction: column;
-            gap: 6px;
-            font-weight: 700;
-        }
-
-        .inventory-head-container { display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; }
-        .btn-toggle-controls {
-            background: var(--md-sys-color-surface-variant);
-            border: none;
-            color: var(--md-sys-color-primary);
-            font-size: 0.75rem;
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 6px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-        }
-
-        .column-visibility-dropdown-container { position: relative; display: inline-block; width: 100%; flex: 1; }
-        .dropdown-trigger-btn {
-            width: 100%;
-            height: 36px;
-            background: var(--md-sys-color-surface);
-            border: 1px solid var(--md-sys-color-outline);
-            border-radius: 8px;
-            padding: 0 10px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--md-sys-color-primary);
-            display: flex;
             align-items: center;
             justify-content: space-between;
-            cursor: pointer;
-            white-space: nowrap;
+            font-weight: 700;
         }
-        .dropdown-trigger-btn::after {
-            content: '';
-            width: 0; height: 0;
-            border-left: 3px solid transparent;
-            border-right: 3px solid transparent;
-            border-top: 4px solid var(--md-sys-color-primary);
-            margin-left: 6px;
-        }
-        .dropdown-menu-panel {
-            display: none;
-            position: absolute;
-            top: 40px;
-            right: 0;
-            width: 180px;
-            background: var(--md-sys-color-surface);
-            border: 1px solid var(--md-sys-color-surface-variant);
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-            z-index: 110;
-            padding: 6px 0;
-        }
-        .dropdown-menu-panel.show { display: block; }
-        .dropdown-item-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 12px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--md-sys-color-primary);
-            cursor: pointer;
-        }
-        .dropdown-item-label:hover { background-color: var(--md-sys-color-bg); }
-        .dropdown-item-label input[type="checkbox"] { width: 14px; height: 14px; accent-color: var(--md-sys-color-accent); margin: 0; }
 
         /* Saved Orders Custom Dropdown with Delete Option per item */
         .saved-orders-dropdown-wrap { position: relative; display: inline-block; }
@@ -611,19 +743,8 @@
         .btn-excel { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); font-weight: 700; }
         .btn-export-all { background: var(--md-sys-color-primary); color: white; }
 
-        .lot-selector-wrap { display: flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 600; }
-        .lot-select { height: 32px; padding: 0 20px 0 6px; font-size: 0.72rem; border-radius: 6px; border: 1px solid var(--md-sys-color-outline); }
-
         .action-cell { display: flex; gap: 4px; align-items: center; }
         .desc-flex-cell { display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; }
-        
-        .inventory-head-flex { display: flex; flex-direction: column; width: 100%; gap: 6px; }
-        .inventory-title-centered { font-weight: 700; font-size: 0.85rem; color: var(--md-sys-color-primary); }
-        
-        .collapsible-control-panel { display: flex; flex-direction: column; gap: 6px; width: 100%; }
-        .collapsible-control-panel.hidden { display: none; }
-        .header-controls-left, .header-controls-right { display: flex; gap: 6px; width: 100%; align-items: center; flex-wrap: wrap; }
-        .header-controls-right select { width: calc(50% - 3px); height: 36px; border-radius: 8px; }
         
         .order-summary-wrapper { display: flex; align-items: center; gap: 6px; width: 100%; justify-content: space-between; flex-wrap: wrap; }
         .text-right { text-align: right; }
@@ -733,12 +854,6 @@
 
         @media (min-width: 768px) {
             body { padding: 14px; }
-            .inventory-head-flex { flex-direction: row; justify-content: space-between; align-items: center; }
-            .collapsible-control-panel { flex-direction: row; justify-content: space-between; align-items: center; }
-            .header-controls-left { width: auto; }
-            .header-controls-right { width: auto; flex-wrap: nowrap; }
-            .header-controls-right select { width: 130px; }
-            .column-visibility-dropdown-container { width: 130px; }
             .form-grid { flex-direction: row; flex-wrap: wrap; }
             .form-unit { flex: 1 1 calc(25% - 10px); }
             .order-tab-header { flex-direction: row; justify-content: space-between; align-items: center; }
@@ -753,31 +868,80 @@
         <h2>📦 ORDER FORM</h2>
         
         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <div class="lot-selector-wrap">
-                <label style="margin: 0;">Lot:</label>
-                <select id="lotSizeSelector" class="lot-select">
-                    <option value="1">1 pc</option>
-                    <option value="6">6 pcs</option>
-                    <option value="12" selected>12 pcs</option>
-                    <option value="24">24 pcs</option>
-                </select>
-            </div>
+            <!-- Actions Dropdown containing Lot, Theme, Font, CSV, and Controls -->
+            <div class="header-actions-wrapper">
+                <button class="btn-toggle-actions" id="btnToggleControls" onclick="toggleControlPanel(event)" title="Toggle Action Panel">
+                    ⚙️ Actions ▼
+                </button>
+                
+                <div class="actions-popover-panel" id="actionsPopoverMenu">
+                    <div class="actions-grid">
+                        <!-- Row 1: Lot & Theme -->
+                        <div class="actions-select-unit">
+                            <label>Lot:</label>
+                            <select id="lotSizeSelector">
+                                <option value="1">1 pc</option>
+                                <option value="6">6 pcs</option>
+                                <option value="12" selected>12 pcs</option>
+                                <option value="24">24 pcs</option>
+                            </select>
+                        </div>
 
-            <div class="theme-dropdown-container">
-                <select id="themeSelector" class="theme-select" onchange="setTheme(this.value)">
-                    <option value="default">Ocean</option>
-                    <option value="flamingo">Flamingo</option>
-                    <option value="forest">Forest</option>
-                </select>
-            </div>
+                        <div class="actions-select-unit">
+                            <label>Theme:</label>
+                            <select id="themeSelector" onchange="setTheme(this.value)">
+                                <option value="default">Ocean</option>
+                                <option value="darkgreen">Dark Green</option>
+                                <option value="black">Black</option>
+                                <option value="darkblue">Dark Blue</option>
+                                <option value="flamingo">Flamingo</option>
+                                <option value="forest">Forest</option>
+                            </select>
+                        </div>
 
-            <div class="theme-dropdown-container">
-                <select id="fontSelector" class="theme-select" onchange="setFont(this.value)">
-                    <option value="jakarta">Jakarta</option>
-                    <option value="inter">Inter</option>
-                    <option value="roboto">Roboto</option>
-                    <option value="mono">Mono</option>
-                </select>
+                        <!-- Row 2: Font & Status Filter -->
+                        <div class="actions-select-unit">
+                            <label>Font:</label>
+                            <select id="fontSelector" onchange="setFont(this.value)">
+                                <option value="jakarta">Jakarta</option>
+                                <option value="inter">Inter</option>
+                                <option value="roboto">Roboto</option>
+                                <option value="mono">Mono</option>
+                            </select>
+                        </div>
+
+                        <div class="actions-select-unit">
+                            <label>Status:</label>
+                            <select id="statusFilter" onchange="renderTable()">
+                                <option value="All">All Status</option>
+                                <option value="Active">Active & Regular</option>
+                                <option value="Regular">Regular Only</option>
+                                <option value="Blocked">Blocked</option>
+                            </select>
+                        </div>
+
+                        <!-- Row 3: CSV Import & Export -->
+                        <label class="btn btn-excel ctrl-item" title="Import CSV" style="cursor: pointer;">
+                            📊 Import
+                            <input type="file" id="csvInput" accept=".csv" style="display:none;" onchange="importCSV(event)">
+                        </label>
+                        <button class="btn btn-export-all ctrl-item" onclick="exportInventoryCSV()">💾 Export</button>
+
+                        <!-- Row 4: Columns Dropdown & Clear Catalog -->
+                        <div class="columns-panel-wrapper">
+                            <button class="dropdown-trigger-btn" onclick="toggleVisibilityDropdown(event)">Columns</button>
+                            <div class="dropdown-menu-panel" id="columnVisibilityMenu">
+                                <label class="dropdown-item-label" onclick="stopPropagation(event)">
+                                    <input type="checkbox" id="chkToggleId" onchange="toggleColumnVisibility('id', this.checked)"> ID
+                                </label>
+                                <label class="dropdown-item-label" onclick="stopPropagation(event)">
+                                    <input type="checkbox" id="chkToggleActions" onchange="toggleColumnVisibility('actions', this.checked)"> Actions
+                                </label>
+                            </div>
+                        </div>
+                        <button class="btn ctrl-item" style="background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="confirmClearInventory()">🗑️ Clear</button>
+                    </div>
+                </div>
             </div>
 
             <button class="btn btn-header-shortcut" onclick="scrollToOrders()">Orders</button>
@@ -788,39 +952,7 @@
         <div class="bottom-full">
             <div class="card">
                 <h3>
-                    <div class="inventory-head-flex">
-                        <div class="inventory-head-container">
-                            <div class="inventory-title-centered">Product Catalog</div>
-                            <button class="btn-toggle-controls" id="btnToggleControls" onclick="toggleControlPanel()" title="Toggle Action Panel">Actions ▼</button>
-                        </div>
-                        
-                        <div class="collapsible-control-panel hidden" id="inventoryControlPanel">
-                            <div class="header-controls-left">
-                                <label class="btn btn-excel" title="Import CSV">
-                                    📊 Import
-                                    <input type="file" id="csvInput" accept=".csv" style="display:none;" onchange="importCSV(event)">
-                                </label>
-                                <button class="btn btn-export-all" onclick="exportInventoryCSV()">💾 Export</button>
-                                <button class="btn" style="background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="confirmClearInventory()">🗑️ Clear</button>
-                            </div>
-                            <div class="header-controls-right">
-                                <select id="statusFilter" onchange="renderTable()">
-                                    <option value="All">All Status</option>
-                                    <option value="Active">Active & Regular</option>
-                                    <option value="Regular">Regular Only</option>
-                                    <option value="Blocked">Blocked</option>
-                                </select>
-
-                                <div class="column-visibility-dropdown-container">
-                                    <button class="dropdown-trigger-btn" onclick="toggleVisibilityDropdown(event)">Columns</button>
-                                    <div class="dropdown-menu-panel" id="columnVisibilityMenu">
-                                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleId" onchange="toggleColumnVisibility('id', this.checked)"> ID</label>
-                                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleActions" onchange="toggleColumnVisibility('actions', this.checked)"> Actions</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <span>Product Catalog</span>
                 </h3>
 
                 <div class="filter-search-wrapper" id="searchFieldWrapper">
@@ -839,7 +971,7 @@
                 <!-- Regular Filter Quick Action Bar -->
                 <div id="regularQuickActionPanel" style="display: none; margin-bottom: 8px;">
                     <button class="btn" style="background: var(--md-sys-color-accent); color: white; width: 100%;" onclick="addAllRegularItems()">
-                        ➕ Add All Filtered Regular Items to Worksheet (Lot-based)
+                        ➕ Add All Filtered Regular Items to Order (Lot-based)
                     </button>
                 </div>
 
@@ -865,10 +997,10 @@
             <div class="card" style="padding-bottom: 10px;">
                 <div class="tab-container">
                     <button class="tab-btn active" id="tabOrderBtn" onclick="switchWorkspaceTab('order')">
-                        📋 Worksheet <span class="tab-badge" id="orderCountBadge">0</span>
+                        📋 Order <span class="tab-badge" id="orderCountBadge">0</span>
                     </button>
-                    <button class="tab-btn" id="tabEntryBtn" onclick="switchWorkspaceTab('entry')">➕ Product Master</button>
-                    <button class="tab-btn" id="tabToolkitBtn" onclick="switchWorkspaceTab('toolkit')">🖨️ Barcode Print</button>
+                    <button class="tab-btn" id="tabEntryBtn" onclick="switchWorkspaceTab('entry')">➕ Product</button>
+                    <button class="tab-btn" id="tabToolkitBtn" onclick="switchWorkspaceTab('toolkit')">🖨️ Barcode</button>
                 </div>
                 
                 <div id="orderTabPanel" class="tab-panel active">
@@ -962,7 +1094,7 @@
                 <div id="toolkitTabPanel" class="tab-panel">
                     <div style="display: flex; flex-direction: column; gap: 10px;">
                         
-                        <div class="header-controls-left" style="gap: 8px; width:100%;">
+                        <div class="header-controls-left" style="gap: 8px; width:100%; display: flex;">
                             <button id="btnToggleToolkitScanner" class="camera-btn" style="flex: 2; margin-bottom:0;" onclick="toggleToolkitScanner()">📷 Start Scanner</button>
                             <label class="btn btn-excel" style="flex: 1; height:38px; min-height:38px;" title="Import Column F">
                                 📊 Import Col F
@@ -978,7 +1110,7 @@
                             <textarea id="barcodeInput" rows="3" placeholder="Scanned items appear here..."></textarea>
                         </div>
                         
-                        <div class="header-controls-left" style="gap: 8px;">
+                        <div class="header-controls-left" style="gap: 8px; display: flex;">
                             <button class="btn btn-save" style="flex: 2; height: 38px; background: var(--md-sys-color-accent);" onclick="generateBarcodes()">⚙️ Render Barcodes</button>
                             <button class="btn" style="flex: 1; height: 38px; background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="clearToolkitBox()">🗑️ Reset</button>
                         </div>
@@ -1089,7 +1221,15 @@
         
         document.addEventListener("click", (e) => {
             const menu = document.getElementById("columnVisibilityMenu");
-            if(menu) menu.classList.remove("show");
+            if (menu && !e.target.closest('.columns-panel-wrapper')) {
+                menu.classList.remove("show");
+            }
+
+            const popover = document.getElementById("actionsPopoverMenu");
+            const actionsWrap = document.querySelector(".header-actions-wrapper");
+            if (popover && actionsWrap && !actionsWrap.contains(e.target)) {
+                popover.classList.remove("show");
+            }
 
             const savedOrdersMenu = document.getElementById("savedOrdersMenuPanel");
             const savedOrdersWrap = document.querySelector(".saved-orders-dropdown-wrap");
@@ -1112,6 +1252,8 @@
                 } else {
                     const menu = document.getElementById("columnVisibilityMenu");
                     if (menu) menu.classList.remove("show");
+                    const popover = document.getElementById("actionsPopoverMenu");
+                    if (popover) popover.classList.remove("show");
                     const savedMenu = document.getElementById("savedOrdersMenuPanel");
                     if (savedMenu) savedMenu.classList.remove("show");
                     if (document.activeElement === elements.tableFilter) {
@@ -1169,7 +1311,7 @@
     }
 
     function setTheme(themeName) {
-        document.body.classList.remove('theme-flamingo', 'theme-forest');
+        document.body.classList.remove('theme-flamingo', 'theme-forest', 'theme-darkgreen', 'theme-black', 'theme-darkblue');
         if (themeName !== 'default') {
             document.body.classList.add('theme-' + themeName);
         }
@@ -1212,16 +1354,10 @@
         }
     }
 
-    function toggleControlPanel() {
-        const panel = document.getElementById('inventoryControlPanel');
-        const btn = document.getElementById('btnToggleControls');
-        if (panel.classList.contains('hidden')) {
-            panel.classList.remove('hidden');
-            btn.innerText = 'Actions ▲';
-        } else {
-            panel.classList.add('hidden');
-            btn.innerText = 'Actions ▼';
-        }
+    function toggleControlPanel(event) {
+        if (event) event.stopPropagation();
+        const panel = document.getElementById('actionsPopoverMenu');
+        panel.classList.toggle('show');
     }
 
     function sync() {
@@ -1233,7 +1369,7 @@
     function toggleVisibilityDropdown(event) {
         event.stopPropagation();
         const menu = document.getElementById("columnVisibilityMenu");
-        if(menu) menu.classList.toggle("show");
+        if (menu) menu.classList.toggle("show");
     }
 
     function toggleSavedOrdersPanel(event) {
@@ -1418,7 +1554,7 @@
                                     <span style="color:var(--price-highlight-text); font-weight:700;">${priceNum}</span> | ${rspNum} (${stockVal})
                                 </span>
                             </div>
-                            <button class="btn btn-plus" title="Add to Order Worksheet" onclick="addTrans('${i.code}')">➕</button>
+                            <button class="btn btn-plus" title="Add to Order" onclick="addTrans('${i.code}')">➕</button>
                         </div>
                     </td>
                     <td class="col-actions" style="display: ${actionsStyle};">
@@ -1580,15 +1716,15 @@
     function remTrans(ref) { 
         transactions = transactions.filter(t => t.ref !== ref); 
         syncTransactions(); 
-        showToast("Removed from worksheet", "info");
+        showToast("Removed from Order", "info");
     }
 
     function confirmClearTransactions() {
         if (!transactions.length) return;
-        openConfirmDialog("Clear Worksheet", "Clear all items from the active order worksheet?", () => {
+        openConfirmDialog("Clear Order", "Clear all items from the active order?", () => {
             transactions = [];
             syncTransactions();
-            showToast("Worksheet cleared", "info");
+            showToast("Order cleared", "info");
         });
     }
 
@@ -1605,7 +1741,7 @@
     // Multiple Saved Orders Logic with In-dropdown Delete Buttons
     function promptSaveCurrentOrder() {
         if (!transactions.length) {
-            showToast("Worksheet is empty!", "error");
+            showToast("Order is empty!", "error");
             return;
         }
         let orderName = prompt("Enter a name for this saved order:", "Order_" + new Date().toLocaleDateString());
@@ -1675,7 +1811,7 @@
     }
 
     function exportToExcel() {
-        if (!transactions.length) return showToast("No items in active order worksheet", "error");
+        if (!transactions.length) return showToast("No items in active order", "error");
         let filename = prompt("Enter Order Filename:", "Order_Worksheet");
         if (!filename) return; 
 
