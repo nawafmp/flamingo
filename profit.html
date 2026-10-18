@@ -2,396 +2,484 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
-    <title>Orders & Inventory</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <title>Order Form</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <style>
         :root {
-            /* Apple HIG Light Palette */
-            --apple-bg: #F2F2F7;
-            --apple-surface: rgba(255, 255, 255, 0.88);
-            --apple-surface-card: #FFFFFF;
-            --apple-surface-subtle: #F9F9FB;
-            --apple-divider: rgba(60, 60, 67, 0.12);
-            --apple-border: rgba(60, 60, 67, 0.18);
-            --apple-text: #1C1C1E;
-            --apple-secondary: #8E8E93;
-            --apple-tertiary: #C7C7CC;
-            --apple-blue: #007AFF;
-            --apple-blue-hover: #0062CC;
-            --apple-blue-tint: rgba(0, 122, 255, 0.12);
-            --apple-green: #34C759;
-            --apple-green-tint: rgba(52, 199, 89, 0.12);
-            --apple-orange: #FF9500;
-            --apple-red: #FF3B30;
-            --apple-red-tint: rgba(255, 59, 48, 0.12);
-            --apple-fill: rgba(120, 120, 128, 0.08);
-            --apple-fill-hover: rgba(120, 120, 128, 0.14);
-            
-            --apple-card-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 0.5px 1.5px rgba(0, 0, 0, 0.03);
-            --apple-popover-shadow: 0 14px 34px rgba(0, 0, 0, 0.16), 0 2px 6px rgba(0, 0, 0, 0.08);
-            --apple-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            --apple-mono: "SF Mono", Menlo, Monaco, Consolas, monospace;
+            /* Default Theme (Ocean Indigo) */
+            --md-sys-color-bg: #f0f4f8; 
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-trans: rgba(255, 255, 255, 0.9);
+            --md-sys-color-surface-variant: #e2e8f0;
+            --md-sys-color-primary: #0f172a; 
+            --md-sys-color-primary-container: #e0f2fe; 
+            --md-sys-color-on-primary-container: #0369a1;
+            --md-sys-color-accent: #0284c7; 
+            --md-sys-color-accent-container: #bae6fd; 
+            --md-sys-color-error: #e11d48;
+            --md-sys-color-error-container: #ffe4e6;
+            --md-sys-color-on-error-container: #9f1239;
+            --md-sys-color-outline: #cbd5e1; 
+            --md-sys-color-text: #0f172a;
+            --md-sys-color-text-secondary: #64748b;
+            --price-highlight-text: #0284c7;
+            --card-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+            --card-shadow-hover: 0 10px 20px rgba(15, 23, 42, 0.06);
         }
 
-        /* Apple Alternate Color Accents */
+        /* Flamingo Theme (Emerald & Gold) */
         body.theme-flamingo {
-            --apple-blue: #30B0C7;
-            --apple-blue-tint: rgba(48, 176, 199, 0.12);
-            --apple-blue-hover: #258D9F;
+            --md-sys-color-bg: #f4f8f6; 
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-trans: rgba(255, 255, 255, 0.9);
+            --md-sys-color-surface-variant: #dcf2e5;
+            --md-sys-color-primary: #064e3b; 
+            --md-sys-color-primary-container: #d1fae5; 
+            --md-sys-color-on-primary-container: #065f46;
+            --md-sys-color-accent: #d97706; 
+            --md-sys-color-accent-container: #fef3c7; 
+            --md-sys-color-outline: #cbd5e1; 
+            --md-sys-color-text: #064e3b;
+            --md-sys-color-text-secondary: #047857;
+            --price-highlight-text: #d97706;
+            --card-shadow: 0 4px 12px rgba(6, 78, 59, 0.04);
+            --card-shadow-hover: 0 10px 20px rgba(6, 78, 59, 0.06);
         }
 
+        /* Forest Mint Theme */
         body.theme-forest {
-            --apple-blue: #28CD41;
-            --apple-blue-tint: rgba(40, 205, 65, 0.12);
-            --apple-blue-hover: #22A835;
+            --md-sys-color-bg: #f3f7f4; 
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-trans: rgba(255, 255, 255, 0.9);
+            --md-sys-color-surface-variant: #e0ece4;
+            --md-sys-color-primary: #113f26; 
+            --md-sys-color-primary-container: #c6ebd7; 
+            --md-sys-color-on-primary-container: #15803d;
+            --md-sys-color-accent: #16a34a; 
+            --md-sys-color-accent-container: #dcfce7; 
+            --md-sys-color-outline: #cbd5e1; 
+            --md-sys-color-text: #113f26;
+            --md-sys-color-text-secondary: #166534;
+            --price-highlight-text: #16a34a;
+            --card-shadow: 0 4px 12px rgba(17, 63, 38, 0.04);
+            --card-shadow-hover: 0 10px 20px rgba(17, 63, 38, 0.06);
         }
 
+        /* Dark Green Theme (#006039) */
         body.theme-darkgreen {
-            --apple-blue: #006039;
-            --apple-blue-tint: rgba(0, 96, 57, 0.14);
-            --apple-blue-hover: #004d2e;
+            --md-sys-color-bg: #f2f7f4; 
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-trans: rgba(255, 255, 255, 0.92);
+            --md-sys-color-surface-variant: #d5e5dc;
+            --md-sys-color-primary: #006039; 
+            --md-sys-color-primary-container: #c8e6d9; 
+            --md-sys-color-on-primary-container: #004d2e;
+            --md-sys-color-accent: #006039; 
+            --md-sys-color-accent-container: #d0eddF; 
+            --md-sys-color-outline: #b9d5c7; 
+            --md-sys-color-text: #004d2e;
+            --md-sys-color-text-secondary: #006039;
+            --price-highlight-text: #006039;
+            --card-shadow: 0 4px 12px rgba(0, 96, 57, 0.05);
+            --card-shadow-hover: 0 10px 20px rgba(0, 96, 57, 0.08);
         }
 
+        /* Black Theme */
         body.theme-black {
-            --apple-blue: #000000;
-            --apple-blue-tint: rgba(0, 0, 0, 0.12);
-            --apple-blue-hover: #222222;
+            --md-sys-color-bg: #f4f4f5; 
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-trans: rgba(255, 255, 255, 0.92);
+            --md-sys-color-surface-variant: #e4e4e7;
+            --md-sys-color-primary: #09090b; 
+            --md-sys-color-primary-container: #e4e4e7; 
+            --md-sys-color-on-primary-container: #18181b;
+            --md-sys-color-accent: #18181b; 
+            --md-sys-color-accent-container: #d4d4d8; 
+            --md-sys-color-outline: #a1a1aa; 
+            --md-sys-color-text: #09090b;
+            --md-sys-color-text-secondary: #52525b;
+            --price-highlight-text: #09090b;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
+        /* Dark Blue Theme */
         body.theme-darkblue {
-            --apple-blue: #002244;
-            --apple-blue-tint: rgba(0, 34, 68, 0.14);
-            --apple-blue-hover: #001730;
+            --md-sys-color-bg: #f0f4f9; 
+            --md-sys-color-surface: #ffffff;
+            --md-sys-color-surface-trans: rgba(255, 255, 255, 0.92);
+            --md-sys-color-surface-variant: #dbe4ef;
+            --md-sys-color-primary: #0f2744; 
+            --md-sys-color-primary-container: #cfe0f5; 
+            --md-sys-color-on-primary-container: #0b1f36;
+            --md-sys-color-accent: #174276; 
+            --md-sys-color-accent-container: #d5e5fa; 
+            --md-sys-color-outline: #aec3dc; 
+            --md-sys-color-text: #0f2744;
+            --md-sys-color-text-secondary: #2b4c73;
+            --price-highlight-text: #174276;
+            --card-shadow: 0 4px 12px rgba(15, 39, 68, 0.05);
+            --card-shadow-hover: 0 10px 20px rgba(15, 39, 68, 0.08);
         }
 
-        /* Font Overrides */
-        body.font-jakarta { font-family: 'Plus Jakarta Sans', var(--apple-font); }
-        body.font-inter { font-family: 'Inter', var(--apple-font); }
-        body.font-roboto { font-family: 'Roboto', var(--apple-font); }
-        body.font-mono { font-family: var(--apple-mono); }
+        /* Font Families */
+        body.font-jakarta { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; }
+        body.font-inter { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        body.font-roboto { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif; }
+        body.font-mono { font-family: 'JetBrains Mono', monospace; }
 
         * {
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
+            transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body { 
-            background: var(--apple-bg); 
+            background: var(--md-sys-color-bg); 
             margin: 0; 
-            padding: 12px 14px 60px 14px; 
-            color: var(--apple-text);
-            font-family: var(--apple-font);
+            padding: 8px; 
+            color: var(--md-sys-color-text);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            letter-spacing: -0.011em;
         }
         
-        .container { max-width: 1400px; margin: 0 auto; }
+        .container { max-width: 1440px; margin: 0 auto; }
         
-        /* Glassmorphic Apple Navigation Bar */
         .header { 
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 14px; 
-            background: var(--apple-surface);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            padding: 10px 16px; 
-            border-radius: 16px; 
-            border: 0.5px solid var(--apple-border);
-            box-shadow: var(--apple-card-shadow);
+            margin-bottom: 10px; 
+            background: var(--md-sys-color-surface-trans);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 8px 12px; 
+            border-radius: 12px; 
+            border: 1px solid var(--md-sys-color-surface-variant);
+            box-shadow: var(--card-shadow);
             position: relative;
-            z-index: 1000;
+            z-index: 500;
             flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .header h2 { 
-            margin: 0; 
-            font-size: 1.05rem; 
-            font-weight: 700; 
-            color: var(--apple-text);
-            letter-spacing: -0.02em; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-        }
-
-        .header-controls {
-            display: flex;
-            align-items: center;
             gap: 8px;
-            position: relative;
+        }
+        .header h2 { margin: 0; font-size: 0.95rem; color: var(--md-sys-color-primary); font-weight: 700; display: flex; align-items: center; gap: 6px; }
+
+        .btn-header-shortcut {
+            background: var(--md-sys-color-primary);
+            color: #ffffff;
+            min-height: 32px !important;
+            height: 32px;
+            padding: 0 12px !important;
+            font-size: 0.75rem !important;
+            border-radius: 8px;
         }
 
-        /* Controls Dropdown Container */
-        .controls-dropdown-wrapper {
+        /* Actions Dropdown Wrapper in Header */
+        .header-actions-wrapper {
             position: relative;
+            display: inline-block;
         }
 
-        .controls-panel {
+        .btn-toggle-actions {
+            background: var(--md-sys-color-surface-variant);
+            border: none;
+            color: var(--md-sys-color-primary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 0 12px;
+            height: 32px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            gap: 4px;
+        }
+        .btn-toggle-actions:hover {
+            filter: brightness(0.96);
+        }
+
+        .actions-popover-panel {
             display: none;
             position: absolute;
-            top: calc(100% + 8px);
+            top: 38px;
             right: 0;
-            width: min(340px, 90vw);
-            background: var(--apple-surface-card);
-            border: 0.5px solid var(--apple-border);
-            border-radius: 16px;
-            box-shadow: var(--apple-popover-shadow);
-            z-index: 2500;
-            padding: 12px;
-            animation: popoverFade 0.15s ease-out;
+            width: min(340px, 92vw);
+            background: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-surface-variant);
+            border-radius: 12px;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
+            z-index: 1000;
+            padding: 10px;
         }
-        .controls-panel.show {
+        .actions-popover-panel.show {
             display: block;
         }
 
-        /* Controls 2-Column Grid with full alignment */
-        .controls-grid {
+        /* 2-Control Grid: Equal Width in Every Row */
+        .actions-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 8px;
             width: 100%;
         }
 
-        .controls-grid .btn,
-        .controls-grid .apple-select-wrap,
-        .controls-grid .ctrl-item {
+        .actions-grid .btn,
+        .actions-grid .ctrl-item,
+        .actions-grid .dropdown-trigger-btn {
             width: 100% !important;
-            height: 36px !important;
-            min-height: 36px !important;
+            height: 34px !important;
+            min-height: 34px !important;
             margin: 0 !important;
-            box-sizing: border-box !important;
+            padding: 0 8px !important;
             font-size: 0.74rem !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-sizing: border-box !important;
+            border-radius: 8px !important;
         }
 
-        .apple-select-wrap {
-            display: inline-flex;
+        .actions-select-unit {
+            width: 100%;
+            height: 34px;
+            display: flex;
             align-items: center;
-            gap: 6px;
-            background: var(--apple-fill);
-            padding: 0 10px;
-            border-radius: 10px;
-            border: 0.5px solid transparent;
-            transition: all 0.2s ease;
+            gap: 4px;
+            background: var(--md-sys-color-bg);
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 8px;
+            padding: 0 6px;
+            box-sizing: border-box;
         }
-        .apple-select-wrap:focus-within {
-            background: var(--apple-surface-card);
-            border-color: var(--apple-border);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-        }
-        .apple-select-wrap label {
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: var(--apple-secondary);
-            text-transform: none;
-            letter-spacing: normal;
+        .actions-select-unit label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--md-sys-color-text-secondary);
+            margin: 0;
+            text-transform: uppercase;
             flex-shrink: 0;
         }
-        .apple-select {
+        .actions-select-unit select {
             width: 100%;
             height: 100%;
-            padding: 0 16px 0 2px;
+            border: none;
+            background-color: transparent;
             font-size: 0.74rem;
             font-weight: 600;
-            color: var(--apple-text);
-            border: none;
-            background: transparent;
+            color: var(--md-sys-color-primary);
             cursor: pointer;
+            padding: 0 18px 0 2px;
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238E8E93' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f172a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-position: right 2px center;
             background-size: 10px;
         }
 
-        /* Non-overlapping Columns Selector Drawer */
-        .column-drawer {
-            grid-column: span 2;
+        .columns-panel-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .dropdown-trigger-btn {
+            background: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-outline);
+            font-weight: 600;
+            color: var(--md-sys-color-primary);
+            cursor: pointer;
+            justify-content: space-between !important;
+        }
+        .dropdown-trigger-btn::after {
+            content: '';
+            width: 0; height: 0;
+            border-left: 3px solid transparent;
+            border-right: 3px solid transparent;
+            border-top: 4px solid var(--md-sys-color-primary);
+            margin-left: 6px;
+        }
+        .dropdown-menu-panel {
             display: none;
-            flex-direction: row;
-            justify-content: space-around;
-            background: var(--apple-fill);
-            border-radius: 10px;
-            padding: 8px 10px;
-            border: 0.5px solid var(--apple-divider);
-            margin-top: 2px;
+            position: absolute;
+            top: 38px;
+            left: 0;
+            width: 160px;
+            background: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-surface-variant);
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            z-index: 1100;
+            padding: 4px 0;
         }
-        .column-drawer.show {
-            display: flex;
-        }
-        .column-drawer label {
+        .dropdown-menu-panel.show { display: block; }
+        .dropdown-item-label {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            padding: 6px 10px;
             font-size: 0.74rem;
-            font-weight: 600;
-            color: var(--apple-text);
+            font-weight: 500;
+            color: var(--md-sys-color-primary);
             cursor: pointer;
             margin: 0;
         }
-        .column-drawer input[type="checkbox"] {
-            accent-color: var(--apple-blue);
-            margin: 0;
-        }
+        .dropdown-item-label:hover { background-color: var(--md-sys-color-bg); }
+        .dropdown-item-label input[type="checkbox"] { width: 14px; height: 14px; accent-color: var(--md-sys-color-accent); margin: 0; }
 
-        /* Apple Buttons */
-        .btn { 
-            cursor: pointer; 
-            border: none; 
-            border-radius: 10px; 
-            font-weight: 600; 
-            padding: 7px 12px; 
-            font-size: 0.75rem; 
-            min-height: 32px; 
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            background: var(--apple-fill);
-            color: var(--apple-text);
-            transition: all 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
-            user-select: none;
-            white-space: nowrap;
-        }
-        .btn:hover { background: var(--apple-fill-hover); }
-        .btn:active { transform: scale(0.97); opacity: 0.85; }
-
-        .btn-primary {
-            background: var(--apple-blue);
-            color: #FFFFFF;
-        }
-        .btn-primary:hover { background: var(--apple-blue-hover); }
-
-        .btn-destructive {
-            background: var(--apple-red-tint);
-            color: var(--apple-red);
-        }
-        .btn-destructive:hover {
-            background: rgba(255, 59, 48, 0.2);
-        }
-
-        .btn-tinted {
-            background: var(--apple-blue-tint);
-            color: var(--apple-blue);
-            font-weight: 600;
-        }
-        .btn-tinted:hover {
-            background: rgba(0, 122, 255, 0.18);
-        }
-
-        .btn-header-shortcut {
-            background: var(--apple-text);
-            color: #FFFFFF;
-            min-height: 32px;
-            padding: 6px 14px;
-            font-size: 0.75rem;
-            border-radius: 980px;
-        }
-        .btn-header-shortcut:hover {
-            background: #000;
-        }
-
-        /* Apple Grouped Card */
-        .workspace-row { display: flex; flex-direction: column; gap: 14px; margin-bottom: 14px; }
+        .workspace-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
         .top-full, .bottom-full { width: 100%; }
 
         .card { 
-            background: var(--apple-surface-card); 
-            padding: 14px; 
-            border-radius: 18px; 
-            border: 0.5px solid var(--apple-border);
-            box-shadow: var(--apple-card-shadow);
+            background: var(--md-sys-color-surface); 
+            padding: 10px; 
+            border-radius: 14px; 
+            border: 1px solid var(--md-sys-color-surface-variant);
+            box-shadow: var(--card-shadow);
         }
         
-        .section-header {
+        h3 { 
+            margin-top: 0; 
+            color: var(--md-sys-color-primary); 
+            font-size: 0.82rem; 
+            border-bottom: 1px solid var(--md-sys-color-surface-variant); 
+            padding-bottom: 8px; 
+            letter-spacing: 0.02em; 
+            display: flex; 
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 700;
+        }
+
+        /* Saved Orders Custom Dropdown with Delete Option per item */
+        .saved-orders-dropdown-wrap { position: relative; display: inline-block; }
+        .saved-orders-trigger {
+            height: 34px;
+            background: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 6px;
+            padding: 0 10px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--md-sys-color-primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .saved-orders-trigger::after {
+            content: '';
+            width: 0; height: 0;
+            border-left: 3px solid transparent;
+            border-right: 3px solid transparent;
+            border-top: 4px solid var(--md-sys-color-primary);
+        }
+        .saved-orders-panel {
+            display: none;
+            position: absolute;
+            top: 38px;
+            left: 0;
+            min-width: 200px;
+            max-height: 220px;
+            overflow-y: auto;
+            background: var(--md-sys-color-surface);
+            border: 1px solid var(--md-sys-color-surface-variant);
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            z-index: 150;
+            padding: 4px 0;
+        }
+        .saved-orders-panel.show { display: block; }
+        .saved-order-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding-bottom: 12px;
-            border-bottom: 0.5px solid var(--apple-divider);
-            margin-bottom: 12px;
+            padding: 6px 10px;
+            font-size: 0.72rem;
+            color: var(--md-sys-color-primary);
+            cursor: pointer;
+            gap: 8px;
         }
+        .saved-order-row:hover { background-color: var(--md-sys-color-bg); }
+        .saved-order-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+        .saved-order-delete-btn {
+            background: transparent;
+            border: none;
+            color: var(--md-sys-color-error);
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 2px 5px;
+            border-radius: 4px;
+            line-height: 1;
+        }
+        .saved-order-delete-btn:hover { background: var(--md-sys-color-error-container); }
 
-        .inventory-title-centered { font-weight: 700; font-size: 0.95rem; color: var(--apple-text); letter-spacing: -0.015em; }
-
-        /* Apple Native Search Field */
+        /* Sticky Search Filter Header */
         .filter-search-wrapper {
             position: sticky;
-            top: 10px;
-            z-index: 40;
-            margin-bottom: 12px;
+            top: 4px;
+            z-index: 50;
+            margin-bottom: 8px;
             width: 100%;
+            background: var(--md-sys-color-surface-trans);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 4px 0;
+            border-radius: 10px;
         }
-        .filter-search-container {
-            display: flex;
-            align-items: center;
-            position: relative;
-            width: 100%;
-            background: var(--apple-fill);
-            border-radius: 12px;
-            border: 0.5px solid transparent;
-            transition: all 0.2s ease;
-        }
-        .filter-search-container:focus-within {
-            background: var(--apple-surface-card);
-            border-color: var(--apple-blue);
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
-        }
+        .filter-search-container { display: flex; align-items: center; position: relative; width: 100%; }
         .filter-search-container input[type="text"] {
             width: 100%;
-            height: 36px;
-            padding-right: 68px;
+            height: 38px;
+            padding-right: 74px;
             padding-left: 32px;
-            border: none;
-            background: transparent;
-            font-size: 0.82rem;
-            color: var(--apple-text);
-            font-family: inherit;
+            border-radius: 8px;
+            border: 1px solid var(--md-sys-color-outline);
+            background-color: var(--md-sys-color-surface);
+            font-size: 0.8rem;
         }
         .search-icon-prefix {
             position: absolute;
             left: 10px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--apple-secondary);
+            color: var(--md-sys-color-text-secondary);
             pointer-events: none;
             display: flex;
             align-items: center;
+            font-size: 0.8rem;
         }
         .btn-clear-search {
             position: absolute;
-            right: 34px;
+            right: 36px;
             top: 50%;
             transform: translateY(-50%);
-            width: 20px;
-            height: 20px;
-            background: var(--apple-tertiary);
+            width: 24px;
+            height: 24px;
+            background: var(--md-sys-color-surface-variant);
             border: none;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #FFFFFF;
-            font-size: 0.65rem;
-            transition: background 0.15s;
+            color: var(--md-sys-color-text-secondary);
+            font-size: 0.7rem;
         }
-        .btn-clear-search:hover { background: var(--apple-secondary); }
         .btn-scan-barcode {
             position: absolute;
-            right: 6px;
+            right: 4px;
             top: 50%;
             transform: translateY(-50%);
-            width: 26px;
-            height: 26px;
+            width: 30px;
+            height: 30px;
             background: transparent;
             border: none;
             border-radius: 6px;
@@ -400,147 +488,179 @@
             align-items: center;
             justify-content: center;
         }
-        .btn-scan-barcode svg { width: 17px; height: 17px; fill: var(--apple-blue); }
+        .btn-scan-barcode svg { width: 18px; height: 18px; fill: var(--md-sys-color-primary); }
 
-        /* Segmented Control Bar (Apple Tabs) */
-        .segmented-control {
+        .tab-container {
             display: flex;
-            background: var(--apple-fill);
-            padding: 3px;
-            border-radius: 11px;
-            margin-bottom: 14px;
-            border: 0.5px solid var(--apple-divider);
-            gap: 2px;
+            gap: 4px;
+            border-bottom: 1px solid var(--md-sys-color-surface-variant);
+            margin-bottom: 10px;
+            overflow-x: auto;
         }
-        .segment-btn {
-            flex: 1;
+        .tab-btn {
             background: transparent;
             border: none;
-            padding: 6px 12px;
-            font-size: 0.76rem;
-            font-weight: 500;
-            color: var(--apple-secondary);
+            padding: 8px 12px; 
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--md-sys-color-text-secondary);
             cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            border-radius: 6px 6px 0 0;
+            position: relative;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            white-space: nowrap;
+            gap: 4px;
         }
-        .segment-btn.active {
-            background: var(--apple-surface-card);
-            color: var(--apple-text);
-            font-weight: 600;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 0.5px 1px rgba(0, 0, 0, 0.04);
+        .tab-btn.active { color: var(--md-sys-color-accent); font-weight: 700; }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--md-sys-color-accent);
         }
-        .segment-badge {
-            background: var(--apple-blue);
-            color: #FFFFFF;
+        .tab-badge {
+            background: var(--md-sys-color-accent-container);
+            color: var(--md-sys-color-accent);
             font-size: 0.65rem;
-            padding: 1px 6px;
-            border-radius: 980px;
+            padding: 1px 5px;
+            border-radius: 10px;
             font-weight: 700;
         }
 
-        /* Apple Form Controls */
-        .form-grid { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        .form-grid { display: flex; flex-direction: column; gap: 10px; width: 100%; }
         .form-unit { width: 100%; display: flex; flex-direction: column; }
         .form-group { width: 100%; display: flex; flex-direction: column; }
         
         label { 
-            font-size: 0.7rem; 
-            font-weight: 600; 
-            color: var(--apple-secondary); 
-            margin-bottom: 5px; 
-            letter-spacing: -0.01em;
+            font-size: 0.65rem; 
+            font-weight: 700; 
+            color: var(--md-sys-color-primary); 
+            margin-bottom: 4px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.04em;
         }
         
         input[type="text"], input[type="number"], select, textarea { 
             width: 100%; 
-            padding: 8px 12px; 
-            border: 0.5px solid var(--apple-border); 
-            border-radius: 10px; 
-            font-size: 0.82rem; 
-            background: var(--apple-surface-card); 
-            color: var(--apple-text);
+            padding: 8px 10px; 
+            border: 1px solid var(--md-sys-color-outline); 
+            border-radius: 8px; 
+            font-size: 0.8rem; 
+            background: var(--md-sys-color-surface); 
+            color: var(--md-sys-color-primary);
             font-family: inherit;
-            transition: border-color 0.15s, box-shadow 0.15s;
         }
-        input[type="text"], input[type="number"], select { height: 36px; }
-        textarea { resize: vertical; padding: 10px; font-family: var(--apple-mono); }
+        input[type="text"], input[type="number"], select { height: 38px; }
+        textarea { resize: vertical; padding: 8px; font-family: 'JetBrains Mono', monospace; }
         
+        select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f172a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 12px;
+            padding-right: 28px;
+        }
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: var(--apple-blue);
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.18);
+            border-color: var(--md-sys-color-accent);
         }
 
         .tab-panel { display: none; opacity: 0; }
-        .tab-panel.active { display: block; opacity: 1; animation: appleFadeIn 0.25s ease-out; }
+        .tab-panel.active { display: block; opacity: 1; }
 
-        @keyframes appleFadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
+        .camera-btn {
+            width: 100%;
+            text-align: center;
+            background: var(--md-sys-color-accent);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+        
+        #scanStatus { text-align: center; font-weight: 600; margin-bottom: 8px; min-height: 16px; font-size: 0.75rem; }
+        #toolkitLiveReader { width: 100%; max-width: 380px; margin: 0 auto 8px auto; border-radius: 10px; overflow: hidden; background: #000; display: none; border: 1px solid var(--md-sys-color-outline); }
+        #toolkitOutput { display: flex; flex-direction: row; align-items: center; overflow-x: auto; gap: 10px; padding: 6px 2px 10px 2px; }
+        
+        .barcode-container {
+            background: #fff;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--md-sys-color-surface-variant);
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            flex: 0 0 auto;
         }
 
-        /* Apple Inset Tables */
+        .order-tab-header {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--md-sys-color-surface-variant);
+        }
+        .order-tab-title { font-size: 0.8rem; font-weight: 700; color: var(--md-sys-color-primary); }
+
         .table-container, .inventory-table-container { 
             overflow-x: auto; 
             max-height: 480px; 
             overflow-y: auto; 
-            border-radius: 12px;
-            border: 0.5px solid var(--apple-divider);
-            background: var(--apple-surface-card);
+            border-radius: 10px;
+            border: 1px solid var(--md-sys-color-surface-variant);
         }
         
-        table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        table { width: 100%; border-collapse: collapse; }
         
         th { 
             position: sticky; 
             top: 0; 
-            background: var(--apple-surface-subtle); 
+            background: var(--md-sys-color-bg); 
             text-align: left; 
-            padding: 8px 12px; 
-            font-size: 0.68rem; 
-            font-weight: 600;
-            color: var(--apple-secondary); 
+            padding: 8px 10px; 
+            font-size: 0.65rem; 
+            font-weight: 700;
+            color: var(--md-sys-color-text-secondary); 
             text-transform: uppercase;
-            letter-spacing: 0.03em;
-            border-bottom: 0.5px solid var(--apple-divider); 
+            letter-spacing: 0.04em;
+            border-bottom: 1px solid var(--md-sys-color-surface-variant); 
             z-index: 10; 
             white-space: nowrap; 
         }
         td { 
-            padding: 9px 12px; 
-            border-bottom: 0.5px solid var(--apple-divider); 
-            font-size: 0.8rem; 
+            padding: 8px 10px; 
+            border-bottom: 1px solid var(--md-sys-color-surface-variant); 
+            font-size: 0.78rem; 
             white-space: nowrap; 
             box-sizing: border-box; 
-            color: var(--apple-text);
         }
         
-        tr:last-child td { border-bottom: none; }
-        tr:hover td { background-color: var(--apple-fill); }
+        tr:hover td { background-color: rgba(0,0,0,0.015); }
 
         td.wrap-cell { 
             white-space: normal; 
             word-break: break-word; 
-            font-size: 0.78rem; 
-            line-height: 1.35; 
+            font-size: 0.75rem; 
+            line-height: 1.3; 
         }
         .sub-meta-text { 
             display: block; 
             font-size: 0.7rem; 
-            color: var(--apple-secondary); 
-            font-family: var(--apple-mono); 
+            color: var(--md-sys-color-text-secondary); 
+            font-family: 'JetBrains Mono', monospace; 
             margin-top: 2px; 
         }
 
         .col-id, .col-actions { display: none; }
 
-        /* Apple Dot Indicator */
+        /* Compact Status Indicator Dot */
         .status-dot {
             display: inline-block;
             width: 7px;
@@ -550,216 +670,194 @@
             vertical-align: middle;
             flex-shrink: 0;
         }
-        .status-dot.green { background-color: var(--apple-green); }
-        .status-dot.orange { background-color: var(--apple-orange); }
-        .status-dot.red { background-color: var(--apple-red); }
+        .status-dot.green { background-color: #10b981; box-shadow: 0 0 4px #10b981; }
+        .status-dot.orange { background-color: #f59e0b; box-shadow: 0 0 4px #f59e0b; }
+        .status-dot.red { background-color: #ef4444; box-shadow: 0 0 4px #ef4444; }
 
-        /* Apple iOS Style Stepper */
+        /* Compact Stepper UX */
         .stepper-container {
             display: inline-flex;
             align-items: center;
-            border-radius: 8px;
-            background: var(--apple-fill);
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 6px;
+            background: var(--md-sys-color-surface);
             overflow: hidden;
-            padding: 2px;
         }
         .stepper-btn {
-            background: transparent;
+            background: var(--md-sys-color-bg);
             border: none;
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            color: var(--apple-text);
-            font-size: 0.85rem;
+            color: var(--md-sys-color-primary);
+            font-size: 0.8rem;
             user-select: none;
-            border-radius: 6px;
-            transition: background 0.15s;
         }
-        .stepper-btn:hover { background: var(--apple-surface-card); }
+        .stepper-btn:hover { background: var(--md-sys-color-surface-variant); }
         .stepper-input {
             width: 38px !important;
-            height: 24px !important;
+            height: 28px !important;
             border: none !important;
-            background: transparent !important;
             text-align: center;
-            font-weight: 600;
-            font-family: var(--apple-mono);
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
             padding: 0 !important;
             font-size: 0.78rem;
-            color: var(--apple-text);
         }
 
-        /* Table Footer Calculation Cards */
         tfoot {
             position: sticky;
             bottom: 0;
-            background: var(--apple-surface-subtle);
+            background: var(--md-sys-color-bg);
             z-index: 10;
         }
-        tfoot td { border-top: 0.5px solid var(--apple-divider); padding: 8px 12px; }
-        .footer-metric-label { font-size: 0.68rem; text-transform: uppercase; color: var(--apple-secondary); font-weight: 600; }
-        .footer-metric-val { font-weight: 600; color: var(--apple-text); font-family: var(--apple-mono); font-size: 0.84rem; }
-        .grand-total-row td { background: var(--apple-blue-tint); }
-        .grand-total-row .footer-metric-label { color: var(--apple-blue); font-weight: 700; }
-        .grand-total-row .footer-metric-val { color: var(--apple-blue); font-weight: 700; font-size: 0.9rem; }
+        tfoot td { border-top: 1px solid var(--md-sys-color-surface-variant); padding: 6px 10px; }
+        .footer-metric-label { font-size: 0.65rem; text-transform: uppercase; color: var(--md-sys-color-text-secondary); font-weight: 700; }
+        .footer-metric-val { font-weight: 700; color: var(--md-sys-color-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; }
+        .grand-total-row td { background: var(--md-sys-color-primary-container); }
 
-        /* Quick Action Icon Buttons */
-        .btn-icon-round {
-            width: 28px;
-            height: 28px;
-            min-height: 28px;
-            padding: 0;
-            border-radius: 50%;
-            background: var(--apple-fill);
-            color: var(--apple-text);
+        .btn { 
+            cursor: pointer; 
+            border: none; 
+            border-radius: 8px; 
+            font-weight: 600; 
+            padding: 6px 10px; 
+            font-size: 0.75rem; 
+            min-height: 34px; 
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.75rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.15s;
+            gap: 4px;
         }
-        .btn-icon-round:hover {
-            background: var(--apple-fill-hover);
-        }
-        .btn-icon-round.accent {
-            background: var(--apple-blue-tint);
-            color: var(--apple-blue);
-        }
-        .btn-icon-round.destructive {
-            background: var(--apple-red-tint);
-            color: var(--apple-red);
-        }
+        .btn:active { transform: scale(0.98); }
+        
+        .btn-save { background: var(--md-sys-color-primary); color: white; width: 100%; height: 38px; }
+        .btn-cancel { background: var(--md-sys-color-error-container); color: var(--md-sys-color-error); width: 100%; height: 38px; }
+        .btn-plus { background: var(--md-sys-color-accent); color: white; width: 28px; height: 28px; min-height: 28px; padding: 0; border-radius: 6px; }
+        .btn-edit { background: var(--md-sys-color-accent-container); color: var(--md-sys-color-accent); width: 28px; height: 28px; min-height: 28px; padding: 0; border-radius: 6px; }
+        .btn-delete { background: var(--md-sys-color-error-container); color: var(--md-sys-color-error); width: 28px; height: 28px; min-height: 28px; padding: 0; border-radius: 6px; }
+        .btn-excel { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); font-weight: 700; }
+        .btn-export-all { background: var(--md-sys-color-primary); color: white; }
 
-        /* Apple Popover Menu */
-        .saved-orders-panel {
-            display: none;
-            position: absolute;
-            background: var(--apple-surface-card);
-            border: 0.5px solid var(--apple-divider);
-            border-radius: 12px;
-            box-shadow: var(--apple-popover-shadow);
-            z-index: 160;
-            padding: 6px;
-            animation: popoverFade 0.15s ease-out;
-        }
-        @keyframes popoverFade {
-            from { opacity: 0; transform: scale(0.96); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .saved-orders-panel.show { display: block; }
+        .action-cell { display: flex; gap: 4px; align-items: center; }
+        .desc-flex-cell { display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; }
+        
+        .order-summary-wrapper { display: flex; align-items: center; gap: 6px; width: 100%; justify-content: space-between; flex-wrap: wrap; }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
 
-        .saved-order-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 10px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--apple-text);
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background 0.12s;
-        }
-        .saved-order-row:hover { background: var(--apple-fill); }
-
-        /* Floating iOS Button at Bottom Center */
+        /* Floating Scroll Arrow Button */
         .floating-scroll-btn {
             position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
+            bottom: 20px;
+            right: 40px;
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background: var(--apple-text);
-            color: #FFFFFF;
+            background: var(--md-sys-color-primary);
+            color: #ffffff;
             border: none;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             cursor: pointer;
             z-index: 2400;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s;
+            font-size: 1.2rem;
+            font-weight: 700;
+            transition: transform 0.2s, background-color 0.2s;
         }
-        .floating-scroll-btn:hover { transform: translateX(-50%) scale(1.08); }
+        .floating-scroll-btn:hover {
+            transform: scale(1.08);
+        }
 
-        /* Apple Dynamic Island / Capsule Toast */
+        /* Toast Notifications */
         #toastContainer {
             position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            bottom: 12px;
+            right: 12px;
             z-index: 3000;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            align-items: center;
+            gap: 6px;
             pointer-events: none;
         }
         .toast {
             pointer-events: auto;
             min-width: 200px;
-            padding: 8px 16px;
-            border-radius: 980px;
-            background: rgba(28, 28, 30, 0.92);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            color: #FFFFFF;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: var(--md-sys-color-primary);
+            color: #ffffff;
             font-size: 0.75rem;
             font-weight: 600;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
-            animation: toastSlideDown 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: slideUp 0.2s ease-out;
         }
-        .toast.success { border: 0.5px solid rgba(52, 199, 89, 0.4); }
-        .toast.error { border: 0.5px solid rgba(255, 59, 48, 0.4); }
-        .toast.info { border: 0.5px solid rgba(0, 122, 255, 0.4); }
+        .toast.success { background: #059669; }
+        .toast.error { background: #e11d48; }
+        .toast.info { background: #0284c7; }
 
-        @keyframes toastSlideDown {
-            from { opacity: 0; transform: translateY(-12px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Apple Modal Dialog */
         .custom-dialog-backdrop {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.35);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(3px);
             z-index: 2500;
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 16px;
+            padding: 12px;
         }
         .custom-dialog {
-            background: var(--apple-surface-card);
-            border-radius: 18px;
-            padding: 18px 20px;
+            background: var(--md-sys-color-surface);
+            border-radius: 14px;
+            padding: 16px;
             max-width: 320px;
             width: 100%;
-            box-shadow: var(--apple-popover-shadow);
-            border: 0.5px solid var(--apple-divider);
-            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border: 1px solid var(--md-sys-color-surface-variant);
         }
-        .custom-dialog h4 { margin: 0 0 6px 0; color: var(--apple-text); font-size: 0.95rem; font-weight: 700; }
-        .custom-dialog p { margin: 0 0 16px 0; font-size: 0.78rem; color: var(--apple-secondary); line-height: 1.4; }
-        .custom-dialog-actions { display: flex; gap: 8px; justify-content: center; }
+        .custom-dialog h4 { margin: 0 0 6px 0; color: var(--md-sys-color-primary); font-size: 0.9rem; }
+        .custom-dialog p { margin: 0 0 12px 0; font-size: 0.78rem; color: var(--md-sys-color-text-secondary); line-height: 1.35; }
+        .custom-dialog-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+        .btn-order-delete {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--md-sys-color-error);
+            font-size: 0.85rem;
+            padding: 2px 4px;
+            border-radius: 4px;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            opacity: 0.7;
+            transition: opacity 0.15s, background-color 0.15s;
+        }
+        .btn-order-delete:hover {
+            opacity: 1;
+            background-color: var(--md-sys-color-error-container);
+        }
 
         @media (min-width: 768px) {
-            body { padding: 20px 24px 60px 24px; }
+            body { padding: 14px; }
             .form-grid { flex-direction: row; flex-wrap: wrap; }
             .form-unit { flex: 1 1 calc(25% - 10px); }
+            .order-tab-header { flex-direction: row; justify-content: space-between; align-items: center; }
+            .order-summary-wrapper { width: auto; }
         }
     </style>
 </head>
@@ -767,86 +865,81 @@
 
 <div class="container">
     <div class="header">
-        <h2>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                <line x1="12" y1="22.08" x2="12" y2="12"></line>
-            </svg>
-            Order Form
-        </h2>
+        <h2>📦 ORDER FORM</h2>
         
-        <div class="header-controls">
-            <!-- Controls Trigger & Popover Panel -->
-            <div class="controls-dropdown-wrapper">
-                <button class="btn btn-tinted" id="btnToggleControls" onclick="toggleControlPanel(event)">
-                    Controls ▾
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <!-- Actions Dropdown containing Lot, Theme, Font, CSV, and Controls -->
+            <div class="header-actions-wrapper">
+                <button class="btn-toggle-actions" id="btnToggleControls" onclick="toggleControlPanel(event)" title="Toggle Action Panel">
+                    ⚙️ Actions ▼
                 </button>
                 
-                <div class="controls-panel" id="headerControlPanel">
-                    <div class="controls-grid">
-                        <!-- Row 1: Lot & Accent -->
-                        <div class="apple-select-wrap">
-                            <label>Lot</label>
-                            <select id="lotSizeSelector" class="apple-select">
+                <div class="actions-popover-panel" id="actionsPopoverMenu">
+                    <div class="actions-grid">
+                        <!-- Row 1: Lot & Theme -->
+                        <div class="actions-select-unit">
+                            <label>Lot:</label>
+                            <select id="lotSizeSelector">
                                 <option value="1">1 pc</option>
                                 <option value="6">6 pcs</option>
                                 <option value="12" selected>12 pcs</option>
                                 <option value="24">24 pcs</option>
                             </select>
                         </div>
-                        <div class="apple-select-wrap">
-                            <label>Accent</label>
-                            <select id="themeSelector" class="apple-select" onchange="setTheme(this.value)">
-                                <option value="default">Default Blue</option>
+
+                        <div class="actions-select-unit">
+                            <label>Theme:</label>
+                            <select id="themeSelector" onchange="setTheme(this.value)">
+                                <option value="default">Ocean</option>
                                 <option value="darkgreen">Dark Green</option>
                                 <option value="black">Black</option>
                                 <option value="darkblue">Dark Blue</option>
-                                <option value="flamingo">Sky Cyan</option>
-                                <option value="forest">Mint Green</option>
+                                <option value="flamingo">Flamingo</option>
+                                <option value="forest">Forest</option>
                             </select>
                         </div>
 
-                        <!-- Row 2: Type & Status Filter -->
-                        <div class="apple-select-wrap">
-                            <label>Type</label>
-                            <select id="fontSelector" class="apple-select" onchange="setFont(this.value)">
-                                <option value="sf">San Francisco</option>
+                        <!-- Row 2: Font & Status Filter -->
+                        <div class="actions-select-unit">
+                            <label>Font:</label>
+                            <select id="fontSelector" onchange="setFont(this.value)">
                                 <option value="jakarta">Jakarta</option>
                                 <option value="inter">Inter</option>
-                                <option value="mono">SF Mono</option>
+                                <option value="roboto">Roboto</option>
+                                <option value="mono">Mono</option>
                             </select>
                         </div>
-                        <div class="apple-select-wrap">
-                            <label>Status</label>
-                            <select id="statusFilter" class="apple-select" onchange="renderTable()">
-                                <option value="All">All</option>
-                                <option value="Active">Active & Reg</option>
+
+                        <div class="actions-select-unit">
+                            <label>Status:</label>
+                            <select id="statusFilter" onchange="renderTable()">
+                                <option value="All">All Status</option>
+                                <option value="Active">Active & Regular</option>
                                 <option value="Regular">Regular Only</option>
                                 <option value="Blocked">Blocked</option>
                             </select>
                         </div>
 
-                        <!-- Row 3: Import & Export -->
-                        <label class="btn btn-tinted ctrl-item" title="Import CSV" style="cursor: pointer;">
-                            ↑ Import CSV
+                        <!-- Row 3: CSV Import & Export -->
+                        <label class="btn btn-excel ctrl-item" title="Import CSV" style="cursor: pointer;">
+                            📊 Import
                             <input type="file" id="csvInput" accept=".csv" style="display:none;" onchange="importCSV(event)">
                         </label>
-                        <button class="btn btn-tinted ctrl-item" onclick="exportInventoryCSV()">↓ Export CSV</button>
+                        <button class="btn btn-export-all ctrl-item" onclick="exportInventoryCSV()">💾 Export</button>
 
-                        <!-- Row 4: Columns Toggle & Catalog Clear -->
-                        <button class="btn btn-tinted ctrl-item" onclick="toggleColumnDrawer(event)">Columns ▾</button>
-                        <button class="btn btn-destructive ctrl-item" onclick="confirmClearInventory()">Clear Catalog</button>
-
-                        <!-- Row 5: Column Checkbox Tray (Full Width Row) -->
-                        <div class="column-drawer" id="columnDrawer">
-                            <label onclick="stopPropagation(event)">
-                                <input type="checkbox" id="chkToggleId" onchange="toggleColumnVisibility('id', this.checked)"> Item ID
-                            </label>
-                            <label onclick="stopPropagation(event)">
-                                <input type="checkbox" id="chkToggleActions" onchange="toggleColumnVisibility('actions', this.checked)"> Actions
-                            </label>
+                        <!-- Row 4: Columns Dropdown & Clear Catalog -->
+                        <div class="columns-panel-wrapper">
+                            <button class="dropdown-trigger-btn" onclick="toggleVisibilityDropdown(event)">Columns</button>
+                            <div class="dropdown-menu-panel" id="columnVisibilityMenu">
+                                <label class="dropdown-item-label" onclick="stopPropagation(event)">
+                                    <input type="checkbox" id="chkToggleId" onchange="toggleColumnVisibility('id', this.checked)"> ID
+                                </label>
+                                <label class="dropdown-item-label" onclick="stopPropagation(event)">
+                                    <input type="checkbox" id="chkToggleActions" onchange="toggleColumnVisibility('actions', this.checked)"> Actions
+                                </label>
+                            </div>
                         </div>
+                        <button class="btn ctrl-item" style="background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="confirmClearInventory()">🗑️ Clear</button>
                     </div>
                 </div>
             </div>
@@ -855,36 +948,30 @@
         </div>
     </div>
 
-    <!-- Product Catalog Card -->
     <div class="workspace-row">
         <div class="bottom-full">
             <div class="card">
-                <div class="section-header">
-                    <div class="inventory-title-centered">Product Catalog</div>
-                </div>
+                <h3>
+                    <span>Product Catalog</span>
+                </h3>
 
                 <div class="filter-search-wrapper" id="searchFieldWrapper">
                     <div class="filter-search-container">
-                        <span class="search-icon-prefix">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                            </svg>
-                        </span>
-                        <input type="text" id="tableFilter" placeholder="Search Code, Name, Barcode..." oninput="debouncedRenderTable()" onkeydown="handleSearchKeydown(event)">
-                        <button class="btn-clear-search" onclick="clearSearchField()" title="Clear">✕</button>
+                        <span class="search-icon-prefix">🔍</span>
+                        <input type="text" id="tableFilter" placeholder="Search Code, Name or Barcode..." oninput="debouncedRenderTable()" onkeydown="handleSearchKeydown(event)">
+                        <button class="btn-clear-search" onclick="clearSearchField()" title="Clear Search">✕</button>
                         <button class="btn-scan-barcode" onclick="triggerBarcodeScanner()" title="Scan Barcode">
                             <svg viewBox="0 0 24 24">
-                                <path d="M4 4h3V2H4c-1.1 0-2 .9-2 2v3h2V4zm16-2h-3v2h3v3h2V4c0-1.1-.9-2-2-2zm2 16h-2v3h-3v2h4c1.1 0 2-.9 2-2v-3zM4 17H2v4c0 1.1.9 2 2 2h3v-2H4v-3zM6 6h2v12H6zm3 0h1v12H9zm3 0h2v12h-2zm3 0h3v12h-3zm4 0h1v12h-1z"/>
+                                <path d="M4 4h3V2H4c-1.1.0-2 .9-2 2v3h2V4zm16-2h-3v2h3v3h2V4c0-1.1-.9-2-2-2zm2 16h-2v3h-3v2h4c1.1 0 2-.9 2-2v-3zM4 17H2v4c0 1.1.9 2 2 2h3v-2H4v-3zM6 6h2v12H6zm3 0h1v12H9zm3 0h2v12h-2zm3 0h3v12h-3zm4 0h1v12h-1z"/>
                             </svg>
                         </button>
                     </div>
                 </div>
 
                 <!-- Regular Filter Quick Action Bar -->
-                <div id="regularQuickActionPanel" style="display: none; margin-bottom: 10px;">
-                    <button class="btn btn-primary" style="width: 100%; border-radius: 10px;" onclick="addAllRegularItems()">
-                        + Add All Filtered Regular Items to Worksheet
+                <div id="regularQuickActionPanel" style="display: none; margin-bottom: 8px;">
+                    <button class="btn" style="background: var(--md-sys-color-accent); color: white; width: 100%;" onclick="addAllRegularItems()">
+                        ➕ Add All Filtered Regular Items to Order (Lot-based)
                     </button>
                 </div>
 
@@ -893,8 +980,8 @@
                         <thead>
                             <tr>
                                 <th class="col-id" style="width: 8%;">ID</th>
-                                <th style="width: 35%;">Code / Barcode</th>
-                                <th style="width: 65%;">Product Details</th>
+                                <th style="width: 35%;">Code</th>
+                                <th style="width: 65%;">Description</th>
                                 <th class="col-actions" style="width: 10%;">Actions</th>
                             </tr>
                         </thead>
@@ -905,37 +992,37 @@
         </div>
     </div>
 
-    <!-- Workspace Segments (Order, Details, Barcode) -->
     <div class="workspace-row">
         <div id="targetWorkspaceCard" class="top-full">
-            <div class="card">
-                <div class="segmented-control">
-                    <button class="segment-btn active" id="tabOrderBtn" onclick="switchWorkspaceTab('order')">
-                        Order <span class="segment-badge" id="orderCountBadge">0</span>
+            <div class="card" style="padding-bottom: 10px;">
+                <div class="tab-container">
+                    <button class="tab-btn active" id="tabOrderBtn" onclick="switchWorkspaceTab('order')">
+                        📋 Order <span class="tab-badge" id="orderCountBadge">0</span>
                     </button>
-                    <button class="segment-btn" id="tabEntryBtn" onclick="switchWorkspaceTab('entry')">Details</button>
-                    <button class="segment-btn" id="tabToolkitBtn" onclick="switchWorkspaceTab('toolkit')">Barcode</button>
+                    <button class="tab-btn" id="tabEntryBtn" onclick="switchWorkspaceTab('entry')">➕ Product</button>
+                    <button class="tab-btn" id="tabToolkitBtn" onclick="switchWorkspaceTab('toolkit')">🖨️ Barcode</button>
                 </div>
                 
-                <!-- Order Panel -->
                 <div id="orderTabPanel" class="tab-panel active">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-                        <div style="font-size: 0.88rem; font-weight: 700; color: var(--apple-text);">Active Order</div>
-                        <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
-                            <div style="position: relative;">
-                                <button class="btn" onclick="toggleSavedOrdersPanel(event)" style="font-size: 0.72rem; padding: 5px 10px;">
-                                    📁 Saved Orders ▾
-                                </button>
-                                <div class="saved-orders-panel" id="savedOrdersMenuPanel" style="top: 36px; left: 0; min-width: 220px;">
-                                    <div id="savedOrdersListContainer"></div>
+                    <div class="order-tab-header">
+                        <div class="order-tab-title">Procurement Order Items</div>
+                        <div class="order-summary-wrapper">
+                            <!-- Custom Saved Orders Dropdown Panel with inline delete buttons -->
+                            <div style="display: flex; gap: 4px; align-items: center; flex-wrap: wrap;">
+                                <div class="saved-orders-dropdown-wrap">
+                                    <div class="saved-orders-trigger" onclick="toggleSavedOrdersPanel(event)">
+                                        <span id="savedOrdersTriggerLabel">📂 Saved Orders</span>
+                                    </div>
+                                    <div class="saved-orders-panel" id="savedOrdersMenuPanel">
+                                        <div id="savedOrdersListContainer"></div>
+                                    </div>
                                 </div>
+                                <button class="btn" style="background: var(--md-sys-color-surface-variant); color: var(--md-sys-color-primary);" onclick="promptSaveCurrentOrder()">💾 Save</button>
+                                <button class="btn btn-excel" onclick="exportToExcel()">📈 Export CSV</button>
+                                <button class="btn" style="background:var(--md-sys-color-surface-variant); color:var(--md-sys-color-primary);" onclick="confirmClearTransactions()">Clear</button>
                             </div>
-                            <button class="btn btn-tinted" onclick="promptSaveCurrentOrder()">Save</button>
-                            <button class="btn btn-tinted" onclick="exportToExcel()">Export CSV</button>
-                            <button class="btn btn-destructive" onclick="confirmClearTransactions()">Clear</button>
                         </div>
                     </div>
-
                     <div class="table-container">
                         <table id="transactionTable">
                             <thead>
@@ -943,32 +1030,32 @@
                                     <th style="width: 5%; text-align: center;">#</th>
                                     <th style="width: 25%;">Code</th>
                                     <th style="width: 40%;">Description</th>
-                                    <th style="width: 15%; text-align: center;">Quantity</th>
-                                    <th style="width: 15%; text-align: right;">Total</th>
+                                    <th style="width: 15%;" class="text-center">Qty</th>
+                                    <th style="width: 15%;" class="text-right">Total</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="5" style="text-align: right;">
-                                        <div style="display: inline-flex; align-items: center; gap: 8px;">
-                                            <span class="footer-metric-label">Subtotal</span>
+                                    <td colspan="5" class="text-center">
+                                        <div style="display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                                            <span class="footer-metric-label">Subtotal:</span>
                                             <span class="footer-metric-val" id="footerTotalVal">0.00</span>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5" style="text-align: right;">
-                                        <div style="display: inline-flex; align-items: center; gap: 8px;">
-                                            <span class="footer-metric-label">VAT (5%)</span>
+                                    <td colspan="5" class="text-center">
+                                        <div style="display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                                            <span class="footer-metric-label">VAT (5%):</span>
                                             <span class="footer-metric-val" id="footerVatVal">0.00</span>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr class="grand-total-row">
-                                    <td colspan="5" style="text-align: right;">
-                                        <div style="display: inline-flex; align-items: center; gap: 8px;">
-                                            <span class="footer-metric-label">Grand Total</span>
+                                    <td colspan="5" class="text-center">
+                                        <div style="display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                                            <span class="footer-metric-label" style="color:var(--md-sys-color-primary); font-weight:700;">Grand Total:</span>
                                             <span class="footer-metric-val" id="footerGrandTotalVal">0.00</span>
                                         </div>
                                     </td>
@@ -978,16 +1065,15 @@
                     </div>
                 </div>
 
-                <!-- Details Panel -->
                 <div id="entryTabPanel" class="tab-panel">
                     <div class="form-grid">
                         <div class="form-unit"><div class="form-group"><label>Item ID</label><input type="text" id="itemID"></div></div>
                         <div class="form-unit"><div class="form-group"><label>Code *</label><input type="text" id="itemCode"></div></div>
                         <div class="form-unit"><div class="form-group"><label>Barcode *</label><input type="text" id="barcode"></div></div>
-                        <div class="form-unit"><div class="form-group"><label>Stock Level</label><input type="number" id="stock" placeholder="0"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>Stock</label><input type="number" id="stock" placeholder="0"></div></div>
                         <div class="form-unit"><div class="form-group"><label>Description</label><input type="text" id="description"></div></div>
                         <div class="form-unit"><div class="form-group"><label>Cost Price</label><input type="number" id="price" step="0.01"></div></div>
-                        <div class="form-unit"><div class="form-group"><label>Retail Price (RSP)</label><input type="number" id="rsp" step="0.01"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>RSP</label><input type="number" id="rsp" step="0.01"></div></div>
                         <div class="form-unit">
                             <div class="form-group">
                                 <label>Status</label>
@@ -998,38 +1084,38 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-unit" style="margin-top: 6px; display: flex; gap: 8px; flex-direction: row;">
-                            <button class="btn btn-primary" id="btnSaveItem" onclick="addItem()" style="flex: 2; height: 38px;">Save Product</button>
-                            <button class="btn btn-destructive" id="btnCancelEdit" onclick="cancelEdit()" style="flex: 1; height: 38px; display: none;">Cancel</button>
+                        <div class="form-unit" style="margin-top: 4px; display: flex; gap: 6px; flex-direction: row;">
+                            <button class="btn btn-save" id="btnSaveItem" onclick="addItem()" style="flex: 2;">Save Product</button>
+                            <button class="btn btn-cancel" id="btnCancelEdit" onclick="cancelEdit()" style="flex: 1; display: none;">Cancel</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Barcode Panel -->
                 <div id="toolkitTabPanel" class="tab-panel">
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                        <div class="header-controls-left" style="gap: 8px; width: 100%;">
-                            <button id="btnToggleToolkitScanner" class="btn btn-primary" style="flex: 2; height: 36px;" onclick="toggleToolkitScanner()">📷 Camera Scanner</button>
-                            <label class="btn btn-tinted" style="flex: 1; height: 36px;" title="Import Column F">
-                                ↑ Import Column F
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        
+                        <div class="header-controls-left" style="gap: 8px; width:100%; display: flex;">
+                            <button id="btnToggleToolkitScanner" class="camera-btn" style="flex: 2; margin-bottom:0;" onclick="toggleToolkitScanner()">📷 Start Scanner</button>
+                            <label class="btn btn-excel" style="flex: 1; height:38px; min-height:38px;" title="Import Column F">
+                                📊 Import Col F
                                 <input type="file" id="toolkitExcelInput" accept=".csv,.txt" style="display:none;" onchange="importToolkitFile(event)">
                             </label>
                         </div>
                         
-                        <div id="toolkitLiveReader" style="width: 100%; max-width: 360px; margin: 0 auto; border-radius: 14px; overflow: hidden; background: #000; display: none; border: 0.5px solid var(--apple-border);"></div>
-                        <div id="scanStatus" style="text-align: center; font-weight: 600; font-size: 0.75rem; color: var(--apple-secondary);"></div>
+                        <div id="toolkitLiveReader"></div>
+                        <div id="scanStatus"></div>
 
                         <div class="form-group">
-                            <label>Scanned Codes Matrix</label>
-                            <textarea id="barcodeInput" rows="3" placeholder="Scanned items will populate here..."></textarea>
+                            <label>Scanned Codes Matrix:</label>
+                            <textarea id="barcodeInput" rows="3" placeholder="Scanned items appear here..."></textarea>
                         </div>
                         
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-primary" style="flex: 2; height: 36px;" onclick="generateBarcodes()">Generate Labels</button>
-                            <button class="btn btn-destructive" style="flex: 1; height: 36px;" onclick="clearToolkitBox()">Reset</button>
+                        <div class="header-controls-left" style="gap: 8px; display: flex;">
+                            <button class="btn btn-save" style="flex: 2; height: 38px; background: var(--md-sys-color-accent);" onclick="generateBarcodes()">⚙️ Render Barcodes</button>
+                            <button class="btn" style="flex: 1; height: 38px; background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="clearToolkitBox()">🗑️ Reset</button>
                         </div>
 
-                        <div id="toolkitOutput" style="display: flex; flex-direction: row; align-items: center; overflow-x: auto; gap: 12px; padding: 10px 4px;"></div>
+                        <div id="toolkitOutput"></div>
                     </div>
                 </div>
 
@@ -1038,30 +1124,28 @@
     </div>
 </div>
 
-<!-- Floating Navigation Arrow at Bottom Center -->
+<!-- Floating Scroll Arrow Button -->
 <button id="floatingScrollBtn" class="floating-scroll-btn" onclick="handleFloatingScroll()" title="Scroll">↓</button>
 
-<!-- Dynamic Island Toast Container -->
 <div id="toastContainer"></div>
 
-<!-- Apple Style Action Confirmation Dialog -->
+<!-- Confirmation Modal Dialog -->
 <div class="custom-dialog-backdrop" id="confirmDialogBackdrop">
     <div class="custom-dialog">
         <h4 id="dialogTitle">Confirmation</h4>
         <p id="dialogMessage">Are you sure you want to proceed?</p>
         <div class="custom-dialog-actions">
-            <button class="btn" style="flex: 1;" onclick="closeConfirmDialog(false)">Cancel</button>
-            <button class="btn btn-destructive" id="dialogConfirmBtn" style="flex: 1;" onclick="closeConfirmDialog(true)">Continue</button>
+            <button class="btn" style="background: var(--md-sys-color-surface-variant);" onclick="closeConfirmDialog(false)">Cancel</button>
+            <button class="btn" id="dialogConfirmBtn" style="background: var(--md-sys-color-error); color: #fff;" onclick="closeConfirmDialog(true)">Confirm</button>
         </div>
     </div>
 </div>
 
-<!-- Barcode Scanner Modal Sheet -->
-<div id="scannerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 16px;">
-    <div style="width: 100%; max-width: 360px; background: var(--apple-surface-card); border-radius: 20px; padding: 18px; box-shadow: var(--apple-popover-shadow); border: 0.5px solid var(--apple-divider); text-align: center;">
-        <h4 style="margin: 0 0 12px 0; color: var(--apple-text); font-size: 0.9rem; font-weight: 700;">Scan Barcode</h4>
-        <div id="interactive-reader" style="width: 100%; border-radius: 12px; overflow: hidden; background: #000;"></div>
-        <button class="btn btn-destructive" style="width: 100%; margin-top: 14px; height: 36px;" onclick="closeBarcodeScanner()">Done</button>
+<div id="scannerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px); z-index: 2000; flex-direction: column; align-items: center; justify-content: center;">
+    <div style="width: 88%; max-width: 360px; background: var(--md-sys-color-surface); border-radius: 14px; padding: 14px; box-sizing: border-box;">
+        <h4 style="margin: 0 0 10px 0; color: var(--md-sys-color-primary); font-size: 0.85rem; text-transform: uppercase;">Scan Barcode</h4>
+        <div id="interactive-reader" style="width: 100%; border-radius: 8px; overflow: hidden; background: #000;"></div>
+        <button class="btn" style="width: 100%; margin-top: 10px; background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="closeBarcodeScanner()">✕ Cancel</button>
     </div>
 </div>
 
@@ -1127,7 +1211,7 @@
         const savedTheme = localStorage.getItem('flamingo_app_theme') || 'default';
         setTheme(savedTheme);
 
-        const savedFont = localStorage.getItem('flamingo_app_font') || 'sf';
+        const savedFont = localStorage.getItem('flamingo_app_font') || 'jakarta';
         setFont(savedFont);
 
         renderTable(); 
@@ -1136,10 +1220,15 @@
         updateFloatingScrollButton();
         
         document.addEventListener("click", (e) => {
-            const ctrlPanel = document.getElementById("headerControlPanel");
-            const ctrlWrap = document.querySelector(".controls-dropdown-wrapper");
-            if (ctrlPanel && ctrlWrap && !ctrlWrap.contains(e.target)) {
-                ctrlPanel.classList.remove("show");
+            const menu = document.getElementById("columnVisibilityMenu");
+            if (menu && !e.target.closest('.columns-panel-wrapper')) {
+                menu.classList.remove("show");
+            }
+
+            const popover = document.getElementById("actionsPopoverMenu");
+            const actionsWrap = document.querySelector(".header-actions-wrapper");
+            if (popover && actionsWrap && !actionsWrap.contains(e.target)) {
+                popover.classList.remove("show");
             }
 
             const savedOrdersMenu = document.getElementById("savedOrdersMenuPanel");
@@ -1161,8 +1250,10 @@
                 } else if (toolkitLiveScanner) {
                     stopToolkitScanner();
                 } else {
-                    const ctrlPanel = document.getElementById("headerControlPanel");
-                    if (ctrlPanel) ctrlPanel.classList.remove("show");
+                    const menu = document.getElementById("columnVisibilityMenu");
+                    if (menu) menu.classList.remove("show");
+                    const popover = document.getElementById("actionsPopoverMenu");
+                    if (popover) popover.classList.remove("show");
                     const savedMenu = document.getElementById("savedOrdersMenuPanel");
                     if (savedMenu) savedMenu.classList.remove("show");
                     if (document.activeElement === elements.tableFilter) {
@@ -1182,10 +1273,9 @@
 
         setTimeout(() => {
             toast.style.opacity = '0';
-            toast.style.transform = 'translateY(-6px) scale(0.96)';
-            toast.style.transition = 'all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)';
+            toast.style.transform = 'translateY(8px)';
             setTimeout(() => toast.remove(), 200);
-        }, 2200);
+        }, 2500);
     }
 
     function openConfirmDialog(title, message, callback) {
@@ -1207,7 +1297,7 @@
         clearTimeout(searchDebounceTimer);
         searchDebounceTimer = setTimeout(() => {
             renderTable();
-        }, 120);
+        }, 150);
     }
 
     function handleSearchKeydown(e) {
@@ -1231,9 +1321,7 @@
 
     function setFont(fontName) {
         document.body.classList.remove('font-jakarta', 'font-inter', 'font-roboto', 'font-mono');
-        if (fontName !== 'sf') {
-            document.body.classList.add('font-' + fontName);
-        }
+        document.body.classList.add('font-' + fontName);
         localStorage.setItem('flamingo_app_font', fontName);
         if (elements.fontSelector) elements.fontSelector.value = fontName;
     }
@@ -1268,20 +1356,20 @@
 
     function toggleControlPanel(event) {
         if (event) event.stopPropagation();
-        const panel = document.getElementById('headerControlPanel');
+        const panel = document.getElementById('actionsPopoverMenu');
         panel.classList.toggle('show');
-    }
-
-    function toggleColumnDrawer(event) {
-        if (event) event.stopPropagation();
-        const drawer = document.getElementById('columnDrawer');
-        drawer.classList.toggle('show');
     }
 
     function sync() {
         localStorage.setItem('flamingo_db_v3', JSON.stringify(inventory));
         localStorage.setItem('flamingo_trans_v3', JSON.stringify(transactions));
         renderTable();
+    }
+
+    function toggleVisibilityDropdown(event) {
+        event.stopPropagation();
+        const menu = document.getElementById("columnVisibilityMenu");
+        if (menu) menu.classList.toggle("show");
     }
 
     function toggleSavedOrdersPanel(event) {
@@ -1453,26 +1541,26 @@
 
             htmlBuffer += `
                 <tr>
-                    <td class="col-id" style="display: ${idStyle}; font-family: var(--apple-mono);">${i.id}</td>
+                    <td class="col-id" style="display: ${idStyle}; font-family:'JetBrains Mono', monospace;">${i.id}</td>
                     <td>
-                        <div style="font-weight:600; font-family: var(--apple-mono); font-size: 0.78rem;">${i.code}</div>
+                        <div style="font-weight:700; font-family:'JetBrains Mono', monospace; font-size:0.75rem;">${i.code}</div>
                         <span class="sub-meta-text">${i.barcode}</span>
                     </td>
                     <td class="wrap-cell">
-                        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                        <div class="desc-flex-cell">
                             <div>
                                 <span class="${dotClass}" title="${i.status}"></span>${i.desc}
                                 <span class="sub-meta-text">
-                                    <span style="color:var(--apple-blue); font-weight:600;">${priceNum}</span> · RSP: ${rspNum} · Stock: ${stockVal}
+                                    <span style="color:var(--price-highlight-text); font-weight:700;">${priceNum}</span> | ${rspNum} (${stockVal})
                                 </span>
                             </div>
-                            <button class="btn-icon-round accent" title="Add to Order" onclick="addTrans('${i.code}')">＋</button>
+                            <button class="btn btn-plus" title="Add to Order" onclick="addTrans('${i.code}')">➕</button>
                         </div>
                     </td>
                     <td class="col-actions" style="display: ${actionsStyle};">
-                        <div style="display:flex; gap:6px; align-items:center;">
-                            <button class="btn-icon-round" title="Edit" onclick="editItem('${i.barcode}')">✎</button>
-                            <button class="btn-icon-round destructive" title="Delete" onclick="delItem(${i.uniqueRef})">✕</button>
+                        <div class="action-cell">
+                            <button class="btn btn-edit" title="Edit" onclick="editItem('${i.barcode}')">✏️</button>
+                            <button class="btn btn-delete" title="Delete" onclick="delItem(${i.uniqueRef})">🗑️</button>
                         </div>
                     </td>
                 </tr>`;
@@ -1533,7 +1621,7 @@
         });
 
         syncTransactions();
-        showToast(`Added regular items (Lot: ${lotIncrement})`, "success");
+        showToast(`Added all regular items (Lot: ${lotIncrement})`, "success");
     }
 
     function changeQtyStep(ref, delta) {
@@ -1585,22 +1673,22 @@
             
             return `
                 <tr>
-                    <td style="text-align: center; color: var(--apple-secondary); font-weight: 600; font-size: 0.72rem;">${index + 1}</td>
-                    <td style="font-weight: 600; font-family: var(--apple-mono); font-size: 0.76rem;">${t.code}</td>
+                    <td class="text-center" style="color: var(--md-sys-color-text-secondary); font-weight: 700; font-size: 0.7rem;">${index + 1}</td>
+                    <td style="font-weight:700; font-family:'JetBrains Mono', monospace; font-size:0.75rem;">${t.code}</td>
                     <td class="wrap-cell">
                         <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
                             <span>${t.desc}</span>
-                            <button class="btn-icon-round destructive" style="width: 22px; height: 22px; min-height: 22px; font-size: 0.65rem;" title="Remove Item" onclick="remTrans(${t.ref})">✕</button>
+                            <button class="btn-order-delete" title="Remove Item" onclick="remTrans(${t.ref})">✕</button>
                         </div>
                     </td>
-                    <td style="text-align: center;">
+                    <td class="text-center">
                         <div class="stepper-container">
                             <button class="stepper-btn" onclick="changeQtyStep(${t.ref}, -1)">−</button>
                             <input type="number" id="qty-input-${t.ref}" class="stepper-input" value="${t.qty}" min="1" onchange="updateQty(${t.ref}, this.value)">
                             <button class="stepper-btn" onclick="changeQtyStep(${t.ref}, 1)">+</button>
                         </div>
                     </td>
-                    <td style="text-align: right; font-weight: 600; font-family: var(--apple-mono); color: var(--apple-text);">
+                    <td class="text-right" style="font-weight:700; color:var(--md-sys-color-primary); font-family:'JetBrains Mono', monospace;">
                         <span id="row-total-${t.ref}">${lineTotal.toFixed(2)}</span>
                     </td>
                 </tr>`;
@@ -1628,12 +1716,12 @@
     function remTrans(ref) { 
         transactions = transactions.filter(t => t.ref !== ref); 
         syncTransactions(); 
-        showToast("Item removed", "info");
+        showToast("Removed from Order", "info");
     }
 
     function confirmClearTransactions() {
         if (!transactions.length) return;
-        openConfirmDialog("Clear Order", "Are you sure you want to clear all active orders?", () => {
+        openConfirmDialog("Clear Order", "Clear all items from the active order?", () => {
             transactions = [];
             syncTransactions();
             showToast("Order cleared", "info");
@@ -1642,27 +1730,28 @@
 
     function confirmClearInventory() {
         if (!inventory.length) return;
-        openConfirmDialog("Clear Entire Catalog", "Warning: This action will permanently delete all catalog products and barcode entries.", () => {
+        openConfirmDialog("Clear Entire Inventory", "Warning: This will delete all catalog products and barcode items.", () => {
             inventory = [];
             sync();
             renderTransactions();
-            showToast("Catalog wiped", "error");
+            showToast("Inventory wiped", "error");
         });
     }
 
+    // Multiple Saved Orders Logic with In-dropdown Delete Buttons
     function promptSaveCurrentOrder() {
         if (!transactions.length) {
             showToast("Order is empty!", "error");
             return;
         }
-        let orderName = prompt("Name this saved order:", "Order_" + new Date().toLocaleDateString());
+        let orderName = prompt("Enter a name for this saved order:", "Order_" + new Date().toLocaleDateString());
         if (!orderName) return;
         orderName = orderName.trim();
         
         savedOrdersMap[orderName] = JSON.parse(JSON.stringify(transactions));
         localStorage.setItem('flamingo_saved_orders_map', JSON.stringify(savedOrdersMap));
         updateSavedOrdersDropdown();
-        showToast(`Saved: "${orderName}"`, "success");
+        showToast(`Order "${orderName}" saved successfully!`, "success");
     }
 
     function updateSavedOrdersDropdown() {
@@ -1670,7 +1759,7 @@
         let keys = Object.keys(savedOrdersMap);
         
         if (keys.length === 0) {
-            elements.savedOrdersListContainer.innerHTML = '<div style="padding: 8px 12px; font-size: 0.72rem; color: var(--apple-secondary); text-align: center;">No saved orders</div>';
+            elements.savedOrdersListContainer.innerHTML = '<div style="padding: 8px 10px; font-size: 0.72rem; color: var(--md-sys-color-text-secondary); text-align: center;">No saved orders</div>';
             return;
         }
 
@@ -1678,8 +1767,8 @@
         keys.forEach(k => {
             html += `
                 <div class="saved-order-row">
-                    <span style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:500;" onclick="loadSavedOrder('${k.replace(/'/g, "\\'")}')" title="Click to load">${k} (${savedOrdersMap[k].length})</span>
-                    <button class="btn-icon-round destructive" style="width: 20px; height: 20px; min-height: 20px; font-size: 0.65rem;" title="Delete" onclick="deleteSavedOrder(event, '${k.replace(/'/g, "\\'")}')">✕</button>
+                    <span class="saved-order-name" onclick="loadSavedOrder('${k.replace(/'/g, "\\'")}')" title="Click to load">${k} (${savedOrdersMap[k].length})</span>
+                    <button class="saved-order-delete-btn" title="Delete Saved Order" onclick="deleteSavedOrder(event, '${k.replace(/'/g, "\\'")}')">✕</button>
                 </div>`;
         });
         elements.savedOrdersListContainer.innerHTML = html;
@@ -1689,7 +1778,7 @@
         if (savedOrdersMap[orderName]) {
             transactions = JSON.parse(JSON.stringify(savedOrdersMap[orderName]));
             syncTransactions();
-            showToast(`Loaded: "${orderName}"`, "success");
+            showToast(`Loaded order: "${orderName}"`, "success");
         }
         const panel = document.getElementById("savedOrdersMenuPanel");
         if (panel) panel.classList.remove("show");
@@ -1697,17 +1786,18 @@
 
     function deleteSavedOrder(event, orderName) {
         event.stopPropagation();
-        openConfirmDialog("Delete Saved Order", `Delete saved order "${orderName}"?`, () => {
+        openConfirmDialog("Delete Saved Order", `Are you sure you want to delete the saved order "${orderName}"?`, () => {
             delete savedOrdersMap[orderName];
             localStorage.setItem('flamingo_saved_orders_map', JSON.stringify(savedOrdersMap));
             updateSavedOrdersDropdown();
-            showToast(`Deleted: "${orderName}"`, "info");
+            showToast(`Saved order "${orderName}" deleted`, "info");
         });
     }
 
+    // Export Filtered Backup Only
     function exportInventoryCSV() {
         const filtered = getFilteredInventory();
-        if (!filtered.length) return showToast("No matching items to export!", "error");
+        if (!filtered.length) return showToast("No inventory items matching current filter to export!", "error");
         let csv = "ID,Code,Barcode,Description,Price,RSP,Stock,Status\n";
         filtered.forEach(i => {
             csv += `"${i.id}","${i.code}","${i.barcode}","${i.desc}","${i.price}","${i.rsp}","${i.stock}","${i.status}"\n`;
@@ -1717,7 +1807,7 @@
         link.href = URL.createObjectURL(blob);
         link.download = `Filtered_Inventory_Backup_${new Date().toLocaleDateString()}.csv`;
         link.click();
-        showToast("Inventory exported", "success");
+        showToast("Filtered inventory exported", "success");
     }
 
     function exportToExcel() {
@@ -1740,7 +1830,7 @@
         link.download = `${filename.trim().replace(/[\/\?<>\\:\*\|"]/g, '_')}.csv`;
         link.click();
         URL.revokeObjectURL(link.href);
-        showToast("Order exported", "success");
+        showToast("Order exported successfully!", "success");
     }
 
     function parseCSVLine(text) {
@@ -1791,7 +1881,7 @@
                 const barcodeMap = new Set(newItems.map(item => item.barcode));
                 inventory = inventory.filter(i => !barcodeMap.has(i.barcode)).concat(newItems);
                 sync();
-                showToast(`Imported ${newItems.length} items`, "success");
+                showToast(`Imported ${newItems.length} items!`, "success");
             }
             if(elements.csvInput) elements.csvInput.value = "";
         };
@@ -1841,9 +1931,9 @@
         }
 
         readerElement.style.display = "block";
-        btn.innerText = "Stop Camera";
-        btn.className = "btn btn-destructive";
-        scanStatus.innerText = "Align barcode within camera view...";
+        btn.innerText = "🛑 Stop Camera";
+        btn.style.backgroundColor = "var(--md-sys-color-error)";
+        scanStatus.innerText = "Position barcode within viewfinder...";
 
         toolkitLiveScanner = new Html5Qrcode("toolkitLiveReader");
         const config = { fps: 15, qrbox: { width: 240, height: 120 } };
@@ -1859,7 +1949,7 @@
                 clearTimeout(throttleTimeout);
                 throttleTimeout = setTimeout(() => { lastScannedCode = ""; }, 2500);
 
-                scanStatus.innerText = `Captured: ${scannedClean}`;
+                scanStatus.innerText = `Added: ${scannedClean}`;
 
                 let currentValue = toolkitTextarea.value;
                 if (currentValue.length > 0 && !currentValue.endsWith('\n')) currentValue += '\n';
@@ -1878,8 +1968,8 @@
         const readerElement = document.getElementById('toolkitLiveReader');
         const btn = document.getElementById('btnToggleToolkitScanner');
         
-        btn.innerText = "📷 Camera Scanner";
-        btn.className = "btn btn-primary";
+        btn.innerText = "📷 Start Scanner";
+        btn.style.backgroundColor = "var(--md-sys-color-accent)";
         scanStatus.innerText = "";
         readerElement.style.display = "none";
 
@@ -1940,11 +2030,11 @@
         const lines = input.split('\n').map(line => line.trim()).filter(line => line !== '');
         if (lines.length === 0) return;
 
-        const currentThemeColor = '#1C1C1E';
+        const currentThemeColor = getComputedStyle(document.body).getPropertyValue('--md-sys-color-primary').trim() || '#0f172a';
 
         lines.forEach((code, index) => {
             const container = document.createElement('div');
-            container.style.cssText = "background: #fff; padding: 10px; border-radius: 12px; border: 0.5px solid var(--apple-divider); box-shadow: var(--apple-card-shadow); text-align: center; flex: 0 0 auto;";
+            container.className = 'barcode-container';
 
             const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             svg.id = 'barcode-render-' + index;
@@ -1963,7 +2053,7 @@
                     margin: 6
                 });
             } catch (error) {
-                container.innerHTML = `<p style="color:var(--apple-red); font-size:11px; margin:0;">Invalid "${code}"</p>`;
+                container.innerHTML = `<p style="color:var(--md-sys-color-error); font-size:11px; margin:0;">Invalid "${code}"</p>`;
             }
         });
     }
