@@ -31,7 +31,7 @@
             --apple-fill-hover: rgba(120, 120, 128, 0.14);
             
             --apple-card-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 0.5px 1.5px rgba(0, 0, 0, 0.03);
-            --apple-popover-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.06);
+            --apple-popover-shadow: 0 14px 34px rgba(0, 0, 0, 0.16), 0 2px 6px rgba(0, 0, 0, 0.08);
             --apple-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
             --apple-mono: "SF Mono", Menlo, Monaco, Consolas, monospace;
         }
@@ -49,7 +49,6 @@
             --apple-blue-hover: #22A835;
         }
 
-        /* New Themes: Dark Green (#006039), Black, Dark Blue */
         body.theme-darkgreen {
             --apple-blue: #006039;
             --apple-blue-tint: rgba(0, 96, 57, 0.14);
@@ -106,6 +105,8 @@
             border-radius: 16px; 
             border: 0.5px solid var(--apple-border);
             box-shadow: var(--apple-card-shadow);
+            position: relative;
+            z-index: 1000;
             flex-wrap: wrap;
             gap: 10px;
         }
@@ -125,10 +126,10 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            flex-wrap: wrap;
+            position: relative;
         }
 
-        /* Controls Dropdown Container (Full Width Two per row Grid) */
+        /* Controls Dropdown Container */
         .controls-dropdown-wrapper {
             position: relative;
         }
@@ -136,14 +137,14 @@
         .controls-panel {
             display: none;
             position: absolute;
-            top: 40px;
+            top: calc(100% + 8px);
             right: 0;
-            width: 320px;
+            width: min(340px, 90vw);
             background: var(--apple-surface-card);
-            border: 0.5px solid var(--apple-divider);
+            border: 0.5px solid var(--apple-border);
             border-radius: 16px;
             box-shadow: var(--apple-popover-shadow);
-            z-index: 150;
+            z-index: 2500;
             padding: 12px;
             animation: popoverFade 0.15s ease-out;
         }
@@ -151,7 +152,7 @@
             display: block;
         }
 
-        /* Two Controls in Each Row Grid (Same exact width) */
+        /* Controls 2-Column Grid with full alignment */
         .controls-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -209,6 +210,36 @@
             background-repeat: no-repeat;
             background-position: right 2px center;
             background-size: 10px;
+        }
+
+        /* Non-overlapping Columns Selector Drawer */
+        .column-drawer {
+            grid-column: span 2;
+            display: none;
+            flex-direction: row;
+            justify-content: space-around;
+            background: var(--apple-fill);
+            border-radius: 10px;
+            padding: 8px 10px;
+            border: 0.5px solid var(--apple-divider);
+            margin-top: 2px;
+        }
+        .column-drawer.show {
+            display: flex;
+        }
+        .column-drawer label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: var(--apple-text);
+            cursor: pointer;
+            margin: 0;
+        }
+        .column-drawer input[type="checkbox"] {
+            accent-color: var(--apple-blue);
+            margin: 0;
         }
 
         /* Apple Buttons */
@@ -606,7 +637,7 @@
         }
 
         /* Apple Popover Menu */
-        .dropdown-menu-panel, .saved-orders-panel {
+        .saved-orders-panel {
             display: none;
             position: absolute;
             background: var(--apple-surface-card);
@@ -621,9 +652,9 @@
             from { opacity: 0; transform: scale(0.96); }
             to { opacity: 1; transform: scale(1); }
         }
-        .dropdown-menu-panel.show, .saved-orders-panel.show { display: block; }
+        .saved-orders-panel.show { display: block; }
 
-        .dropdown-item-label, .saved-order-row {
+        .saved-order-row {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -635,10 +666,9 @@
             border-radius: 8px;
             transition: background 0.12s;
         }
-        .dropdown-item-label:hover, .saved-order-row:hover { background: var(--apple-fill); }
-        .dropdown-item-label input[type="checkbox"] { accent-color: var(--apple-blue); margin: 0; }
+        .saved-order-row:hover { background: var(--apple-fill); }
 
-        /* Floating iOS Button Moved to Bottom Center */
+        /* Floating iOS Button at Bottom Center */
         .floating-scroll-btn {
             position: fixed;
             bottom: 24px;
@@ -804,19 +834,19 @@
                         </label>
                         <button class="btn btn-tinted ctrl-item" onclick="exportInventoryCSV()">↓ Export CSV</button>
 
-                        <!-- Row 4: Column Toggles & Catalog Clear -->
-                        <div style="position: relative; width: 100%;">
-                            <button class="btn btn-tinted ctrl-item" onclick="toggleVisibilityDropdown(event)">Columns ▾</button>
-                            <div class="dropdown-menu-panel" id="columnVisibilityMenu" style="top: 40px; left: 0; width: 150px;">
-                                <label class="dropdown-item-label" onclick="stopPropagation(event)">
-                                    <input type="checkbox" id="chkToggleId" onchange="toggleColumnVisibility('id', this.checked)"> Item ID
-                                </label>
-                                <label class="dropdown-item-label" onclick="stopPropagation(event)">
-                                    <input type="checkbox" id="chkToggleActions" onchange="toggleColumnVisibility('actions', this.checked)"> Actions
-                                </label>
-                            </div>
-                        </div>
+                        <!-- Row 4: Columns Toggle & Catalog Clear -->
+                        <button class="btn btn-tinted ctrl-item" onclick="toggleColumnDrawer(event)">Columns ▾</button>
                         <button class="btn btn-destructive ctrl-item" onclick="confirmClearInventory()">Clear Catalog</button>
+
+                        <!-- Row 5: Column Checkbox Tray (Full Width Row) -->
+                        <div class="column-drawer" id="columnDrawer">
+                            <label onclick="stopPropagation(event)">
+                                <input type="checkbox" id="chkToggleId" onchange="toggleColumnVisibility('id', this.checked)"> Item ID
+                            </label>
+                            <label onclick="stopPropagation(event)">
+                                <input type="checkbox" id="chkToggleActions" onchange="toggleColumnVisibility('actions', this.checked)"> Actions
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1008,7 +1038,7 @@
     </div>
 </div>
 
-<!-- Floating Navigation Arrow Moved to Bottom Center -->
+<!-- Floating Navigation Arrow at Bottom Center -->
 <button id="floatingScrollBtn" class="floating-scroll-btn" onclick="handleFloatingScroll()" title="Scroll">↓</button>
 
 <!-- Dynamic Island Toast Container -->
@@ -1106,11 +1136,6 @@
         updateFloatingScrollButton();
         
         document.addEventListener("click", (e) => {
-            const menu = document.getElementById("columnVisibilityMenu");
-            if (menu && !e.target.closest('.controls-panel')) {
-                menu.classList.remove("show");
-            }
-
             const ctrlPanel = document.getElementById("headerControlPanel");
             const ctrlWrap = document.querySelector(".controls-dropdown-wrapper");
             if (ctrlPanel && ctrlWrap && !ctrlWrap.contains(e.target)) {
@@ -1136,8 +1161,6 @@
                 } else if (toolkitLiveScanner) {
                     stopToolkitScanner();
                 } else {
-                    const menu = document.getElementById("columnVisibilityMenu");
-                    if (menu) menu.classList.remove("show");
                     const ctrlPanel = document.getElementById("headerControlPanel");
                     if (ctrlPanel) ctrlPanel.classList.remove("show");
                     const savedMenu = document.getElementById("savedOrdersMenuPanel");
@@ -1249,16 +1272,16 @@
         panel.classList.toggle('show');
     }
 
+    function toggleColumnDrawer(event) {
+        if (event) event.stopPropagation();
+        const drawer = document.getElementById('columnDrawer');
+        drawer.classList.toggle('show');
+    }
+
     function sync() {
         localStorage.setItem('flamingo_db_v3', JSON.stringify(inventory));
         localStorage.setItem('flamingo_trans_v3', JSON.stringify(transactions));
         renderTable();
-    }
-
-    function toggleVisibilityDropdown(event) {
-        event.stopPropagation();
-        const menu = document.getElementById("columnVisibilityMenu");
-        if(menu) menu.classList.toggle("show");
     }
 
     function toggleSavedOrdersPanel(event) {
