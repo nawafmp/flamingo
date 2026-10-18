@@ -49,6 +49,25 @@
             --apple-blue-hover: #22A835;
         }
 
+        /* New Themes: Dark Green (#006039), Black, Dark Blue */
+        body.theme-darkgreen {
+            --apple-blue: #006039;
+            --apple-blue-tint: rgba(0, 96, 57, 0.14);
+            --apple-blue-hover: #004d2e;
+        }
+
+        body.theme-black {
+            --apple-blue: #000000;
+            --apple-blue-tint: rgba(0, 0, 0, 0.12);
+            --apple-blue-hover: #222222;
+        }
+
+        body.theme-darkblue {
+            --apple-blue: #002244;
+            --apple-blue-tint: rgba(0, 34, 68, 0.14);
+            --apple-blue-hover: #001730;
+        }
+
         /* Font Overrides */
         body.font-jakarta { font-family: 'Plus Jakarta Sans', var(--apple-font); }
         body.font-inter { font-family: 'Inter', var(--apple-font); }
@@ -64,7 +83,7 @@
         body { 
             background: var(--apple-bg); 
             margin: 0; 
-            padding: 12px 14px 40px 14px; 
+            padding: 12px 14px 60px 14px; 
             color: var(--apple-text);
             font-family: var(--apple-font);
             -webkit-font-smoothing: antialiased;
@@ -109,13 +128,54 @@
             flex-wrap: wrap;
         }
 
-        /* Segmented / Dropdown Styling in Apple Style */
+        /* Controls Dropdown Container (Full Width Two per row Grid) */
+        .controls-dropdown-wrapper {
+            position: relative;
+        }
+
+        .controls-panel {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 0;
+            width: 320px;
+            background: var(--apple-surface-card);
+            border: 0.5px solid var(--apple-divider);
+            border-radius: 16px;
+            box-shadow: var(--apple-popover-shadow);
+            z-index: 150;
+            padding: 12px;
+            animation: popoverFade 0.15s ease-out;
+        }
+        .controls-panel.show {
+            display: block;
+        }
+
+        /* Two Controls in Each Row Grid (Same exact width) */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            width: 100%;
+        }
+
+        .controls-grid .btn,
+        .controls-grid .apple-select-wrap,
+        .controls-grid .ctrl-item {
+            width: 100% !important;
+            height: 36px !important;
+            min-height: 36px !important;
+            margin: 0 !important;
+            box-sizing: border-box !important;
+            font-size: 0.74rem !important;
+        }
+
         .apple-select-wrap {
             display: inline-flex;
             align-items: center;
             gap: 6px;
             background: var(--apple-fill);
-            padding: 3px 8px;
+            padding: 0 10px;
             border-radius: 10px;
             border: 0.5px solid transparent;
             transition: all 0.2s ease;
@@ -131,11 +191,13 @@
             color: var(--apple-secondary);
             text-transform: none;
             letter-spacing: normal;
+            flex-shrink: 0;
         }
         .apple-select {
-            height: 26px;
+            width: 100%;
+            height: 100%;
             padding: 0 16px 0 2px;
-            font-size: 0.75rem;
+            font-size: 0.74rem;
             font-weight: 600;
             color: var(--apple-text);
             border: none;
@@ -153,9 +215,9 @@
         .btn { 
             cursor: pointer; 
             border: none; 
-            border-radius: 980px; 
+            border-radius: 10px; 
             font-weight: 600; 
-            padding: 7px 14px; 
+            padding: 7px 12px; 
             font-size: 0.75rem; 
             min-height: 32px; 
             display: inline-flex;
@@ -166,6 +228,7 @@
             color: var(--apple-text);
             transition: all 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
             user-select: none;
+            white-space: nowrap;
         }
         .btn:hover { background: var(--apple-fill-hover); }
         .btn:active { transform: scale(0.97); opacity: 0.85; }
@@ -196,8 +259,8 @@
         .btn-header-shortcut {
             background: var(--apple-text);
             color: #FFFFFF;
-            min-height: 30px;
-            padding: 4px 12px;
+            min-height: 32px;
+            padding: 6px 14px;
             font-size: 0.75rem;
             border-radius: 980px;
         }
@@ -217,32 +280,16 @@
             box-shadow: var(--apple-card-shadow);
         }
         
-        /* Section Titles */
         .section-header {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
             padding-bottom: 12px;
             border-bottom: 0.5px solid var(--apple-divider);
             margin-bottom: 12px;
         }
 
-        .inventory-head-flex { display: flex; flex-direction: column; width: 100%; gap: 10px; }
         .inventory-title-centered { font-weight: 700; font-size: 0.95rem; color: var(--apple-text); letter-spacing: -0.015em; }
-
-        .collapsible-control-panel { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 8px; 
-            width: 100%; 
-            background: var(--apple-surface-subtle);
-            padding: 10px 12px;
-            border-radius: 12px;
-            border: 0.5px solid var(--apple-divider);
-        }
-        .collapsible-control-panel.hidden { display: none; }
-        .header-controls-left, .header-controls-right { display: flex; gap: 8px; width: 100%; align-items: center; flex-wrap: wrap; }
-        .header-controls-right select { height: 32px; border-radius: 8px; }
 
         /* Apple Native Search Field */
         .filter-search-wrapper {
@@ -566,7 +613,7 @@
             border: 0.5px solid var(--apple-divider);
             border-radius: 12px;
             box-shadow: var(--apple-popover-shadow);
-            z-index: 120;
+            z-index: 160;
             padding: 6px;
             animation: popoverFade 0.15s ease-out;
         }
@@ -591,11 +638,12 @@
         .dropdown-item-label:hover, .saved-order-row:hover { background: var(--apple-fill); }
         .dropdown-item-label input[type="checkbox"] { accent-color: var(--apple-blue); margin: 0; }
 
-        /* Floating iOS Button */
+        /* Floating iOS Button Moved to Bottom Center */
         .floating-scroll-btn {
             position: fixed;
             bottom: 24px;
-            right: 24px;
+            left: 50%;
+            transform: translateX(-50%);
             width: 44px;
             height: 44px;
             border-radius: 50%;
@@ -612,7 +660,7 @@
             font-weight: 600;
             transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s;
         }
-        .floating-scroll-btn:hover { transform: scale(1.08); }
+        .floating-scroll-btn:hover { transform: translateX(-50%) scale(1.08); }
 
         /* Apple Dynamic Island / Capsule Toast */
         #toastContainer {
@@ -680,10 +728,6 @@
 
         @media (min-width: 768px) {
             body { padding: 20px 24px 60px 24px; }
-            .inventory-head-flex { flex-direction: row; justify-content: space-between; align-items: center; }
-            .collapsible-control-panel { flex-direction: row; justify-content: space-between; align-items: center; }
-            .header-controls-left { width: auto; }
-            .header-controls-right { width: auto; flex-wrap: nowrap; }
             .form-grid { flex-direction: row; flex-wrap: wrap; }
             .form-unit { flex: 1 1 calc(25% - 10px); }
         }
@@ -703,33 +747,78 @@
         </h2>
         
         <div class="header-controls">
-            <div class="apple-select-wrap">
-                <label>Lot</label>
-                <select id="lotSizeSelector" class="apple-select">
-                    <option value="1">1 pc</option>
-                    <option value="6">6 pcs</option>
-                    <option value="12" selected>12 pcs</option>
-                    <option value="24">24 pcs</option>
-                </select>
-            </div>
+            <!-- Controls Trigger & Popover Panel -->
+            <div class="controls-dropdown-wrapper">
+                <button class="btn btn-tinted" id="btnToggleControls" onclick="toggleControlPanel(event)">
+                    Controls ▾
+                </button>
+                
+                <div class="controls-panel" id="headerControlPanel">
+                    <div class="controls-grid">
+                        <!-- Row 1: Lot & Accent -->
+                        <div class="apple-select-wrap">
+                            <label>Lot</label>
+                            <select id="lotSizeSelector" class="apple-select">
+                                <option value="1">1 pc</option>
+                                <option value="6">6 pcs</option>
+                                <option value="12" selected>12 pcs</option>
+                                <option value="24">24 pcs</option>
+                            </select>
+                        </div>
+                        <div class="apple-select-wrap">
+                            <label>Accent</label>
+                            <select id="themeSelector" class="apple-select" onchange="setTheme(this.value)">
+                                <option value="default">Default Blue</option>
+                                <option value="darkgreen">Dark Green</option>
+                                <option value="black">Black</option>
+                                <option value="darkblue">Dark Blue</option>
+                                <option value="flamingo">Sky Cyan</option>
+                                <option value="forest">Mint Green</option>
+                            </select>
+                        </div>
 
-            <div class="apple-select-wrap">
-                <label>Accent</label>
-                <select id="themeSelector" class="apple-select" onchange="setTheme(this.value)">
-                    <option value="default">Default Blue</option>
-                    <option value="flamingo">Sky Cyan</option>
-                    <option value="forest">Mint Green</option>
-                </select>
-            </div>
+                        <!-- Row 2: Type & Status Filter -->
+                        <div class="apple-select-wrap">
+                            <label>Type</label>
+                            <select id="fontSelector" class="apple-select" onchange="setFont(this.value)">
+                                <option value="sf">San Francisco</option>
+                                <option value="jakarta">Jakarta</option>
+                                <option value="inter">Inter</option>
+                                <option value="mono">SF Mono</option>
+                            </select>
+                        </div>
+                        <div class="apple-select-wrap">
+                            <label>Status</label>
+                            <select id="statusFilter" class="apple-select" onchange="renderTable()">
+                                <option value="All">All</option>
+                                <option value="Active">Active & Reg</option>
+                                <option value="Regular">Regular Only</option>
+                                <option value="Blocked">Blocked</option>
+                            </select>
+                        </div>
 
-            <div class="apple-select-wrap">
-                <label>Type</label>
-                <select id="fontSelector" class="apple-select" onchange="setFont(this.value)">
-                    <option value="sf">San Francisco</option>
-                    <option value="jakarta">Jakarta</option>
-                    <option value="inter">Inter</option>
-                    <option value="mono">SF Mono</option>
-                </select>
+                        <!-- Row 3: Import & Export -->
+                        <label class="btn btn-tinted ctrl-item" title="Import CSV" style="cursor: pointer;">
+                            ↑ Import CSV
+                            <input type="file" id="csvInput" accept=".csv" style="display:none;" onchange="importCSV(event)">
+                        </label>
+                        <button class="btn btn-tinted ctrl-item" onclick="exportInventoryCSV()">↓ Export CSV</button>
+
+                        <!-- Row 4: Column Toggles & Catalog Clear -->
+                        <div style="position: relative; width: 100%;">
+                            <button class="btn btn-tinted ctrl-item" onclick="toggleVisibilityDropdown(event)">Columns ▾</button>
+                            <div class="dropdown-menu-panel" id="columnVisibilityMenu" style="top: 40px; left: 0; width: 150px;">
+                                <label class="dropdown-item-label" onclick="stopPropagation(event)">
+                                    <input type="checkbox" id="chkToggleId" onchange="toggleColumnVisibility('id', this.checked)"> Item ID
+                                </label>
+                                <label class="dropdown-item-label" onclick="stopPropagation(event)">
+                                    <input type="checkbox" id="chkToggleActions" onchange="toggleColumnVisibility('actions', this.checked)"> Actions
+                                </label>
+                            </div>
+                        </div>
+                        <button class="btn btn-destructive ctrl-item" onclick="confirmClearInventory()">Clear Catalog</button>
+                    </div>
+                </div>
             </div>
 
             <button class="btn btn-header-shortcut" onclick="scrollToOrders()">Orders</button>
@@ -741,45 +830,7 @@
         <div class="bottom-full">
             <div class="card">
                 <div class="section-header">
-                    <div class="inventory-head-flex">
-                        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                            <div class="inventory-title-centered">Product Catalog</div>
-                            <button class="btn btn-tinted" id="btnToggleControls" onclick="toggleControlPanel()" style="min-height: 26px; padding: 4px 10px; font-size: 0.72rem;">
-                                Controls ▾
-                            </button>
-                        </div>
-                        
-                        <div class="collapsible-control-panel hidden" id="inventoryControlPanel">
-                            <div class="header-controls-left">
-                                <label class="btn btn-tinted" title="Import CSV">
-                                    ↑ Import CSV
-                                    <input type="file" id="csvInput" accept=".csv" style="display:none;" onchange="importCSV(event)">
-                                </label>
-                                <button class="btn btn-tinted" onclick="exportInventoryCSV()">↓ Export CSV</button>
-                                <button class="btn btn-destructive" onclick="confirmClearInventory()">Clear Catalog</button>
-                            </div>
-                            <div class="header-controls-right">
-                                <select id="statusFilter" class="apple-select" style="background:var(--apple-fill); padding:4px 20px 4px 8px; border-radius:8px;" onchange="renderTable()">
-                                    <option value="All">All Statuses</option>
-                                    <option value="Active">Active & Regular</option>
-                                    <option value="Regular">Regular Only</option>
-                                    <option value="Blocked">Blocked</option>
-                                </select>
-
-                                <div style="position: relative;">
-                                    <button class="btn" onclick="toggleVisibilityDropdown(event)" style="font-size: 0.72rem; padding: 5px 10px;">Columns ▾</button>
-                                    <div class="dropdown-menu-panel" id="columnVisibilityMenu" style="top: 36px; right: 0; width: 160px;">
-                                        <label class="dropdown-item-label" onclick="stopPropagation(event)">
-                                            <input type="checkbox" id="chkToggleId" onchange="toggleColumnVisibility('id', this.checked)"> Item ID
-                                        </label>
-                                        <label class="dropdown-item-label" onclick="stopPropagation(event)">
-                                            <input type="checkbox" id="chkToggleActions" onchange="toggleColumnVisibility('actions', this.checked)"> Action Tools
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="inventory-title-centered">Product Catalog</div>
                 </div>
 
                 <div class="filter-search-wrapper" id="searchFieldWrapper">
@@ -824,19 +875,19 @@
         </div>
     </div>
 
-    <!-- Workspace Segments (Worksheet, Product Master, Barcode Printing) -->
+    <!-- Workspace Segments (Order, Details, Barcode) -->
     <div class="workspace-row">
         <div id="targetWorkspaceCard" class="top-full">
             <div class="card">
                 <div class="segmented-control">
                     <button class="segment-btn active" id="tabOrderBtn" onclick="switchWorkspaceTab('order')">
-                        Worksheet <span class="segment-badge" id="orderCountBadge">0</span>
+                        Order <span class="segment-badge" id="orderCountBadge">0</span>
                     </button>
-                    <button class="segment-btn" id="tabEntryBtn" onclick="switchWorkspaceTab('entry')">Product Master</button>
-                    <button class="segment-btn" id="tabToolkitBtn" onclick="switchWorkspaceTab('toolkit')">Barcode Print</button>
+                    <button class="segment-btn" id="tabEntryBtn" onclick="switchWorkspaceTab('entry')">Details</button>
+                    <button class="segment-btn" id="tabToolkitBtn" onclick="switchWorkspaceTab('toolkit')">Barcode</button>
                 </div>
                 
-                <!-- Order Worksheet Panel -->
+                <!-- Order Panel -->
                 <div id="orderTabPanel" class="tab-panel active">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
                         <div style="font-size: 0.88rem; font-weight: 700; color: var(--apple-text);">Active Order</div>
@@ -897,7 +948,7 @@
                     </div>
                 </div>
 
-                <!-- Product Master Panel -->
+                <!-- Details Panel -->
                 <div id="entryTabPanel" class="tab-panel">
                     <div class="form-grid">
                         <div class="form-unit"><div class="form-group"><label>Item ID</label><input type="text" id="itemID"></div></div>
@@ -924,7 +975,7 @@
                     </div>
                 </div>
 
-                <!-- Barcode Tool Panel -->
+                <!-- Barcode Panel -->
                 <div id="toolkitTabPanel" class="tab-panel">
                     <div style="display: flex; flex-direction: column; gap: 12px;">
                         <div class="header-controls-left" style="gap: 8px; width: 100%;">
@@ -957,7 +1008,7 @@
     </div>
 </div>
 
-<!-- Floating Navigation Arrow -->
+<!-- Floating Navigation Arrow Moved to Bottom Center -->
 <button id="floatingScrollBtn" class="floating-scroll-btn" onclick="handleFloatingScroll()" title="Scroll">↓</button>
 
 <!-- Dynamic Island Toast Container -->
@@ -1056,7 +1107,15 @@
         
         document.addEventListener("click", (e) => {
             const menu = document.getElementById("columnVisibilityMenu");
-            if(menu) menu.classList.remove("show");
+            if (menu && !e.target.closest('.controls-panel')) {
+                menu.classList.remove("show");
+            }
+
+            const ctrlPanel = document.getElementById("headerControlPanel");
+            const ctrlWrap = document.querySelector(".controls-dropdown-wrapper");
+            if (ctrlPanel && ctrlWrap && !ctrlWrap.contains(e.target)) {
+                ctrlPanel.classList.remove("show");
+            }
 
             const savedOrdersMenu = document.getElementById("savedOrdersMenuPanel");
             const savedOrdersWrap = document.querySelector(".saved-orders-dropdown-wrap");
@@ -1079,6 +1138,8 @@
                 } else {
                     const menu = document.getElementById("columnVisibilityMenu");
                     if (menu) menu.classList.remove("show");
+                    const ctrlPanel = document.getElementById("headerControlPanel");
+                    if (ctrlPanel) ctrlPanel.classList.remove("show");
                     const savedMenu = document.getElementById("savedOrdersMenuPanel");
                     if (savedMenu) savedMenu.classList.remove("show");
                     if (document.activeElement === elements.tableFilter) {
@@ -1137,7 +1198,7 @@
     }
 
     function setTheme(themeName) {
-        document.body.classList.remove('theme-flamingo', 'theme-forest');
+        document.body.classList.remove('theme-flamingo', 'theme-forest', 'theme-darkgreen', 'theme-black', 'theme-darkblue');
         if (themeName !== 'default') {
             document.body.classList.add('theme-' + themeName);
         }
@@ -1182,16 +1243,10 @@
         }
     }
 
-    function toggleControlPanel() {
-        const panel = document.getElementById('inventoryControlPanel');
-        const btn = document.getElementById('btnToggleControls');
-        if (panel.classList.contains('hidden')) {
-            panel.classList.remove('hidden');
-            btn.innerText = 'Controls ▴';
-        } else {
-            panel.classList.add('hidden');
-            btn.innerText = 'Controls ▾';
-        }
+    function toggleControlPanel(event) {
+        if (event) event.stopPropagation();
+        const panel = document.getElementById('headerControlPanel');
+        panel.classList.toggle('show');
     }
 
     function sync() {
@@ -1388,7 +1443,7 @@
                                     <span style="color:var(--apple-blue); font-weight:600;">${priceNum}</span> · RSP: ${rspNum} · Stock: ${stockVal}
                                 </span>
                             </div>
-                            <button class="btn-icon-round accent" title="Add to Order Worksheet" onclick="addTrans('${i.code}')">＋</button>
+                            <button class="btn-icon-round accent" title="Add to Order" onclick="addTrans('${i.code}')">＋</button>
                         </div>
                     </td>
                     <td class="col-actions" style="display: ${actionsStyle};">
@@ -1555,10 +1610,10 @@
 
     function confirmClearTransactions() {
         if (!transactions.length) return;
-        openConfirmDialog("Clear Worksheet", "Are you sure you want to clear all active orders?", () => {
+        openConfirmDialog("Clear Order", "Are you sure you want to clear all active orders?", () => {
             transactions = [];
             syncTransactions();
-            showToast("Worksheet cleared", "info");
+            showToast("Order cleared", "info");
         });
     }
 
@@ -1574,7 +1629,7 @@
 
     function promptSaveCurrentOrder() {
         if (!transactions.length) {
-            showToast("Worksheet is empty!", "error");
+            showToast("Order is empty!", "error");
             return;
         }
         let orderName = prompt("Name this saved order:", "Order_" + new Date().toLocaleDateString());
@@ -1643,7 +1698,7 @@
     }
 
     function exportToExcel() {
-        if (!transactions.length) return showToast("No items in active order worksheet", "error");
+        if (!transactions.length) return showToast("No items in active order", "error");
         let filename = prompt("Enter Order Filename:", "Order_Worksheet");
         if (!filename) return; 
 
