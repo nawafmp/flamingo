@@ -2,282 +2,318 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-    <title>Order Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
+    <title>Orders & Inventory</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <style>
         :root {
-            /* Default Theme (Ocean Indigo) */
-            --md-sys-color-bg: #f0f4f8; 
-            --md-sys-color-surface: #ffffff;
-            --md-sys-color-surface-trans: rgba(255, 255, 255, 0.9);
-            --md-sys-color-surface-variant: #e2e8f0;
-            --md-sys-color-primary: #0f172a; 
-            --md-sys-color-primary-container: #e0f2fe; 
-            --md-sys-color-on-primary-container: #0369a1;
-            --md-sys-color-accent: #0284c7; 
-            --md-sys-color-accent-container: #bae6fd; 
-            --md-sys-color-error: #e11d48;
-            --md-sys-color-error-container: #ffe4e6;
-            --md-sys-color-on-error-container: #9f1239;
-            --md-sys-color-outline: #cbd5e1; 
-            --md-sys-color-text: #0f172a;
-            --md-sys-color-text-secondary: #64748b;
-            --price-highlight-text: #0284c7;
-            --card-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
-            --card-shadow-hover: 0 10px 20px rgba(15, 23, 42, 0.06);
+            /* Apple HIG Light Palette */
+            --apple-bg: #F2F2F7;
+            --apple-surface: rgba(255, 255, 255, 0.88);
+            --apple-surface-card: #FFFFFF;
+            --apple-surface-subtle: #F9F9FB;
+            --apple-divider: rgba(60, 60, 67, 0.12);
+            --apple-border: rgba(60, 60, 67, 0.18);
+            --apple-text: #1C1C1E;
+            --apple-secondary: #8E8E93;
+            --apple-tertiary: #C7C7CC;
+            --apple-blue: #007AFF;
+            --apple-blue-hover: #0062CC;
+            --apple-blue-tint: rgba(0, 122, 255, 0.12);
+            --apple-green: #34C759;
+            --apple-green-tint: rgba(52, 199, 89, 0.12);
+            --apple-orange: #FF9500;
+            --apple-red: #FF3B30;
+            --apple-red-tint: rgba(255, 59, 48, 0.12);
+            --apple-fill: rgba(120, 120, 128, 0.08);
+            --apple-fill-hover: rgba(120, 120, 128, 0.14);
+            
+            --apple-card-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 0.5px 1.5px rgba(0, 0, 0, 0.03);
+            --apple-popover-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.06);
+            --apple-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            --apple-mono: "SF Mono", Menlo, Monaco, Consolas, monospace;
         }
 
-        /* Flamingo Theme (Emerald & Gold) */
+        /* Apple Alternate Color Accents */
         body.theme-flamingo {
-            --md-sys-color-bg: #f4f8f6; 
-            --md-sys-color-surface: #ffffff;
-            --md-sys-color-surface-trans: rgba(255, 255, 255, 0.9);
-            --md-sys-color-surface-variant: #dcf2e5;
-            --md-sys-color-primary: #064e3b; 
-            --md-sys-color-primary-container: #d1fae5; 
-            --md-sys-color-on-primary-container: #065f46;
-            --md-sys-color-accent: #d97706; 
-            --md-sys-color-accent-container: #fef3c7; 
-            --md-sys-color-outline: #cbd5e1; 
-            --md-sys-color-text: #064e3b;
-            --md-sys-color-text-secondary: #047857;
-            --price-highlight-text: #d97706;
-            --card-shadow: 0 4px 12px rgba(6, 78, 59, 0.04);
-            --card-shadow-hover: 0 10px 20px rgba(6, 78, 59, 0.06);
+            --apple-blue: #30B0C7;
+            --apple-blue-tint: rgba(48, 176, 199, 0.12);
+            --apple-blue-hover: #258D9F;
         }
 
-        /* Forest Mint Theme */
         body.theme-forest {
-            --md-sys-color-bg: #f3f7f4; 
-            --md-sys-color-surface: #ffffff;
-            --md-sys-color-surface-trans: rgba(255, 255, 255, 0.9);
-            --md-sys-color-surface-variant: #e0ece4;
-            --md-sys-color-primary: #113f26; 
-            --md-sys-color-primary-container: #c6ebd7; 
-            --md-sys-color-on-primary-container: #15803d;
-            --md-sys-color-accent: #16a34a; 
-            --md-sys-color-accent-container: #dcfce7; 
-            --md-sys-color-outline: #cbd5e1; 
-            --md-sys-color-text: #113f26;
-            --md-sys-color-text-secondary: #166534;
-            --price-highlight-text: #16a34a;
-            --card-shadow: 0 4px 12px rgba(17, 63, 38, 0.04);
-            --card-shadow-hover: 0 10px 20px rgba(17, 63, 38, 0.06);
+            --apple-blue: #28CD41;
+            --apple-blue-tint: rgba(40, 205, 65, 0.12);
+            --apple-blue-hover: #22A835;
         }
+
+        /* Font Overrides */
+        body.font-jakarta { font-family: 'Plus Jakarta Sans', var(--apple-font); }
+        body.font-inter { font-family: 'Inter', var(--apple-font); }
+        body.font-roboto { font-family: 'Roboto', var(--apple-font); }
+        body.font-mono { font-family: var(--apple-mono); }
 
         * {
             box-sizing: border-box;
-            transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
         }
 
         body { 
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; 
-            background: var(--md-sys-color-bg); 
+            background: var(--apple-bg); 
             margin: 0; 
-            padding: 8px; 
-            color: var(--md-sys-color-text);
+            padding: 12px 14px 40px 14px; 
+            color: var(--apple-text);
+            font-family: var(--apple-font);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            letter-spacing: -0.011em;
         }
         
-        .container { max-width: 1440px; margin: 0 auto; }
+        .container { max-width: 1400px; margin: 0 auto; }
         
+        /* Glassmorphic Apple Navigation Bar */
         .header { 
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 10px; 
-            background: var(--md-sys-color-surface-trans);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 8px 12px; 
-            border-radius: 12px; 
-            border: 1px solid var(--md-sys-color-surface-variant);
-            box-shadow: var(--card-shadow);
+            margin-bottom: 14px; 
+            background: var(--apple-surface);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            padding: 10px 16px; 
+            border-radius: 16px; 
+            border: 0.5px solid var(--apple-border);
+            box-shadow: var(--apple-card-shadow);
             flex-wrap: wrap;
-            gap: 8px;
-        }
-        .header h2 { margin: 0; font-size: 0.95rem; color: var(--md-sys-color-primary); font-weight: 700; display: flex; align-items: center; gap: 6px; }
-
-        .theme-dropdown-container { display: inline-flex; align-items: center; gap: 6px; }
-        .theme-select {
-            height: 32px;
-            padding: 0 24px 0 8px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--md-sys-color-primary);
-            border: 1px solid var(--md-sys-color-outline);
-            border-radius: 8px;
-            background-color: var(--md-sys-color-surface);
-            cursor: pointer;
-        }
-
-        .btn-header-shortcut {
-            background: var(--md-sys-color-primary);
-            color: #ffffff;
-            min-height: 32px !important;
-            height: 32px;
-            padding: 0 10px !important;
-            font-size: 0.75rem !important;
-            border-radius: 8px;
-        }
-
-        .workspace-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
-        .top-full, .bottom-full { width: 100%; }
-
-        .card { 
-            background: var(--md-sys-color-surface); 
-            padding: 10px; 
-            border-radius: 14px; 
-            border: 1px solid var(--md-sys-color-surface-variant);
-            box-shadow: var(--card-shadow);
+            gap: 10px;
         }
         
-        h3 { 
-            margin-top: 0; 
-            color: var(--md-sys-color-primary); 
-            font-size: 0.78rem; 
-            border-bottom: 1px solid var(--md-sys-color-surface-variant); 
-            padding-bottom: 8px; 
-            letter-spacing: 0.04em; 
+        .header h2 { 
+            margin: 0; 
+            font-size: 1.05rem; 
+            font-weight: 700; 
+            color: var(--apple-text);
+            letter-spacing: -0.02em; 
             display: flex; 
-            flex-direction: column;
-            gap: 6px;
-            font-weight: 700;
+            align-items: center; 
+            gap: 8px; 
         }
 
-        .inventory-head-container { display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; }
-        .btn-toggle-controls {
-            background: var(--md-sys-color-surface-variant);
-            border: none;
-            color: var(--md-sys-color-primary);
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* Segmented / Dropdown Styling in Apple Style */
+        .apple-select-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--apple-fill);
+            padding: 3px 8px;
+            border-radius: 10px;
+            border: 0.5px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .apple-select-wrap:focus-within {
+            background: var(--apple-surface-card);
+            border-color: var(--apple-border);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+        .apple-select-wrap label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--apple-secondary);
+            text-transform: none;
+            letter-spacing: normal;
+        }
+        .apple-select {
+            height: 26px;
+            padding: 0 16px 0 2px;
             font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--apple-text);
+            border: none;
+            background: transparent;
             cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 6px;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238E8E93' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 2px center;
+            background-size: 10px;
+        }
+
+        /* Apple Buttons */
+        .btn { 
+            cursor: pointer; 
+            border: none; 
+            border-radius: 980px; 
+            font-weight: 600; 
+            padding: 7px 14px; 
+            font-size: 0.75rem; 
+            min-height: 32px; 
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
+            gap: 5px;
+            background: var(--apple-fill);
+            color: var(--apple-text);
+            transition: all 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+            user-select: none;
+        }
+        .btn:hover { background: var(--apple-fill-hover); }
+        .btn:active { transform: scale(0.97); opacity: 0.85; }
+
+        .btn-primary {
+            background: var(--apple-blue);
+            color: #FFFFFF;
+        }
+        .btn-primary:hover { background: var(--apple-blue-hover); }
+
+        .btn-destructive {
+            background: var(--apple-red-tint);
+            color: var(--apple-red);
+        }
+        .btn-destructive:hover {
+            background: rgba(255, 59, 48, 0.2);
         }
 
-        .column-visibility-dropdown-container { position: relative; display: inline-block; width: 100%; flex: 1; }
-        .dropdown-trigger-btn {
-            width: 100%;
-            height: 36px;
-            background: var(--md-sys-color-surface);
-            border: 1px solid var(--md-sys-color-outline);
-            border-radius: 8px;
-            padding: 0 10px;
-            font-size: 0.75rem;
+        .btn-tinted {
+            background: var(--apple-blue-tint);
+            color: var(--apple-blue);
             font-weight: 600;
-            color: var(--md-sys-color-primary);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            white-space: nowrap;
         }
-        .dropdown-trigger-btn::after {
-            content: '';
-            width: 0; height: 0;
-            border-left: 3px solid transparent;
-            border-right: 3px solid transparent;
-            border-top: 4px solid var(--md-sys-color-primary);
-            margin-left: 6px;
+        .btn-tinted:hover {
+            background: rgba(0, 122, 255, 0.18);
         }
-        .dropdown-menu-panel {
-            display: none;
-            position: absolute;
-            top: 40px;
-            right: 0;
-            width: 180px;
-            background: var(--md-sys-color-surface);
-            border: 1px solid var(--md-sys-color-surface-variant);
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-            z-index: 110;
-            padding: 6px 0;
-        }
-        .dropdown-menu-panel.show { display: block; }
-        .dropdown-item-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 12px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--md-sys-color-primary);
-            cursor: pointer;
-        }
-        .dropdown-item-label:hover { background-color: var(--md-sys-color-bg); }
-        .dropdown-item-label input[type="checkbox"] { width: 14px; height: 14px; accent-color: var(--md-sys-color-accent); margin: 0; }
 
-        /* Search Filter Header */
+        .btn-header-shortcut {
+            background: var(--apple-text);
+            color: #FFFFFF;
+            min-height: 30px;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            border-radius: 980px;
+        }
+        .btn-header-shortcut:hover {
+            background: #000;
+        }
+
+        /* Apple Grouped Card */
+        .workspace-row { display: flex; flex-direction: column; gap: 14px; margin-bottom: 14px; }
+        .top-full, .bottom-full { width: 100%; }
+
+        .card { 
+            background: var(--apple-surface-card); 
+            padding: 14px; 
+            border-radius: 18px; 
+            border: 0.5px solid var(--apple-border);
+            box-shadow: var(--apple-card-shadow);
+        }
+        
+        /* Section Titles */
+        .section-header {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 0.5px solid var(--apple-divider);
+            margin-bottom: 12px;
+        }
+
+        .inventory-head-flex { display: flex; flex-direction: column; width: 100%; gap: 10px; }
+        .inventory-title-centered { font-weight: 700; font-size: 0.95rem; color: var(--apple-text); letter-spacing: -0.015em; }
+
+        .collapsible-control-panel { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px; 
+            width: 100%; 
+            background: var(--apple-surface-subtle);
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 0.5px solid var(--apple-divider);
+        }
+        .collapsible-control-panel.hidden { display: none; }
+        .header-controls-left, .header-controls-right { display: flex; gap: 8px; width: 100%; align-items: center; flex-wrap: wrap; }
+        .header-controls-right select { height: 32px; border-radius: 8px; }
+
+        /* Apple Native Search Field */
         .filter-search-wrapper {
             position: sticky;
-            top: 0;
-            z-index: 50;
-            margin-bottom: 8px;
+            top: 10px;
+            z-index: 40;
+            margin-bottom: 12px;
             width: 100%;
-            background: var(--md-sys-color-surface-trans);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            padding: 4px 0;
-            border-radius: 10px;
         }
-        .filter-search-container { display: flex; align-items: center; position: relative; width: 100%; }
+        .filter-search-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            background: var(--apple-fill);
+            border-radius: 12px;
+            border: 0.5px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .filter-search-container:focus-within {
+            background: var(--apple-surface-card);
+            border-color: var(--apple-blue);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+        }
         .filter-search-container input[type="text"] {
             width: 100%;
-            height: 38px;
-            padding-right: 74px;
+            height: 36px;
+            padding-right: 68px;
             padding-left: 32px;
-            border-radius: 8px;
-            border: 1px solid var(--md-sys-color-outline);
-            background-color: var(--md-sys-color-surface);
-            font-size: 0.8rem;
+            border: none;
+            background: transparent;
+            font-size: 0.82rem;
+            color: var(--apple-text);
+            font-family: inherit;
         }
         .search-icon-prefix {
             position: absolute;
             left: 10px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--md-sys-color-text-secondary);
+            color: var(--apple-secondary);
             pointer-events: none;
             display: flex;
             align-items: center;
-            font-size: 0.8rem;
         }
         .btn-clear-search {
             position: absolute;
-            right: 36px;
+            right: 34px;
             top: 50%;
             transform: translateY(-50%);
-            width: 24px;
-            height: 24px;
-            background: var(--md-sys-color-surface-variant);
+            width: 20px;
+            height: 20px;
+            background: var(--apple-tertiary);
             border: none;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--md-sys-color-text-secondary);
-            font-size: 0.7rem;
+            color: #FFFFFF;
+            font-size: 0.65rem;
+            transition: background 0.15s;
         }
+        .btn-clear-search:hover { background: var(--apple-secondary); }
         .btn-scan-barcode {
             position: absolute;
-            right: 4px;
+            right: 6px;
             top: 50%;
             transform: translateY(-50%);
-            width: 30px;
-            height: 30px;
+            width: 26px;
+            height: 26px;
             background: transparent;
             border: none;
             border-radius: 6px;
@@ -286,179 +322,147 @@
             align-items: center;
             justify-content: center;
         }
-        .btn-scan-barcode svg { width: 18px; height: 18px; fill: var(--md-sys-color-primary); }
+        .btn-scan-barcode svg { width: 17px; height: 17px; fill: var(--apple-blue); }
 
-        .tab-container {
+        /* Segmented Control Bar (Apple Tabs) */
+        .segmented-control {
             display: flex;
-            gap: 4px;
-            border-bottom: 1px solid var(--md-sys-color-surface-variant);
-            margin-bottom: 10px;
-            overflow-x: auto;
+            background: var(--apple-fill);
+            padding: 3px;
+            border-radius: 11px;
+            margin-bottom: 14px;
+            border: 0.5px solid var(--apple-divider);
+            gap: 2px;
         }
-        .tab-btn {
+        .segment-btn {
+            flex: 1;
             background: transparent;
             border: none;
-            padding: 8px 12px; 
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--md-sys-color-text-secondary);
+            padding: 6px 12px;
+            font-size: 0.76rem;
+            font-weight: 500;
+            color: var(--apple-secondary);
             cursor: pointer;
-            border-radius: 6px 6px 0 0;
-            position: relative;
+            border-radius: 8px;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 6px;
+            white-space: nowrap;
         }
-        .tab-btn.active { color: var(--md-sys-color-accent); font-weight: 700; }
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--md-sys-color-accent);
+        .segment-btn.active {
+            background: var(--apple-surface-card);
+            color: var(--apple-text);
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 0.5px 1px rgba(0, 0, 0, 0.04);
         }
-        .tab-badge {
-            background: var(--md-sys-color-accent-container);
-            color: var(--md-sys-color-accent);
+        .segment-badge {
+            background: var(--apple-blue);
+            color: #FFFFFF;
             font-size: 0.65rem;
-            padding: 1px 5px;
-            border-radius: 10px;
+            padding: 1px 6px;
+            border-radius: 980px;
             font-weight: 700;
         }
 
-        .form-grid { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        /* Apple Form Controls */
+        .form-grid { display: flex; flex-direction: column; gap: 12px; width: 100%; }
         .form-unit { width: 100%; display: flex; flex-direction: column; }
         .form-group { width: 100%; display: flex; flex-direction: column; }
         
         label { 
-            font-size: 0.65rem; 
-            font-weight: 700; 
-            color: var(--md-sys-color-primary); 
-            margin-bottom: 4px; 
-            text-transform: uppercase; 
-            letter-spacing: 0.04em;
+            font-size: 0.7rem; 
+            font-weight: 600; 
+            color: var(--apple-secondary); 
+            margin-bottom: 5px; 
+            letter-spacing: -0.01em;
         }
         
         input[type="text"], input[type="number"], select, textarea { 
             width: 100%; 
-            padding: 8px 10px; 
-            border: 1px solid var(--md-sys-color-outline); 
-            border-radius: 8px; 
-            font-size: 0.8rem; 
-            background: var(--md-sys-color-surface); 
-            color: var(--md-sys-color-primary);
+            padding: 8px 12px; 
+            border: 0.5px solid var(--apple-border); 
+            border-radius: 10px; 
+            font-size: 0.82rem; 
+            background: var(--apple-surface-card); 
+            color: var(--apple-text);
             font-family: inherit;
+            transition: border-color 0.15s, box-shadow 0.15s;
         }
-        input[type="text"], input[type="number"], select { height: 38px; }
-        textarea { resize: vertical; padding: 8px; font-family: 'JetBrains Mono', monospace; }
+        input[type="text"], input[type="number"], select { height: 36px; }
+        textarea { resize: vertical; padding: 10px; font-family: var(--apple-mono); }
         
-        select {
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f172a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 12px;
-            padding-right: 28px;
-        }
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: var(--md-sys-color-accent);
+            border-color: var(--apple-blue);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.18);
         }
 
         .tab-panel { display: none; opacity: 0; }
-        .tab-panel.active { display: block; opacity: 1; }
+        .tab-panel.active { display: block; opacity: 1; animation: appleFadeIn 0.25s ease-out; }
 
-        .camera-btn {
-            width: 100%;
-            text-align: center;
-            background: var(--md-sys-color-accent);
-            color: white;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-        }
-        
-        #scanStatus { text-align: center; font-weight: 600; margin-bottom: 8px; min-height: 16px; font-size: 0.75rem; }
-        #toolkitLiveReader { width: 100%; max-width: 380px; margin: 0 auto 8px auto; border-radius: 10px; overflow: hidden; background: #000; display: none; border: 1px solid var(--md-sys-color-outline); }
-        #toolkitOutput { display: flex; flex-direction: row; align-items: center; overflow-x: auto; gap: 10px; padding: 6px 2px 10px 2px; }
-        
-        .barcode-container {
-            background: #fff;
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid var(--md-sys-color-surface-variant);
-            box-shadow: var(--card-shadow);
-            text-align: center;
-            flex: 0 0 auto;
+        @keyframes appleFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .order-tab-header {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-bottom: 10px;
-            padding-bottom: 8px;
-            border-bottom: 1px dashed var(--md-sys-color-surface-variant);
-        }
-        .order-tab-title { font-size: 0.8rem; font-weight: 700; color: var(--md-sys-color-primary); }
-
+        /* Apple Inset Tables */
         .table-container, .inventory-table-container { 
             overflow-x: auto; 
             max-height: 480px; 
             overflow-y: auto; 
-            border-radius: 10px;
-            border: 1px solid var(--md-sys-color-surface-variant);
+            border-radius: 12px;
+            border: 0.5px solid var(--apple-divider);
+            background: var(--apple-surface-card);
         }
         
-        table { width: 100%; border-collapse: collapse; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; }
         
         th { 
             position: sticky; 
             top: 0; 
-            background: var(--md-sys-color-bg); 
+            background: var(--apple-surface-subtle); 
             text-align: left; 
-            padding: 8px 10px; 
-            font-size: 0.65rem; 
-            font-weight: 700;
-            color: var(--md-sys-color-text-secondary); 
+            padding: 8px 12px; 
+            font-size: 0.68rem; 
+            font-weight: 600;
+            color: var(--apple-secondary); 
             text-transform: uppercase;
-            letter-spacing: 0.04em;
-            border-bottom: 1px solid var(--md-sys-color-surface-variant); 
+            letter-spacing: 0.03em;
+            border-bottom: 0.5px solid var(--apple-divider); 
             z-index: 10; 
             white-space: nowrap; 
         }
         td { 
-            padding: 8px 10px; 
-            border-bottom: 1px solid var(--md-sys-color-surface-variant); 
-            font-size: 0.78rem; 
+            padding: 9px 12px; 
+            border-bottom: 0.5px solid var(--apple-divider); 
+            font-size: 0.8rem; 
             white-space: nowrap; 
             box-sizing: border-box; 
+            color: var(--apple-text);
         }
         
-        tr:hover td { background-color: rgba(0,0,0,0.015); }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: var(--apple-fill); }
 
         td.wrap-cell { 
             white-space: normal; 
             word-break: break-word; 
-            font-size: 0.75rem; 
-            line-height: 1.3; 
+            font-size: 0.78rem; 
+            line-height: 1.35; 
         }
         .sub-meta-text { 
             display: block; 
             font-size: 0.7rem; 
-            color: var(--md-sys-color-text-secondary); 
-            font-family: 'JetBrains Mono', monospace; 
+            color: var(--apple-secondary); 
+            font-family: var(--apple-mono); 
             margin-top: 2px; 
         }
 
-        .col-id, .col-barcode, .col-stock, .col-actions { display: none; }
+        .col-id, .col-actions { display: none; }
 
-        /* Compact Status Indicator Dot */
+        /* Apple Dot Indicator */
         .status-dot {
             display: inline-block;
             width: 7px;
@@ -468,187 +472,220 @@
             vertical-align: middle;
             flex-shrink: 0;
         }
-        .status-dot.green { background-color: #10b981; box-shadow: 0 0 4px #10b981; }
-        .status-dot.red { background-color: #ef4444; box-shadow: 0 0 4px #ef4444; }
+        .status-dot.green { background-color: var(--apple-green); }
+        .status-dot.orange { background-color: var(--apple-orange); }
+        .status-dot.red { background-color: var(--apple-red); }
 
-        /* Stepper UX with Accessible Mobile Touch Targets (36px+) */
+        /* Apple iOS Style Stepper */
         .stepper-container {
             display: inline-flex;
             align-items: center;
-            border: 1px solid var(--md-sys-color-outline);
-            border-radius: 6px;
-            background: var(--md-sys-color-surface);
+            border-radius: 8px;
+            background: var(--apple-fill);
             overflow: hidden;
+            padding: 2px;
         }
         .stepper-btn {
-            background: var(--md-sys-color-bg);
+            background: transparent;
             border: none;
-            width: 36px;
-            height: 36px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
-            color: var(--md-sys-color-primary);
-            font-size: 0.9rem;
+            color: var(--apple-text);
+            font-size: 0.85rem;
             user-select: none;
-            touch-action: manipulation;
+            border-radius: 6px;
+            transition: background 0.15s;
         }
-        .stepper-btn:hover { background: var(--md-sys-color-surface-variant); }
-        .stepper-btn:active { background: var(--md-sys-color-outline); }
+        .stepper-btn:hover { background: var(--apple-surface-card); }
         .stepper-input {
-            width: 44px !important;
-            height: 36px !important;
+            width: 38px !important;
+            height: 24px !important;
             border: none !important;
+            background: transparent !important;
             text-align: center;
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-family: var(--apple-mono);
             padding: 0 !important;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
+            color: var(--apple-text);
         }
 
+        /* Table Footer Calculation Cards */
         tfoot {
             position: sticky;
             bottom: 0;
-            background: var(--md-sys-color-bg);
+            background: var(--apple-surface-subtle);
             z-index: 10;
         }
-        tfoot td { border-top: 1px solid var(--md-sys-color-surface-variant); padding: 6px 10px; }
-        .footer-metric-label { font-size: 0.65rem; text-transform: uppercase; color: var(--md-sys-color-text-secondary); font-weight: 700; }
-        .footer-metric-val { font-weight: 700; color: var(--md-sys-color-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; }
-        .grand-total-row td { background: var(--md-sys-color-primary-container); }
+        tfoot td { border-top: 0.5px solid var(--apple-divider); padding: 8px 12px; }
+        .footer-metric-label { font-size: 0.68rem; text-transform: uppercase; color: var(--apple-secondary); font-weight: 600; }
+        .footer-metric-val { font-weight: 600; color: var(--apple-text); font-family: var(--apple-mono); font-size: 0.84rem; }
+        .grand-total-row td { background: var(--apple-blue-tint); }
+        .grand-total-row .footer-metric-label { color: var(--apple-blue); font-weight: 700; }
+        .grand-total-row .footer-metric-val { color: var(--apple-blue); font-weight: 700; font-size: 0.9rem; }
 
-        .btn { 
-            cursor: pointer; 
-            border: none; 
-            border-radius: 8px; 
-            font-weight: 600; 
-            padding: 6px 10px; 
-            font-size: 0.75rem; 
-            min-height: 34px; 
+        /* Quick Action Icon Buttons */
+        .btn-icon-round {
+            width: 28px;
+            height: 28px;
+            min-height: 28px;
+            padding: 0;
+            border-radius: 50%;
+            background: var(--apple-fill);
+            color: var(--apple-text);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            font-size: 0.75rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.15s;
         }
-        .btn:active { transform: scale(0.98); }
-        
-        .btn-save { background: var(--md-sys-color-primary); color: white; width: 100%; height: 38px; }
-        .btn-cancel { background: var(--md-sys-color-error-container); color: var(--md-sys-color-error); width: 100%; height: 38px; }
-        .btn-plus { background: var(--md-sys-color-accent); color: white; width: 34px; height: 34px; min-height: 34px; padding: 0; border-radius: 6px; }
-        .btn-edit { background: var(--md-sys-color-accent-container); color: var(--md-sys-color-accent); width: 34px; height: 34px; min-height: 34px; padding: 0; border-radius: 6px; }
-        .btn-delete { background: var(--md-sys-color-error-container); color: var(--md-sys-color-error); width: 34px; height: 34px; min-height: 34px; padding: 0; border-radius: 6px; }
-        .btn-excel { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); font-weight: 700; }
-        .btn-export-all { background: var(--md-sys-color-primary); color: white; }
+        .btn-icon-round:hover {
+            background: var(--apple-fill-hover);
+        }
+        .btn-icon-round.accent {
+            background: var(--apple-blue-tint);
+            color: var(--apple-blue);
+        }
+        .btn-icon-round.destructive {
+            background: var(--apple-red-tint);
+            color: var(--apple-red);
+        }
 
-        .lot-selector-wrap { display: flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 600; }
-        .lot-select { height: 32px; padding: 0 20px 0 6px; font-size: 0.72rem; border-radius: 6px; border: 1px solid var(--md-sys-color-outline); }
+        /* Apple Popover Menu */
+        .dropdown-menu-panel, .saved-orders-panel {
+            display: none;
+            position: absolute;
+            background: var(--apple-surface-card);
+            border: 0.5px solid var(--apple-divider);
+            border-radius: 12px;
+            box-shadow: var(--apple-popover-shadow);
+            z-index: 120;
+            padding: 6px;
+            animation: popoverFade 0.15s ease-out;
+        }
+        @keyframes popoverFade {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .dropdown-menu-panel.show, .saved-orders-panel.show { display: block; }
 
-        .action-cell { display: flex; gap: 4px; align-items: center; }
-        .desc-flex-cell { display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; }
-        
-        .inventory-head-flex { display: flex; flex-direction: column; width: 100%; gap: 6px; }
-        .inventory-title-centered { font-weight: 700; font-size: 0.85rem; color: var(--md-sys-color-primary); }
-        
-        .collapsible-control-panel { display: flex; flex-direction: column; gap: 6px; width: 100%; }
-        .collapsible-control-panel.hidden { display: none; }
-        .header-controls-left, .header-controls-right { display: flex; gap: 6px; width: 100%; align-items: center; flex-wrap: wrap; }
-        .header-controls-right select { width: calc(50% - 3px); height: 36px; border-radius: 8px; }
-        
-        .order-summary-wrapper { display: flex; align-items: center; gap: 6px; width: 100%; justify-content: space-between; }
-        .text-right { text-align: right; }
-        .text-center { text-align: center; }
+        .dropdown-item-label, .saved-order-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--apple-text);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.12s;
+        }
+        .dropdown-item-label:hover, .saved-order-row:hover { background: var(--apple-fill); }
+        .dropdown-item-label input[type="checkbox"] { accent-color: var(--apple-blue); margin: 0; }
 
-        /* Toast Notifications */
+        /* Floating iOS Button */
+        .floating-scroll-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--apple-text);
+            color: #FFFFFF;
+            border: none;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+            cursor: pointer;
+            z-index: 2400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s;
+        }
+        .floating-scroll-btn:hover { transform: scale(1.08); }
+
+        /* Apple Dynamic Island / Capsule Toast */
         #toastContainer {
             position: fixed;
-            bottom: 12px;
-            right: 12px;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             z-index: 3000;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
+            align-items: center;
             pointer-events: none;
         }
         .toast {
             pointer-events: auto;
             min-width: 200px;
-            padding: 8px 12px;
-            border-radius: 8px;
-            background: var(--md-sys-color-primary);
-            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 980px;
+            background: rgba(28, 28, 30, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            color: #FFFFFF;
             font-size: 0.75rem;
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            animation: slideUp 0.2s ease-out;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+            animation: toastSlideDown 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+            text-align: center;
         }
-        .toast.success { background: #059669; }
-        .toast.error { background: #e11d48; }
-        .toast.info { background: #0284c7; }
+        .toast.success { border: 0.5px solid rgba(52, 199, 89, 0.4); }
+        .toast.error { border: 0.5px solid rgba(255, 59, 48, 0.4); }
+        .toast.info { border: 0.5px solid rgba(0, 122, 255, 0.4); }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes toastSlideDown {
+            from { opacity: 0; transform: translateY(-12px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
+        /* Apple Modal Dialog */
         .custom-dialog-backdrop {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(3px);
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             z-index: 2500;
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 12px;
+            padding: 16px;
         }
         .custom-dialog {
-            background: var(--md-sys-color-surface);
-            border-radius: 14px;
-            padding: 16px;
+            background: var(--apple-surface-card);
+            border-radius: 18px;
+            padding: 18px 20px;
             max-width: 320px;
             width: 100%;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            border: 1px solid var(--md-sys-color-surface-variant);
+            box-shadow: var(--apple-popover-shadow);
+            border: 0.5px solid var(--apple-divider);
+            text-align: center;
         }
-        .custom-dialog h4 { margin: 0 0 6px 0; color: var(--md-sys-color-primary); font-size: 0.9rem; }
-        .custom-dialog p { margin: 0 0 12px 0; font-size: 0.78rem; color: var(--md-sys-color-text-secondary); line-height: 1.35; }
-        .custom-dialog-actions { display: flex; gap: 8px; justify-content: flex-end; }
-
-        .btn-order-delete {
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            color: var(--md-sys-color-error);
-            font-size: 0.85rem;
-            padding: 6px 8px;
-            border-radius: 4px;
-            line-height: 1;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            opacity: 0.7;
-            transition: opacity 0.15s, background-color 0.15s;
-        }
-        .btn-order-delete:hover {
-            opacity: 1;
-            background-color: var(--md-sys-color-error-container);
-        }
+        .custom-dialog h4 { margin: 0 0 6px 0; color: var(--apple-text); font-size: 0.95rem; font-weight: 700; }
+        .custom-dialog p { margin: 0 0 16px 0; font-size: 0.78rem; color: var(--apple-secondary); line-height: 1.4; }
+        .custom-dialog-actions { display: flex; gap: 8px; justify-content: center; }
 
         @media (min-width: 768px) {
-            body { padding: 14px; }
+            body { padding: 20px 24px 60px 24px; }
             .inventory-head-flex { flex-direction: row; justify-content: space-between; align-items: center; }
             .collapsible-control-panel { flex-direction: row; justify-content: space-between; align-items: center; }
             .header-controls-left { width: auto; }
             .header-controls-right { width: auto; flex-wrap: nowrap; }
-            .header-controls-right select { width: 130px; }
-            .column-visibility-dropdown-container { width: 130px; }
             .form-grid { flex-direction: row; flex-wrap: wrap; }
             .form-unit { flex: 1 1 calc(25% - 10px); }
-            .order-tab-header { flex-direction: row; justify-content: space-between; align-items: center; }
-            .order-summary-wrapper { width: auto; }
         }
     </style>
 </head>
@@ -656,12 +693,19 @@
 
 <div class="container">
     <div class="header">
-        <h2>📦 ORDER FORM</h2>
+        <h2>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+            Order Form
+        </h2>
         
-        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <div class="lot-selector-wrap">
-                <label style="margin: 0;">Lot:</label>
-                <select id="lotSizeSelector" class="lot-select">
+        <div class="header-controls">
+            <div class="apple-select-wrap">
+                <label>Lot</label>
+                <select id="lotSizeSelector" class="apple-select">
                     <option value="1">1 pc</option>
                     <option value="6">6 pcs</option>
                     <option value="12" selected>12 pcs</option>
@@ -669,11 +713,22 @@
                 </select>
             </div>
 
-            <div class="theme-dropdown-container">
-                <select id="themeSelector" class="theme-select" onchange="setTheme(this.value)">
-                    <option value="default">Ocean</option>
-                    <option value="flamingo">Flamingo</option>
-                    <option value="forest">Forest</option>
+            <div class="apple-select-wrap">
+                <label>Accent</label>
+                <select id="themeSelector" class="apple-select" onchange="setTheme(this.value)">
+                    <option value="default">Default Blue</option>
+                    <option value="flamingo">Sky Cyan</option>
+                    <option value="forest">Mint Green</option>
+                </select>
+            </div>
+
+            <div class="apple-select-wrap">
+                <label>Type</label>
+                <select id="fontSelector" class="apple-select" onchange="setFont(this.value)">
+                    <option value="sf">San Francisco</option>
+                    <option value="jakarta">Jakarta</option>
+                    <option value="inter">Inter</option>
+                    <option value="mono">SF Mono</option>
                 </select>
             </div>
 
@@ -681,58 +736,75 @@
         </div>
     </div>
 
+    <!-- Product Catalog Card -->
     <div class="workspace-row">
         <div class="bottom-full">
             <div class="card">
-                <h3>
+                <div class="section-header">
                     <div class="inventory-head-flex">
-                        <div class="inventory-head-container">
+                        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
                             <div class="inventory-title-centered">Product Catalog</div>
-                            <button class="btn-toggle-controls" id="btnToggleControls" onclick="toggleControlPanel()" title="Toggle Action Panel">Actions ▼</button>
+                            <button class="btn btn-tinted" id="btnToggleControls" onclick="toggleControlPanel()" style="min-height: 26px; padding: 4px 10px; font-size: 0.72rem;">
+                                Controls ▾
+                            </button>
                         </div>
                         
                         <div class="collapsible-control-panel hidden" id="inventoryControlPanel">
                             <div class="header-controls-left">
-                                <label class="btn btn-excel" title="Import CSV">
-                                    📊 Import
+                                <label class="btn btn-tinted" title="Import CSV">
+                                    ↑ Import CSV
                                     <input type="file" id="csvInput" accept=".csv" style="display:none;" onchange="importCSV(event)">
                                 </label>
-                                <button class="btn btn-export-all" onclick="exportInventoryCSV()">💾 Export</button>
-                                <button class="btn" style="background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="confirmClearInventory()">🗑️ Clear</button>
+                                <button class="btn btn-tinted" onclick="exportInventoryCSV()">↓ Export CSV</button>
+                                <button class="btn btn-destructive" onclick="confirmClearInventory()">Clear Catalog</button>
                             </div>
                             <div class="header-controls-right">
-                                <select id="statusFilter" onchange="renderTable()">
-                                    <option value="All">All Status</option>
-                                    <option value="Active">Active</option>
-                                    <option value="Regular">Regular</option>
+                                <select id="statusFilter" class="apple-select" style="background:var(--apple-fill); padding:4px 20px 4px 8px; border-radius:8px;" onchange="renderTable()">
+                                    <option value="All">All Statuses</option>
+                                    <option value="Active">Active & Regular</option>
+                                    <option value="Regular">Regular Only</option>
                                     <option value="Blocked">Blocked</option>
                                 </select>
 
-                                <div class="column-visibility-dropdown-container">
-                                    <button class="dropdown-trigger-btn" onclick="toggleVisibilityDropdown(event)">Columns</button>
-                                    <div class="dropdown-menu-panel" id="columnVisibilityMenu">
-                                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleId" onchange="toggleColumnVisibility('id', this.checked)"> ID</label>
-                                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleBarcode" onchange="toggleColumnVisibility('barcode', this.checked)"> Barcode</label>
-                                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleStock" onchange="toggleColumnVisibility('stock', this.checked)"> Stock</label>
-                                        <label class="dropdown-item-label" onclick="stopPropagation(event)"><input type="checkbox" id="chkToggleActions" onchange="toggleColumnVisibility('actions', this.checked)"> Actions</label>
+                                <div style="position: relative;">
+                                    <button class="btn" onclick="toggleVisibilityDropdown(event)" style="font-size: 0.72rem; padding: 5px 10px;">Columns ▾</button>
+                                    <div class="dropdown-menu-panel" id="columnVisibilityMenu" style="top: 36px; right: 0; width: 160px;">
+                                        <label class="dropdown-item-label" onclick="stopPropagation(event)">
+                                            <input type="checkbox" id="chkToggleId" onchange="toggleColumnVisibility('id', this.checked)"> Item ID
+                                        </label>
+                                        <label class="dropdown-item-label" onclick="stopPropagation(event)">
+                                            <input type="checkbox" id="chkToggleActions" onchange="toggleColumnVisibility('actions', this.checked)"> Action Tools
+                                        </label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </h3>
+                </div>
 
                 <div class="filter-search-wrapper" id="searchFieldWrapper">
                     <div class="filter-search-container">
-                        <span class="search-icon-prefix">🔍</span>
-                        <input type="text" id="tableFilter" placeholder="Search Code, Name or Barcode..." oninput="debouncedRenderTable()" onkeydown="handleSearchKeydown(event)" onfocus="focusAndScrollSearch()">
-                        <button class="btn-clear-search" onclick="clearSearchField()" title="Clear Search">✕</button>
-                        <button class="btn-scan-barcode" id="btnHeaderScanner" onclick="triggerBarcodeScanner()" title="Scan Barcode">
+                        <span class="search-icon-prefix">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </span>
+                        <input type="text" id="tableFilter" placeholder="Search Code, Name, Barcode..." oninput="debouncedRenderTable()" onkeydown="handleSearchKeydown(event)">
+                        <button class="btn-clear-search" onclick="clearSearchField()" title="Clear">✕</button>
+                        <button class="btn-scan-barcode" onclick="triggerBarcodeScanner()" title="Scan Barcode">
                             <svg viewBox="0 0 24 24">
-                                <path d="M4 4h3V2H4c-1.1.0-2 .9-2 2v3h2V4zm16-2h-3v2h3v3h2V4c0-1.1-.9-2-2-2zm2 16h-2v3h-3v2h4c1.1 0 2-.9 2-2v-3zM4 17H2v4c0 1.1.9 2 2 2h3v-2H4v-3zM6 6h2v12H6zm3 0h1v12H9zm3 0h2v12h-2zm3 0h3v12h-3zm4 0h1v12h-1z"/>
+                                <path d="M4 4h3V2H4c-1.1 0-2 .9-2 2v3h2V4zm16-2h-3v2h3v3h2V4c0-1.1-.9-2-2-2zm2 16h-2v3h-3v2h4c1.1 0 2-.9 2-2v-3zM4 17H2v4c0 1.1.9 2 2 2h3v-2H4v-3zM6 6h2v12H6zm3 0h1v12H9zm3 0h2v12h-2zm3 0h3v12h-3zm4 0h1v12h-1z"/>
                             </svg>
                         </button>
                     </div>
+                </div>
+
+                <!-- Regular Filter Quick Action Bar -->
+                <div id="regularQuickActionPanel" style="display: none; margin-bottom: 10px;">
+                    <button class="btn btn-primary" style="width: 100%; border-radius: 10px;" onclick="addAllRegularItems()">
+                        + Add All Filtered Regular Items to Worksheet
+                    </button>
                 </div>
 
                 <div class="inventory-table-container">
@@ -740,10 +812,8 @@
                         <thead>
                             <tr>
                                 <th class="col-id" style="width: 8%;">ID</th>
-                                <th style="width: 35%;">Code</th>
-                                <th style="width: 65%;">Description</th>
-                                <th class="col-barcode" style="width: 20%;">Barcode</th>
-                                <th class="col-stock" style="width: 12%;">Stock</th>
+                                <th style="width: 35%;">Code / Barcode</th>
+                                <th style="width: 65%;">Product Details</th>
                                 <th class="col-actions" style="width: 10%;">Actions</th>
                             </tr>
                         </thead>
@@ -754,25 +824,37 @@
         </div>
     </div>
 
+    <!-- Workspace Segments (Worksheet, Product Master, Barcode Printing) -->
     <div class="workspace-row">
         <div id="targetWorkspaceCard" class="top-full">
-            <div class="card" style="padding-bottom: 10px;">
-                <div class="tab-container">
-                    <button class="tab-btn active" id="tabOrderBtn" onclick="switchWorkspaceTab('order')">
-                        📋 Worksheet <span class="tab-badge" id="orderCountBadge">0</span>
+            <div class="card">
+                <div class="segmented-control">
+                    <button class="segment-btn active" id="tabOrderBtn" onclick="switchWorkspaceTab('order')">
+                        Worksheet <span class="segment-badge" id="orderCountBadge">0</span>
                     </button>
-                    <button class="tab-btn" id="tabEntryBtn" onclick="switchWorkspaceTab('entry')">➕ Product Master</button>
-                    <button class="tab-btn" id="tabToolkitBtn" onclick="switchWorkspaceTab('toolkit')">🖨️ Barcode Print</button>
+                    <button class="segment-btn" id="tabEntryBtn" onclick="switchWorkspaceTab('entry')">Product Master</button>
+                    <button class="segment-btn" id="tabToolkitBtn" onclick="switchWorkspaceTab('toolkit')">Barcode Print</button>
                 </div>
                 
+                <!-- Order Worksheet Panel -->
                 <div id="orderTabPanel" class="tab-panel active">
-                    <div class="order-tab-header">
-                        <div class="order-tab-title">Procurement Order Items</div>
-                        <div class="order-summary-wrapper">
-                            <button class="btn btn-excel" onclick="exportToExcel()">📈 Export CSV</button>
-                            <button class="btn" style="background:var(--md-sys-color-surface-variant); color:var(--md-sys-color-primary);" onclick="confirmClearTransactions()">Clear</button>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                        <div style="font-size: 0.88rem; font-weight: 700; color: var(--apple-text);">Active Order</div>
+                        <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                            <div style="position: relative;">
+                                <button class="btn" onclick="toggleSavedOrdersPanel(event)" style="font-size: 0.72rem; padding: 5px 10px;">
+                                    📁 Saved Orders ▾
+                                </button>
+                                <div class="saved-orders-panel" id="savedOrdersMenuPanel" style="top: 36px; left: 0; min-width: 220px;">
+                                    <div id="savedOrdersListContainer"></div>
+                                </div>
+                            </div>
+                            <button class="btn btn-tinted" onclick="promptSaveCurrentOrder()">Save</button>
+                            <button class="btn btn-tinted" onclick="exportToExcel()">Export CSV</button>
+                            <button class="btn btn-destructive" onclick="confirmClearTransactions()">Clear</button>
                         </div>
                     </div>
+
                     <div class="table-container">
                         <table id="transactionTable">
                             <thead>
@@ -780,38 +862,51 @@
                                     <th style="width: 5%; text-align: center;">#</th>
                                     <th style="width: 25%;">Code</th>
                                     <th style="width: 40%;">Description</th>
-                                    <th style="width: 15%;" class="text-center">Qty</th>
-                                    <th style="width: 15%;" class="text-right">Total</th>
+                                    <th style="width: 15%; text-align: center;">Quantity</th>
+                                    <th style="width: 15%; text-align: right;">Total</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="4" class="text-right footer-metric-label">Subtotal:</td>
-                                    <td class="text-right footer-metric-val" id="footerTotalVal">0.00</td>
+                                    <td colspan="5" style="text-align: right;">
+                                        <div style="display: inline-flex; align-items: center; gap: 8px;">
+                                            <span class="footer-metric-label">Subtotal</span>
+                                            <span class="footer-metric-val" id="footerTotalVal">0.00</span>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4" class="text-right footer-metric-label">VAT (5%):</td>
-                                    <td class="text-right footer-metric-val" id="footerVatVal">0.00</td>
+                                    <td colspan="5" style="text-align: right;">
+                                        <div style="display: inline-flex; align-items: center; gap: 8px;">
+                                            <span class="footer-metric-label">VAT (5%)</span>
+                                            <span class="footer-metric-val" id="footerVatVal">0.00</span>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr class="grand-total-row">
-                                    <td colspan="4" class="text-right footer-metric-label" style="color:var(--md-sys-color-primary); font-weight:700;">Grand Total:</td>
-                                    <td class="text-right footer-metric-val" id="footerGrandTotalVal">0.00</td>
+                                    <td colspan="5" style="text-align: right;">
+                                        <div style="display: inline-flex; align-items: center; gap: 8px;">
+                                            <span class="footer-metric-label">Grand Total</span>
+                                            <span class="footer-metric-val" id="footerGrandTotalVal">0.00</span>
+                                        </div>
+                                    </td>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
                 </div>
 
+                <!-- Product Master Panel -->
                 <div id="entryTabPanel" class="tab-panel">
                     <div class="form-grid">
                         <div class="form-unit"><div class="form-group"><label>Item ID</label><input type="text" id="itemID"></div></div>
                         <div class="form-unit"><div class="form-group"><label>Code *</label><input type="text" id="itemCode"></div></div>
                         <div class="form-unit"><div class="form-group"><label>Barcode *</label><input type="text" id="barcode"></div></div>
-                        <div class="form-unit"><div class="form-group"><label>Stock</label><input type="number" id="stock" placeholder="0"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>Stock Level</label><input type="number" id="stock" placeholder="0"></div></div>
                         <div class="form-unit"><div class="form-group"><label>Description</label><input type="text" id="description"></div></div>
                         <div class="form-unit"><div class="form-group"><label>Cost Price</label><input type="number" id="price" step="0.01"></div></div>
-                        <div class="form-unit"><div class="form-group"><label>RSP</label><input type="number" id="rsp" step="0.01"></div></div>
+                        <div class="form-unit"><div class="form-group"><label>Retail Price (RSP)</label><input type="number" id="rsp" step="0.01"></div></div>
                         <div class="form-unit">
                             <div class="form-group">
                                 <label>Status</label>
@@ -822,38 +917,38 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-unit" style="margin-top: 4px; display: flex; gap: 6px; flex-direction: row;">
-                            <button class="btn btn-save" id="btnSaveItem" onclick="addItem()" style="flex: 2;">Save Product</button>
-                            <button class="btn btn-cancel" id="btnCancelEdit" onclick="cancelEdit()" style="flex: 1; display: none;">Cancel</button>
+                        <div class="form-unit" style="margin-top: 6px; display: flex; gap: 8px; flex-direction: row;">
+                            <button class="btn btn-primary" id="btnSaveItem" onclick="addItem()" style="flex: 2; height: 38px;">Save Product</button>
+                            <button class="btn btn-destructive" id="btnCancelEdit" onclick="cancelEdit()" style="flex: 1; height: 38px; display: none;">Cancel</button>
                         </div>
                     </div>
                 </div>
 
+                <!-- Barcode Tool Panel -->
                 <div id="toolkitTabPanel" class="tab-panel">
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                        
-                        <div class="header-controls-left" style="gap: 8px; width:100%;">
-                            <button id="btnToggleToolkitScanner" class="camera-btn" style="flex: 2; margin-bottom:0;" onclick="toggleToolkitScanner()">📷 Start Scanner</button>
-                            <label class="btn btn-excel" style="flex: 1; height:38px; min-height:38px;" title="Import Column F">
-                                📊 Import Col F
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div class="header-controls-left" style="gap: 8px; width: 100%;">
+                            <button id="btnToggleToolkitScanner" class="btn btn-primary" style="flex: 2; height: 36px;" onclick="toggleToolkitScanner()">📷 Camera Scanner</button>
+                            <label class="btn btn-tinted" style="flex: 1; height: 36px;" title="Import Column F">
+                                ↑ Import Column F
                                 <input type="file" id="toolkitExcelInput" accept=".csv,.txt" style="display:none;" onchange="importToolkitFile(event)">
                             </label>
                         </div>
                         
-                        <div id="toolkitLiveReader"></div>
-                        <div id="scanStatus"></div>
+                        <div id="toolkitLiveReader" style="width: 100%; max-width: 360px; margin: 0 auto; border-radius: 14px; overflow: hidden; background: #000; display: none; border: 0.5px solid var(--apple-border);"></div>
+                        <div id="scanStatus" style="text-align: center; font-weight: 600; font-size: 0.75rem; color: var(--apple-secondary);"></div>
 
                         <div class="form-group">
-                            <label>Scanned Codes Matrix:</label>
-                            <textarea id="barcodeInput" rows="3" placeholder="Scanned items appear here..."></textarea>
+                            <label>Scanned Codes Matrix</label>
+                            <textarea id="barcodeInput" rows="3" placeholder="Scanned items will populate here..."></textarea>
                         </div>
                         
-                        <div class="header-controls-left" style="gap: 8px;">
-                            <button class="btn btn-save" style="flex: 2; height: 38px; background: var(--md-sys-color-accent);" onclick="generateBarcodes()">⚙️ Render Barcodes</button>
-                            <button class="btn" style="flex: 1; height: 38px; background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="clearToolkitBox()">🗑️ Reset</button>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-primary" style="flex: 2; height: 36px;" onclick="generateBarcodes()">Generate Labels</button>
+                            <button class="btn btn-destructive" style="flex: 1; height: 36px;" onclick="clearToolkitBox()">Reset</button>
                         </div>
 
-                        <div id="toolkitOutput"></div>
+                        <div id="toolkitOutput" style="display: flex; flex-direction: row; align-items: center; overflow-x: auto; gap: 12px; padding: 10px 4px;"></div>
                     </div>
                 </div>
 
@@ -862,71 +957,43 @@
     </div>
 </div>
 
+<!-- Floating Navigation Arrow -->
+<button id="floatingScrollBtn" class="floating-scroll-btn" onclick="handleFloatingScroll()" title="Scroll">↓</button>
+
+<!-- Dynamic Island Toast Container -->
 <div id="toastContainer"></div>
 
-<!-- Confirmation Modal Dialog -->
+<!-- Apple Style Action Confirmation Dialog -->
 <div class="custom-dialog-backdrop" id="confirmDialogBackdrop">
     <div class="custom-dialog">
         <h4 id="dialogTitle">Confirmation</h4>
         <p id="dialogMessage">Are you sure you want to proceed?</p>
         <div class="custom-dialog-actions">
-            <button class="btn" id="dialogCancelBtn" style="background: var(--md-sys-color-surface-variant);" onclick="closeConfirmDialog(false)">Cancel</button>
-            <button class="btn" id="dialogConfirmBtn" style="background: var(--md-sys-color-error); color: #fff;" onclick="closeConfirmDialog(true)">Confirm</button>
+            <button class="btn" style="flex: 1;" onclick="closeConfirmDialog(false)">Cancel</button>
+            <button class="btn btn-destructive" id="dialogConfirmBtn" style="flex: 1;" onclick="closeConfirmDialog(true)">Continue</button>
         </div>
     </div>
 </div>
 
-<div id="scannerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px); z-index: 2000; flex-direction: column; align-items: center; justify-content: center;">
-    <div style="width: 88%; max-width: 360px; background: var(--md-sys-color-surface); border-radius: 14px; padding: 14px; box-sizing: border-box;">
-        <h4 style="margin: 0 0 10px 0; color: var(--md-sys-color-primary); font-size: 0.85rem; text-transform: uppercase;">Scan Barcode</h4>
-        <div id="interactive-reader" style="width: 100%; border-radius: 8px; overflow: hidden; background: #000;"></div>
-        <button class="btn" id="btnCancelScannerModal" style="width: 100%; margin-top: 10px; background: var(--md-sys-color-error-container); color: var(--md-sys-color-error);" onclick="closeBarcodeScanner()">✕ Cancel</button>
+<!-- Barcode Scanner Modal Sheet -->
+<div id="scannerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; padding: 16px;">
+    <div style="width: 100%; max-width: 360px; background: var(--apple-surface-card); border-radius: 20px; padding: 18px; box-shadow: var(--apple-popover-shadow); border: 0.5px solid var(--apple-divider); text-align: center;">
+        <h4 style="margin: 0 0 12px 0; color: var(--apple-text); font-size: 0.9rem; font-weight: 700;">Scan Barcode</h4>
+        <div id="interactive-reader" style="width: 100%; border-radius: 12px; overflow: hidden; background: #000;"></div>
+        <button class="btn btn-destructive" style="width: 100%; margin-top: 14px; height: 36px;" onclick="closeBarcodeScanner()">Done</button>
     </div>
 </div>
 
 <script>
     let inventory = JSON.parse(localStorage.getItem('flamingo_db_v3')) || [];
     let transactions = JSON.parse(localStorage.getItem('flamingo_trans_v3')) || [];
+    let savedOrdersMap = JSON.parse(localStorage.getItem('flamingo_saved_orders_map')) || {};
     let editingUniqueRef = null;
     let searchDebounceTimer = null;
     let pendingConfirmCallback = null;
-    let inventoryMap = new Map();
-
-    function rebuildInventoryMap() {
-        inventoryMap = new Map(inventory.map(item => [item.code, item]));
-    }
-
-    function generateUUID() {
-        if (typeof crypto !== 'undefined' && crypto.randomUUID) {
-            return crypto.randomUUID();
-        }
-        return 'id-' + Date.now() + '-' + Math.random().toString(36).substring(2, 9);
-    }
-
-    function escapeHTML(str) {
-        if (str === null || str === undefined) return '';
-        return String(str).replace(/[&<>'"]/g, tag => ({
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            "'": '&#39;',
-            '"': '&quot;'
-        }[tag] || tag));
-    }
-
-    function sanitizeCSVCell(val) {
-        let str = (val === null || val === undefined) ? "" : String(val);
-        // Formula injection safeguard for Excel/Google Sheets
-        if (/^[=\+\-\@\t\r]/.test(str)) {
-            str = "'" + str;
-        }
-        return `"${str.replace(/"/g, '""')}"`;
-    }
 
     let visibleColumns = {
         id: false,
-        barcode: false,
-        stock: false,
         actions: false
     };
 
@@ -950,9 +1017,12 @@
         csvInput: document.getElementById('csvInput'),
         toolkitExcelInput: document.getElementById('toolkitExcelInput'),
         themeSelector: document.getElementById('themeSelector'),
+        fontSelector: document.getElementById('fontSelector'),
         orderCountBadge: document.getElementById('orderCountBadge'),
         btnSaveItem: document.getElementById('btnSaveItem'),
-        btnCancelEdit: document.getElementById('btnCancelEdit')
+        btnCancelEdit: document.getElementById('btnCancelEdit'),
+        savedOrdersListContainer: document.getElementById('savedOrdersListContainer'),
+        regularQuickActionPanel: document.getElementById('regularQuickActionPanel')
     };
 
     const calcEl = {
@@ -976,67 +1046,45 @@
         const savedTheme = localStorage.getItem('flamingo_app_theme') || 'default';
         setTheme(savedTheme);
 
-        const chkStock = document.getElementById('chkToggleStock');
-        if (chkStock) chkStock.checked = false;
-        toggleColumnVisibility('stock', false);
+        const savedFont = localStorage.getItem('flamingo_app_font') || 'sf';
+        setFont(savedFont);
 
-        rebuildInventoryMap();
         renderTable(); 
         renderTransactions(); 
+        updateSavedOrdersDropdown();
+        updateFloatingScrollButton();
         
-        document.addEventListener("click", () => {
+        document.addEventListener("click", (e) => {
             const menu = document.getElementById("columnVisibilityMenu");
             if(menu) menu.classList.remove("show");
+
+            const savedOrdersMenu = document.getElementById("savedOrdersMenuPanel");
+            const savedOrdersWrap = document.querySelector(".saved-orders-dropdown-wrap");
+            if (savedOrdersMenu && savedOrdersWrap && !savedOrdersWrap.contains(e.target)) {
+                savedOrdersMenu.classList.remove("show");
+            }
+        });
+
+        window.addEventListener("scroll", () => {
+            updateFloatingScrollButton();
         });
 
         document.addEventListener("keydown", (e) => {
             if (e.key === "Escape") {
                 const scannerModal = document.getElementById('scannerModal');
-                const confirmModal = document.getElementById('confirmDialogBackdrop');
                 if (scannerModal && scannerModal.style.display === 'flex') {
                     closeBarcodeScanner();
-                } else if (confirmModal && confirmModal.style.display === 'flex') {
-                    closeConfirmDialog(false);
                 } else if (toolkitLiveScanner) {
                     stopToolkitScanner();
                 } else {
                     const menu = document.getElementById("columnVisibilityMenu");
                     if (menu) menu.classList.remove("show");
+                    const savedMenu = document.getElementById("savedOrdersMenuPanel");
+                    if (savedMenu) savedMenu.classList.remove("show");
                     if (document.activeElement === elements.tableFilter) {
                         clearSearchField();
                     }
                 }
-            }
-        });
-
-        // Event delegation on table bodies
-        elements.inventoryTbody.addEventListener('click', (e) => {
-            const addBtn = e.target.closest('.btn-plus');
-            const editBtn = e.target.closest('.btn-edit');
-            const delBtn = e.target.closest('.btn-delete');
-
-            if (addBtn) addTrans(addBtn.dataset.code);
-            else if (editBtn) editItem(editBtn.dataset.barcode);
-            else if (delBtn) delItem(delBtn.dataset.ref);
-        });
-
-        elements.transactionTbody.addEventListener('click', (e) => {
-            const delBtn = e.target.closest('.btn-order-delete');
-            const stepBtn = e.target.closest('.stepper-btn');
-
-            if (delBtn) {
-                remTrans(delBtn.dataset.ref);
-            } else if (stepBtn) {
-                const ref = stepBtn.dataset.ref;
-                const delta = parseInt(stepBtn.dataset.delta, 10);
-                changeQtyStep(ref, delta);
-            }
-        });
-
-        elements.transactionTbody.addEventListener('change', (e) => {
-            const input = e.target.closest('.stepper-input');
-            if (input) {
-                updateQty(input.dataset.ref, input.value);
             }
         });
     };
@@ -1050,9 +1098,10 @@
 
         setTimeout(() => {
             toast.style.opacity = '0';
-            toast.style.transform = 'translateY(8px)';
+            toast.style.transform = 'translateY(-6px) scale(0.96)';
+            toast.style.transition = 'all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)';
             setTimeout(() => toast.remove(), 200);
-        }, 2500);
+        }, 2200);
     }
 
     function openConfirmDialog(title, message, callback) {
@@ -1060,7 +1109,6 @@
         document.getElementById('dialogMessage').innerText = message;
         document.getElementById('confirmDialogBackdrop').style.display = 'flex';
         pendingConfirmCallback = callback;
-        document.getElementById('dialogConfirmBtn').focus();
     }
 
     function closeConfirmDialog(result) {
@@ -1075,7 +1123,7 @@
         clearTimeout(searchDebounceTimer);
         searchDebounceTimer = setTimeout(() => {
             renderTable();
-        }, 150);
+        }, 120);
     }
 
     function handleSearchKeydown(e) {
@@ -1097,22 +1145,58 @@
         if (elements.themeSelector) elements.themeSelector.value = themeName;
     }
 
+    function setFont(fontName) {
+        document.body.classList.remove('font-jakarta', 'font-inter', 'font-roboto', 'font-mono');
+        if (fontName !== 'sf') {
+            document.body.classList.add('font-' + fontName);
+        }
+        localStorage.setItem('flamingo_app_font', fontName);
+        if (elements.fontSelector) elements.fontSelector.value = fontName;
+    }
+
+    function handleFloatingScroll() {
+        const scrollMiddle = (document.documentElement.scrollHeight - window.innerHeight) / 2;
+        if (window.scrollY < scrollMiddle) {
+            window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    function updateFloatingScrollButton() {
+        const btn = document.getElementById('floatingScrollBtn');
+        if (!btn) return;
+        const totalScrollable = document.documentElement.scrollHeight - window.innerHeight;
+        if (totalScrollable <= 0) {
+            btn.style.display = 'none';
+            return;
+        }
+        btn.style.display = 'flex';
+        const scrollMiddle = totalScrollable / 2;
+        if (window.scrollY < scrollMiddle) {
+            btn.innerText = '↓';
+            btn.title = 'Scroll to bottom';
+        } else {
+            btn.innerText = '↑';
+            btn.title = 'Scroll to top';
+        }
+    }
+
     function toggleControlPanel() {
         const panel = document.getElementById('inventoryControlPanel');
         const btn = document.getElementById('btnToggleControls');
         if (panel.classList.contains('hidden')) {
             panel.classList.remove('hidden');
-            btn.innerText = 'Actions ▲';
+            btn.innerText = 'Controls ▴';
         } else {
             panel.classList.add('hidden');
-            btn.innerText = 'Actions ▼';
+            btn.innerText = 'Controls ▾';
         }
     }
 
     function sync() {
         localStorage.setItem('flamingo_db_v3', JSON.stringify(inventory));
         localStorage.setItem('flamingo_trans_v3', JSON.stringify(transactions));
-        rebuildInventoryMap();
         renderTable();
     }
 
@@ -1120,6 +1204,12 @@
         event.stopPropagation();
         const menu = document.getElementById("columnVisibilityMenu");
         if(menu) menu.classList.toggle("show");
+    }
+
+    function toggleSavedOrdersPanel(event) {
+        event.stopPropagation();
+        const panel = document.getElementById("savedOrdersMenuPanel");
+        if (panel) panel.classList.toggle("show");
     }
 
     function stopPropagation(event) {
@@ -1131,15 +1221,6 @@
             elements.tableFilter.value = "";
             renderTable();
             elements.tableFilter.focus();
-        }
-    }
-
-    function focusAndScrollSearch() {
-        const target = document.getElementById('searchFieldWrapper');
-        if (target) {
-            setTimeout(() => {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 250);
         }
     }
 
@@ -1214,7 +1295,7 @@
         }
 
         const item = {
-            uniqueRef: editingUniqueRef || generateUUID(),
+            uniqueRef: editingUniqueRef || (Date.now() + Math.random()),
             id: elements.itemID.value.trim(),
             code: codeVal,
             barcode: barcodeVal,
@@ -1245,7 +1326,7 @@
 
     function delItem(ref) { 
         openConfirmDialog("Delete Item", "Are you sure you want to permanently delete this product?", () => {
-            inventory = inventory.filter(i => String(i.uniqueRef) !== String(ref)); 
+            inventory = inventory.filter(i => i.uniqueRef !== ref); 
             sync(); 
             renderTransactions(); 
             showToast("Item deleted", "info");
@@ -1257,8 +1338,19 @@
         const searchTokens = filterInput.split(/\s+/).filter(t => t.length > 0);
         const stat = elements.statusFilter.value;
 
+        if (elements.regularQuickActionPanel) {
+            elements.regularQuickActionPanel.style.display = (stat === "Regular") ? "block" : "none";
+        }
+
         return inventory.filter(i => {
-            if (stat !== "All" && i.status !== stat) return false;
+            if (stat === "Active") {
+                if (i.status !== "Active" && i.status !== "Regular") return false;
+            } else if (stat === "Regular") {
+                if (i.status !== "Regular") return false;
+            } else if (stat === "Blocked") {
+                if (i.status !== "Blocked") return false;
+            }
+
             if (searchTokens.length === 0) return true;
             const itemString = `${i.code} ${i.barcode} ${i.desc} ${i.id}`.toLowerCase();
             return searchTokens.every(token => itemString.includes(token));
@@ -1267,53 +1359,57 @@
 
     function renderTable() {
         const filtered = getFilteredInventory();
-        const fragment = document.createDocumentFragment();
+        let htmlBuffer = '';
 
         filtered.forEach(i => {
-            const dotClass = i.status === 'Blocked' ? 'status-dot red' : 'status-dot green';
-            const priceNum = Number(i.price || 0).toFixed(2);
-            const rspNum = Number(i.rsp || 0).toFixed(2);
+            let dotClass = 'status-dot green';
+            if (i.status === 'Blocked') dotClass = 'status-dot red';
+            else if (i.status === 'Regular') dotClass = 'status-dot orange';
+            
+            const idStyle = visibleColumns.id ? 'table-cell' : 'none';
+            const actionsStyle = visibleColumns.actions ? 'table-cell' : 'none';
 
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td class="col-id" style="display: ${visibleColumns.id ? 'table-cell' : 'none'}; font-family:'JetBrains Mono', monospace;">${escapeHTML(i.id)}</td>
-                <td>
-                    <div style="font-weight:700; font-family:'JetBrains Mono', monospace; font-size:0.75rem;">${escapeHTML(i.code)}</div>
-                    <span class="sub-meta-text">${escapeHTML(i.barcode)}</span>
-                </td>
-                <td class="wrap-cell">
-                    <div class="desc-flex-cell">
-                        <div>
-                            <span class="${dotClass}" title="${escapeHTML(i.status)}"></span>${escapeHTML(i.desc)}
-                            <span class="sub-meta-text">
-                                <span style="color:var(--price-highlight-text); font-weight:700;">${priceNum}</span> | ${rspNum}
-                            </span>
+            const priceNum = Number(i.price).toFixed(2);
+            const rspNum = Number(i.rsp).toFixed(2);
+            const stockVal = i.stock || "0";
+
+            htmlBuffer += `
+                <tr>
+                    <td class="col-id" style="display: ${idStyle}; font-family: var(--apple-mono);">${i.id}</td>
+                    <td>
+                        <div style="font-weight:600; font-family: var(--apple-mono); font-size: 0.78rem;">${i.code}</div>
+                        <span class="sub-meta-text">${i.barcode}</span>
+                    </td>
+                    <td class="wrap-cell">
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                            <div>
+                                <span class="${dotClass}" title="${i.status}"></span>${i.desc}
+                                <span class="sub-meta-text">
+                                    <span style="color:var(--apple-blue); font-weight:600;">${priceNum}</span> · RSP: ${rspNum} · Stock: ${stockVal}
+                                </span>
+                            </div>
+                            <button class="btn-icon-round accent" title="Add to Order Worksheet" onclick="addTrans('${i.code}')">＋</button>
                         </div>
-                        <button class="btn btn-plus" title="Add to Order Worksheet" data-code="${escapeHTML(i.code)}">➕</button>
-                    </div>
-                </td>
-                <td class="col-barcode" style="display: ${visibleColumns.barcode ? 'table-cell' : 'none'}; font-family:'JetBrains Mono', monospace;">${escapeHTML(i.barcode)}</td>
-                <td class="col-stock" style="display: ${visibleColumns.stock ? 'table-cell' : 'none'};"><strong>${escapeHTML(i.stock)}</strong></td>
-                <td class="col-actions" style="display: ${visibleColumns.actions ? 'table-cell' : 'none'};">
-                    <div class="action-cell">
-                        <button class="btn btn-edit" title="Edit" data-barcode="${escapeHTML(i.barcode)}">✏️</button>
-                        <button class="btn btn-delete" title="Delete" data-ref="${escapeHTML(i.uniqueRef)}">🗑️</button>
-                    </div>
-                </td>`;
-            fragment.appendChild(tr);
+                    </td>
+                    <td class="col-actions" style="display: ${actionsStyle};">
+                        <div style="display:flex; gap:6px; align-items:center;">
+                            <button class="btn-icon-round" title="Edit" onclick="editItem('${i.barcode}')">✎</button>
+                            <button class="btn-icon-round destructive" title="Delete" onclick="delItem(${i.uniqueRef})">✕</button>
+                        </div>
+                    </td>
+                </tr>`;
         });
-
-        elements.inventoryTbody.innerHTML = '';
-        elements.inventoryTbody.appendChild(fragment);
+        
+        elements.inventoryTbody.innerHTML = htmlBuffer;
     }
 
     function addTrans(code) {
-        const item = inventoryMap.get(code) || inventory.find(i => i.code === code);
+        const item = inventory.find(i => i.code === code);
         if (!item) return;
 
-        const lotIncrement = parseInt(elements.lotSizeSelector.value, 10) || 12;
-        const existingIndex = transactions.findIndex(t => t.code === item.code);
+        const lotIncrement = parseInt(elements.lotSizeSelector.value) || 12;
 
+        const existingIndex = transactions.findIndex(t => t.code === item.code);
         if (existingIndex !== -1) {
             const existingItem = transactions.splice(existingIndex, 1)[0];
             existingItem.qty = (Number(existingItem.qty) || 0) + lotIncrement;
@@ -1323,8 +1419,8 @@
                 code: item.code,
                 desc: item.desc,
                 qty: lotIncrement,
-                price: parseFloat(item.price || "0").toFixed(2),
-                ref: generateUUID()
+                price: item.price,
+                ref: Date.now() + Math.random()
             });
         }
 
@@ -1332,10 +1428,40 @@
         showToast(`+${lotIncrement} added: ${item.code}`, "success");
     }
 
+    function addAllRegularItems() {
+        const filtered = getFilteredInventory();
+        if (filtered.length === 0) {
+            showToast("No regular items matching current filter", "error");
+            return;
+        }
+
+        const lotIncrement = parseInt(elements.lotSizeSelector.value) || 12;
+
+        filtered.forEach(item => {
+            if (item.status === "Regular") {
+                const existingIndex = transactions.findIndex(t => t.code === item.code);
+                if (existingIndex !== -1) {
+                    transactions[existingIndex].qty = (Number(transactions[existingIndex].qty) || 0) + lotIncrement;
+                } else {
+                    transactions.push({
+                        code: item.code,
+                        desc: item.desc,
+                        qty: lotIncrement,
+                        price: item.price,
+                        ref: Date.now() + Math.random()
+                    });
+                }
+            }
+        });
+
+        syncTransactions();
+        showToast(`Added regular items (Lot: ${lotIncrement})`, "success");
+    }
+
     function changeQtyStep(ref, delta) {
-        const t = transactions.find(item => String(item.ref) === String(ref));
+        const t = transactions.find(item => item.ref === ref);
         if (t) {
-            let current = parseInt(t.qty, 10) || 0;
+            let current = parseInt(t.qty) || 0;
             let next = current + delta;
             if (next <= 0) {
                 remTrans(ref);
@@ -1346,9 +1472,9 @@
     }
 
     function updateQty(ref, val) {
-        const t = transactions.find(item => String(item.ref) === String(ref));
+        const t = transactions.find(item => item.ref === ref);
         if (t) { 
-            t.qty = Math.max(1, parseInt(val, 10) || 1); 
+            t.qty = Math.max(1, parseInt(val) || 1); 
             localStorage.setItem('flamingo_trans_v3', JSON.stringify(transactions)); 
             calculateGrandTotal();
             
@@ -1357,7 +1483,8 @@
             if(inputField) inputField.value = t.qty;
 
             if(rowTotalSpan) {
-                const unitPrice = Number(t.price) || 0;
+                const currentItem = inventory.find(i => i.code === t.code);
+                const unitPrice = currentItem ? Number(currentItem.price) : (Number(t.price) || 0);
                 rowTotalSpan.innerText = (unitPrice * Number(t.qty)).toFixed(2);
             }
         }
@@ -1373,44 +1500,42 @@
             elements.orderCountBadge.innerText = transactions.length;
         }
 
-        const fragment = document.createDocumentFragment();
-
-        transactions.forEach((t, index) => {
-            const unitPrice = Number(t.price) || 0;
+        elements.transactionTbody.innerHTML = transactions.map((t, index) => {
+            const currentItem = inventory.find(i => i.code === t.code);
+            const unitPrice = currentItem ? Number(currentItem.price) : (Number(t.price) || 0);
             const lineTotal = unitPrice * Number(t.qty);
-            const tr = document.createElement('tr');
-
-            tr.innerHTML = `
-                <td class="text-center" style="color: var(--md-sys-color-text-secondary); font-weight: 700; font-size: 0.7rem;">${index + 1}</td>
-                <td style="font-weight:700; font-family:'JetBrains Mono', monospace; font-size:0.75rem;">${escapeHTML(t.code)}</td>
-                <td class="wrap-cell">
-                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
-                        <span>${escapeHTML(t.desc)}</span>
-                        <button class="btn-order-delete" title="Remove Item" data-ref="${escapeHTML(t.ref)}">✕</button>
-                    </div>
-                </td>
-                <td class="text-center">
-                    <div class="stepper-container">
-                        <button class="stepper-btn" data-ref="${escapeHTML(t.ref)}" data-delta="-1">−</button>
-                        <input type="number" id="qty-input-${escapeHTML(t.ref)}" data-ref="${escapeHTML(t.ref)}" class="stepper-input" value="${escapeHTML(t.qty)}" min="1">
-                        <button class="stepper-btn" data-ref="${escapeHTML(t.ref)}" data-delta="1">+</button>
-                    </div>
-                </td>
-                <td class="text-right" style="font-weight:700; color:var(--md-sys-color-primary); font-family:'JetBrains Mono', monospace;">
-                    <span id="row-total-${escapeHTML(t.ref)}">${lineTotal.toFixed(2)}</span>
-                </td>`;
-            fragment.appendChild(tr);
-        });
-
-        elements.transactionTbody.innerHTML = '';
-        elements.transactionTbody.appendChild(fragment);
+            
+            return `
+                <tr>
+                    <td style="text-align: center; color: var(--apple-secondary); font-weight: 600; font-size: 0.72rem;">${index + 1}</td>
+                    <td style="font-weight: 600; font-family: var(--apple-mono); font-size: 0.76rem;">${t.code}</td>
+                    <td class="wrap-cell">
+                        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                            <span>${t.desc}</span>
+                            <button class="btn-icon-round destructive" style="width: 22px; height: 22px; min-height: 22px; font-size: 0.65rem;" title="Remove Item" onclick="remTrans(${t.ref})">✕</button>
+                        </div>
+                    </td>
+                    <td style="text-align: center;">
+                        <div class="stepper-container">
+                            <button class="stepper-btn" onclick="changeQtyStep(${t.ref}, -1)">−</button>
+                            <input type="number" id="qty-input-${t.ref}" class="stepper-input" value="${t.qty}" min="1" onchange="updateQty(${t.ref}, this.value)">
+                            <button class="stepper-btn" onclick="changeQtyStep(${t.ref}, 1)">+</button>
+                        </div>
+                    </td>
+                    <td style="text-align: right; font-weight: 600; font-family: var(--apple-mono); color: var(--apple-text);">
+                        <span id="row-total-${t.ref}">${lineTotal.toFixed(2)}</span>
+                    </td>
+                </tr>`;
+        }).join('');
+        
         calculateGrandTotal();
     }
 
     function calculateGrandTotal() {
         let subtotal = 0;
         transactions.forEach(t => {
-            const unitPrice = Number(t.price) || 0;
+            const currentItem = inventory.find(i => i.code === t.code);
+            const unitPrice = currentItem ? Number(currentItem.price) : (Number(t.price) || 0);
             subtotal += unitPrice * (Number(t.qty) || 0);
         });
         
@@ -1423,14 +1548,14 @@
     }
 
     function remTrans(ref) { 
-        transactions = transactions.filter(t => String(t.ref) !== String(ref)); 
+        transactions = transactions.filter(t => t.ref !== ref); 
         syncTransactions(); 
-        showToast("Removed from worksheet", "info");
+        showToast("Item removed", "info");
     }
 
     function confirmClearTransactions() {
         if (!transactions.length) return;
-        openConfirmDialog("Clear Worksheet", "Clear all items from the active order worksheet?", () => {
+        openConfirmDialog("Clear Worksheet", "Are you sure you want to clear all active orders?", () => {
             transactions = [];
             syncTransactions();
             showToast("Worksheet cleared", "info");
@@ -1439,26 +1564,81 @@
 
     function confirmClearInventory() {
         if (!inventory.length) return;
-        openConfirmDialog("Clear Entire Inventory", "Warning: This will delete all catalog products and barcode items.", () => {
+        openConfirmDialog("Clear Entire Catalog", "Warning: This action will permanently delete all catalog products and barcode entries.", () => {
             inventory = [];
             sync();
             renderTransactions();
-            showToast("Inventory wiped", "error");
+            showToast("Catalog wiped", "error");
+        });
+    }
+
+    function promptSaveCurrentOrder() {
+        if (!transactions.length) {
+            showToast("Worksheet is empty!", "error");
+            return;
+        }
+        let orderName = prompt("Name this saved order:", "Order_" + new Date().toLocaleDateString());
+        if (!orderName) return;
+        orderName = orderName.trim();
+        
+        savedOrdersMap[orderName] = JSON.parse(JSON.stringify(transactions));
+        localStorage.setItem('flamingo_saved_orders_map', JSON.stringify(savedOrdersMap));
+        updateSavedOrdersDropdown();
+        showToast(`Saved: "${orderName}"`, "success");
+    }
+
+    function updateSavedOrdersDropdown() {
+        if (!elements.savedOrdersListContainer) return;
+        let keys = Object.keys(savedOrdersMap);
+        
+        if (keys.length === 0) {
+            elements.savedOrdersListContainer.innerHTML = '<div style="padding: 8px 12px; font-size: 0.72rem; color: var(--apple-secondary); text-align: center;">No saved orders</div>';
+            return;
+        }
+
+        let html = '';
+        keys.forEach(k => {
+            html += `
+                <div class="saved-order-row">
+                    <span style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:500;" onclick="loadSavedOrder('${k.replace(/'/g, "\\'")}')" title="Click to load">${k} (${savedOrdersMap[k].length})</span>
+                    <button class="btn-icon-round destructive" style="width: 20px; height: 20px; min-height: 20px; font-size: 0.65rem;" title="Delete" onclick="deleteSavedOrder(event, '${k.replace(/'/g, "\\'")}')">✕</button>
+                </div>`;
+        });
+        elements.savedOrdersListContainer.innerHTML = html;
+    }
+
+    function loadSavedOrder(orderName) {
+        if (savedOrdersMap[orderName]) {
+            transactions = JSON.parse(JSON.stringify(savedOrdersMap[orderName]));
+            syncTransactions();
+            showToast(`Loaded: "${orderName}"`, "success");
+        }
+        const panel = document.getElementById("savedOrdersMenuPanel");
+        if (panel) panel.classList.remove("show");
+    }
+
+    function deleteSavedOrder(event, orderName) {
+        event.stopPropagation();
+        openConfirmDialog("Delete Saved Order", `Delete saved order "${orderName}"?`, () => {
+            delete savedOrdersMap[orderName];
+            localStorage.setItem('flamingo_saved_orders_map', JSON.stringify(savedOrdersMap));
+            updateSavedOrdersDropdown();
+            showToast(`Deleted: "${orderName}"`, "info");
         });
     }
 
     function exportInventoryCSV() {
-        if (!inventory.length) return showToast("Inventory is empty!", "error");
-        let csv = "\uFEFFID,Code,Barcode,Description,Price,RSP,Stock,Status\n";
-        inventory.forEach(i => {
-            csv += `${sanitizeCSVCell(i.id)},${sanitizeCSVCell(i.code)},${sanitizeCSVCell(i.barcode)},${sanitizeCSVCell(i.desc)},${sanitizeCSVCell(i.price)},${sanitizeCSVCell(i.rsp)},${sanitizeCSVCell(i.stock)},${sanitizeCSVCell(i.status)}\n`;
+        const filtered = getFilteredInventory();
+        if (!filtered.length) return showToast("No matching items to export!", "error");
+        let csv = "ID,Code,Barcode,Description,Price,RSP,Stock,Status\n";
+        filtered.forEach(i => {
+            csv += `"${i.id}","${i.code}","${i.barcode}","${i.desc}","${i.price}","${i.rsp}","${i.stock}","${i.status}"\n`;
         });
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = `Inventory_Backup_${new Date().toLocaleDateString()}.csv`;
+        link.download = `Filtered_Inventory_Backup_${new Date().toLocaleDateString()}.csv`;
         link.click();
-        URL.revokeObjectURL(link.href);
         showToast("Inventory exported", "success");
     }
 
@@ -1467,12 +1647,13 @@
         let filename = prompt("Enter Order Filename:", "Order_Worksheet");
         if (!filename) return; 
 
-        let csvContent = "\uFEFFCode,Description,Quantity,Price,Total\n"; 
+        let csvContent = "\uFEFF"; 
+        csvContent += "Code,Description,Quantity\n"; 
         let sortedTransactions = [...transactions].sort((a, b) => Number(b.qty) - Number(a.qty));
 
         sortedTransactions.forEach(t => {
-            const lineTotal = (Number(t.price || 0) * Number(t.qty || 0)).toFixed(2);
-            csvContent += `${sanitizeCSVCell(t.code)},${sanitizeCSVCell(t.desc)},${sanitizeCSVCell(t.qty)},${sanitizeCSVCell(t.price)},${sanitizeCSVCell(lineTotal)}\n`; 
+            const cleanedDescription = t.desc.replace(/"/g, '""');
+            csvContent += `"${t.code}","${cleanedDescription}",${t.qty}\n`; 
         });
 
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -1481,7 +1662,7 @@
         link.download = `${filename.trim().replace(/[\/\?<>\\:\*\|"]/g, '_')}.csv`;
         link.click();
         URL.revokeObjectURL(link.href);
-        showToast("Order exported successfully!", "success");
+        showToast("Order exported", "success");
     }
 
     function parseCSVLine(text) {
@@ -1489,14 +1670,7 @@
         let q = false;
         for (let i = 0; i < text.length; i++) {
             let c = text[i];
-            if (c === '"') { 
-                if (q && text[i+1] === '"') {
-                    p += '"';
-                    i++;
-                } else {
-                    q = !q; 
-                }
-            }
+            if (c === '"') { q = !q; }
             else if (c === ',' && !q) { r.push(p); p = ''; }
             else { p += c; }
         }
@@ -1512,6 +1686,7 @@
             const lines = e.target.result.split(/\r?\n/);
             if(lines.length <= 1) return;
 
+            let timestampBase = Date.now();
             let newItems = [];
 
             for (let i = 1; i < lines.length; i++) {
@@ -1521,7 +1696,7 @@
                 const c = parseCSVLine(lineClean);
                 if (c.length >= 6) {
                     newItems.push({
-                        uniqueRef: generateUUID(),
+                        uniqueRef: timestampBase + i,
                         id: (c[0] || "").trim(), 
                         code: (c[1] || "").trim().toUpperCase(),
                         barcode: (c[2] || "").trim(), 
@@ -1538,7 +1713,7 @@
                 const barcodeMap = new Set(newItems.map(item => item.barcode));
                 inventory = inventory.filter(i => !barcodeMap.has(i.barcode)).concat(newItems);
                 sync();
-                showToast(`Imported ${newItems.length} items!`, "success");
+                showToast(`Imported ${newItems.length} items`, "success");
             }
             if(elements.csvInput) elements.csvInput.value = "";
         };
@@ -1559,7 +1734,6 @@
                 elements.tableFilter.value = decodedText.trim();
                 renderTable();
                 closeBarcodeScanner();
-                focusAndScrollSearch();
             },
             () => {}
         ).catch(err => {
@@ -1577,8 +1751,6 @@
                 html5QrcodeScanner = null;
             }).catch(() => { html5QrcodeScanner = null; });
         }
-        const scanBtn = document.getElementById('btnHeaderScanner');
-        if (scanBtn) scanBtn.focus();
     }
 
     function toggleToolkitScanner() {
@@ -1591,9 +1763,9 @@
         }
 
         readerElement.style.display = "block";
-        btn.innerText = "🛑 Stop Camera";
-        btn.style.backgroundColor = "var(--md-sys-color-error)";
-        scanStatus.innerText = "Position barcode within viewfinder...";
+        btn.innerText = "Stop Camera";
+        btn.className = "btn btn-destructive";
+        scanStatus.innerText = "Align barcode within camera view...";
 
         toolkitLiveScanner = new Html5Qrcode("toolkitLiveReader");
         const config = { fps: 15, qrbox: { width: 240, height: 120 } };
@@ -1609,7 +1781,7 @@
                 clearTimeout(throttleTimeout);
                 throttleTimeout = setTimeout(() => { lastScannedCode = ""; }, 2500);
 
-                scanStatus.innerText = `Added: ${scannedClean}`;
+                scanStatus.innerText = `Captured: ${scannedClean}`;
 
                 let currentValue = toolkitTextarea.value;
                 if (currentValue.length > 0 && !currentValue.endsWith('\n')) currentValue += '\n';
@@ -1628,8 +1800,8 @@
         const readerElement = document.getElementById('toolkitLiveReader');
         const btn = document.getElementById('btnToggleToolkitScanner');
         
-        btn.innerText = "📷 Start Scanner";
-        btn.style.backgroundColor = "var(--md-sys-color-accent)";
+        btn.innerText = "📷 Camera Scanner";
+        btn.className = "btn btn-primary";
         scanStatus.innerText = "";
         readerElement.style.display = "none";
 
@@ -1690,11 +1862,11 @@
         const lines = input.split('\n').map(line => line.trim()).filter(line => line !== '');
         if (lines.length === 0) return;
 
-        const currentThemeColor = getComputedStyle(document.body).getPropertyValue('--md-sys-color-primary').trim() || '#0f172a';
+        const currentThemeColor = '#1C1C1E';
 
         lines.forEach((code, index) => {
             const container = document.createElement('div');
-            container.className = 'barcode-container';
+            container.style.cssText = "background: #fff; padding: 10px; border-radius: 12px; border: 0.5px solid var(--apple-divider); box-shadow: var(--apple-card-shadow); text-align: center; flex: 0 0 auto;";
 
             const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             svg.id = 'barcode-render-' + index;
@@ -1713,7 +1885,7 @@
                     margin: 6
                 });
             } catch (error) {
-                container.innerHTML = `<p style="color:var(--md-sys-color-error); font-size:11px; margin:0;">Invalid "${escapeHTML(code)}"</p>`;
+                container.innerHTML = `<p style="color:var(--apple-red); font-size:11px; margin:0;">Invalid "${code}"</p>`;
             }
         });
     }
