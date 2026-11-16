@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Tactics Board & Team Maker</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#080f0b">
+    <title>Tactics Board</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* --- PREMIUM FOREST DESIGN SYSTEM --- */
         :root {
             --bg-gradient: radial-gradient(circle at center, #14261c 0%, #080f0b 100%);
-            --panel-bg: rgba(18, 38, 27, 0.85);
-            --sidebar-text: #ecfdf5;
+            --panel-bg: rgba(14, 31, 22, 0.92);
+            --text-main: #ecfdf5;
             --input-bg: #142d1f;
-            --input-border: #22c55e40;
-            --primary-light: #059669;
-            --primary-hover: #10b981;
-            --pitch-shadow: rgba(4, 15, 10, 0.6);
-            --glass-blur: blur(16px);
+            --border-color: rgba(34, 197, 94, 0.28);
+            --accent: #10b981;
+            --accent-dark: #059669;
         }
 
         * {
@@ -24,161 +24,49 @@
             margin: 0;
             padding: 0;
             -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background: var(--bg-gradient);
-            height: 100vh;
-            height: 100dvh; 
+            height: 100dvh;
             width: 100vw;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            color: var(--sidebar-text);
-            padding: 10px calc(10px + env(safe-area-inset-right, 0px)) calc(15px + env(safe-area-inset-bottom, 0px)) calc(10px + env(safe-area-inset-left, 0px));
+            color: var(--text-main);
+            padding: 
+                calc(8px + env(safe-area-inset-top, 0px))
+                calc(10px + env(safe-area-inset-right, 0px))
+                calc(10px + env(safe-area-inset-bottom, 0px))
+                calc(10px + env(safe-area-inset-left, 0px));
+            gap: 8px;
         }
 
-        /* --- TOP HEADER NAVIGATION --- */
-        .top-nav {
+        /* --- UNOBSTRUCTED FULL-HEIGHT PITCH --- */
+        .pitch-container {
+            flex: 1;
             width: 100%;
-            max-width: 600px;
-            margin: 0 auto 8px auto;
-            background-color: var(--panel-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--input-border);
-            padding: 8px 12px;
-            border-radius: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            flex-shrink: 0;
-        }
-
-        .kit-selectors-container {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        label {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            opacity: 0.8;
-            font-weight: 700;
-            color: #a7f3d0;
-        }
-
-        .color-group {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background-color: var(--input-bg);
-            border: 1px solid var(--input-border);
-            padding: 4px;
-            border-radius: 8px;
-        }
-
-        input[type="color"] {
-            -webkit-appearance: none;
-            border: none;
-            width: 24px;
-            height: 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            background: none;
-        }
-
-        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
-        input[type="color"]::-webkit-color-swatch {
-            border: 1px solid var(--input-border);
-            border-radius: 4px;
-        }
-
-        .btn-paste {
-            background-color: var(--primary-light);
-            color: white;
-            border: none;
-            width: 36px;
-            height: 36px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(5, 150, 105, 0.3);
-            transition: all 0.2s;
+            max-width: 480px;
+            margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .btn-paste:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-1px);
-        }
-
-        /* --- DISPLAY LAYOUT ENVIRONMENT --- */
-        .main-content {
-            flex-grow: 1;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .pitch-wrapper {
-            width: 100%;
-            height: calc(100vh - 80px);
-            height: calc(100dvh - 80px);
-            max-width: 550px; 
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            min-height: 0;
         }
 
         .pitch {
             width: 100%;
             height: 100%;
             background-color: #2e7d32;
-            border: 4px solid #f0fdf4;
-            border-radius: 12px;
+            border: 3px solid rgba(240, 253, 244, 0.9);
+            border-radius: 14px;
             position: relative;
-            box-shadow: var(--pitch-shadow);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
             background-image: linear-gradient(to bottom, #2e7d32 50%, #276b2b 50%);
-            background-size: 100% 20%;
-        }
-
-        /* --- DOWNLOAD BOARD BUTTON --- */
-        .download-pitch-btn {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background-color: rgba(18, 38, 27, 0.8);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            color: #ffffff;
-            border: 1px solid rgba(52, 211, 153, 0.2);
-            padding: 6px 10px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            border-radius: 6px;
-            cursor: pointer;
-            z-index: 50;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-        }
-
-        .download-pitch-btn:hover {
-            background-color: rgba(18, 38, 27, 0.95);
+            background-size: 100% 16.66%;
+            overflow: hidden;
         }
 
         .halfway-line {
@@ -186,772 +74,707 @@
             top: 50%;
             left: 0;
             width: 100%;
-            height: 4px;
+            height: 3px;
             background: rgba(240, 253, 244, 0.85);
             transform: translateY(-50%);
-            z-index: 1;
         }
 
         .center-circle {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 25%;
-            height: 20%;
-            border: 4px solid rgba(240, 253, 244, 0.85);
+            width: 26%;
+            aspect-ratio: 1 / 1;
+            border: 3px solid rgba(240, 253, 244, 0.85);
             border-radius: 50%;
             transform: translate(-50%, -50%);
         }
 
-        .penalty-box-top {
+        .penalty-box-top, .penalty-box-bottom {
             position: absolute;
-            top: 0;
             left: 20%;
             width: 60%;
-            height: 16%;
-            border: 4px solid rgba(240, 253, 244, 0.85);
-            border-top: none;
+            height: 15%;
+            border: 3px solid rgba(240, 253, 244, 0.85);
         }
+        .penalty-box-top { top: 0; border-top: none; }
+        .penalty-box-bottom { bottom: 0; border-bottom: none; }
 
-        .penalty-box-bottom {
-            position: absolute;
-            bottom: 0;
-            left: 20%;
-            width: 60%;
-            height: 16%;
-            border: 4px solid rgba(240, 253, 244, 0.85);
-            border-bottom: none;
-        }
-
-        /* --- DRAGGABLE JERSEY --- */
+        /* --- PLAYER TOKEN --- */
         .player-wrapper {
             position: absolute;
-            width: 36px;
-            height: 48px;
+            width: 56px;
+            height: 56px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            cursor: move;
-            user-select: none;
-            z-index: 10;
+            justify-content: center;
             transform: translate(-50%, -50%);
             touch-action: none;
+            z-index: 10;
+            transition: transform 0.1s ease;
         }
 
-        .player-wrapper:active { z-index: 1000; }
+        .player-wrapper.dragging {
+            z-index: 100;
+            transform: translate(-50%, -50%) scale(1.18);
+        }
+
+        .player-wrapper.selected .jersey-container {
+            filter: drop-shadow(0 0 8px #34d399);
+            transform: scale(1.1);
+        }
 
         .jersey-container {
             position: relative;
-            width: 32px;
-            height: 28px;
-            filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.3));
+            width: 34px;
+            height: 30px;
+            filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.4));
+            transition: transform 0.15s ease;
         }
 
         .jersey-body {
             position: absolute;
-            left: 7px;
+            left: 8px;
             top: 2px;
             width: 18px;
-            height: 25px;
-            border-radius: 2px 2px 0 0;
-            overflow: hidden;
-        }
-
-        .jersey-body::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 2px;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.12);
-        }
-        .jersey-body::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 2px;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.12);
+            height: 26px;
+            border-radius: 3px 3px 2px 2px;
         }
 
         .jersey-collar {
             position: absolute;
-            top: 0px;
-            left: 12px;
+            top: 1px;
+            left: 13px;
             width: 8px;
             height: 5px;
             border-radius: 0 0 4px 4px;
             z-index: 4;
-            display: flex;
-            justify-content: center;
         }
 
-        .sleeve-left {
+        .sleeve-left, .sleeve-right {
             position: absolute;
             top: 2px;
-            left: 1px;
             width: 9px;
             height: 11px;
+            border-bottom: 2px solid;
+        }
+        .sleeve-left {
+            left: 2px;
             border-radius: 2px 1px 0 1px;
-            transform: rotate(-32deg);
+            transform: rotate(-30deg);
             transform-origin: top right;
         }
-
         .sleeve-right {
-            position: absolute;
-            top: 2px;
-            right: 1px;
-            width: 9px;
-            height: 11px;
-            border-radius: 1px 3px 1px 0;
-            transform: rotate(32deg);
+            right: 2px;
+            border-radius: 1px 2px 1px 0;
+            transform: rotate(30deg);
             transform-origin: top left;
         }
 
-        .jersey-badge {
-            position: absolute;
-            top: 6px;
-            left: 19px;
-            width: 4px;
-            height: 5px;
-            background-color: #fff;
-            border-radius: 0 0 1px 1px;
-            z-index: 3;
-        }
-
         .player-name {
-            background-color: #f0fdf4;
-            color: #166534;
-            font-size: 8px;
-            font-weight: 700;
-            padding: 1px 4px;
+            background-color: rgba(240, 253, 244, 0.95);
+            color: #064e3b;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 1px 5px;
             border-radius: 4px;
-            margin-top: 1px;
+            margin-top: 2px;
             white-space: nowrap;
-            max-width: 54px;
+            max-width: 64px;
             overflow: hidden;
             text-overflow: ellipsis;
-            border: 1px solid #bbf7d0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
         }
 
-        /* --- INLINE SWAP CONTROL TRIGGER BUTTON --- */
-        .inline-swap-btn {
+        /* --- FLOATING PLAYER ACTION BAR (ON TAP) --- */
+        .player-action-bar {
             position: absolute;
-            top: -6px;
-            right: -6px;
-            background-color: #10b981;
-            color: white;
-            border: 1px solid white;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.7rem;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--accent);
+            border-radius: 999px;
+            padding: 6px 12px;
             display: none;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            z-index: 50;
-        }
-        
-        .player-wrapper.focused-player .inline-swap-btn {
-            display: flex;
+            gap: 10px;
+            z-index: 60;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
         }
 
-        /* --- POP-UP MODAL WINDOW --- */
-        .modal-overlay {
+        .player-action-bar.visible { display: flex; }
+
+        .action-pill-btn {
+            background: var(--accent-dark);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        /* --- THUMB-FRIENDLY BOTTOM DOCK --- */
+        .bottom-dock {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .dock-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dock-btn {
+            height: 42px;
+            padding: 0 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .dock-btn.primary {
+            background: var(--accent-dark);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .kit-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .kit-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            padding: 5px 8px;
+            border-radius: 12px;
+        }
+
+        .kit-pill span {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #a7f3d0;
+        }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: none;
+            padding: 0;
+            cursor: pointer;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch {
+            border: 2px solid rgba(255,255,255,0.45);
+            border-radius: 50%;
+        }
+
+        /* --- NATIVE BOTTOM SHEET MODALS --- */
+        .sheet-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(4, 15, 10, 0.65);
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
             z-index: 200;
             display: none;
-            align-items: center;
+            align-items: flex-end;
             justify-content: center;
-            opacity: 0;
-            transition: opacity 0.2s ease;
         }
-        .modal-overlay.active { display: flex; opacity: 1; }
-        .modal-card {
-            background-color: #0d1f14;
-            border: 1px solid var(--input-border);
-            width: 90%;
-            max-width: 350px;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+        .sheet-overlay.active { display: flex; }
+
+        .sheet-card {
+            background: #0d1f14;
+            border-top: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 480px;
+            border-radius: 22px 22px 0 0;
+            padding: 16px 16px calc(20px + env(safe-area-inset-bottom, 0px));
             display: flex;
             flex-direction: column;
             gap: 12px;
-            transform: translateY(20px);
-            transition: transform 0.2s ease;
-        }
-        .modal-overlay.active .modal-card { transform: translateY(0); }
-        .modal-list {
-            max-height: 200px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .modal-item {
-            padding: 10px;
-            background-color: var(--input-bg);
-            border: 1px solid var(--input-border);
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--sidebar-text);
-            text-align: center;
-        }
-        .modal-item:hover {
-            background-color: #1b4329;
-            border-color: #10b981;
-        }
-        .modal-cancel {
-            background-color: transparent;
-            border: 1px solid var(--input-border);
-            color: var(--sidebar-text);
-            padding: 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85rem;
+            animation: slideUp 0.2s ease-out;
         }
 
-        /* Textarea Design Context */
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .sheet-handle {
+            width: 38px;
+            height: 4px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 4px;
+            margin: 0 auto 4px;
+        }
+
         .modal-textarea {
             width: 100%;
-            height: 160px;
-            background-color: var(--input-bg);
-            border: 1px solid var(--input-border);
-            color: var(--sidebar-text);
-            padding: 10px;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            resize: vertical;
+            height: 150px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 16px;
+            user-select: text;
             outline: none;
         }
-        .modal-textarea:focus {
-            border-color: var(--primary-hover);
-        }
-        .modal-btn-row {
+
+        .sheet-row {
             display: flex;
             gap: 8px;
         }
-        .btn-modal-action {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            cursor: pointer;
-            color: white;
-            transition: opacity 0.15s;
-        }
-        .btn-modal-action:hover { opacity: 0.9; }
-        .btn-format { background-color: var(--primary-light); }
-        .btn-confirm { background-color: #10b981; }
 
-        @media (max-width: 1024px) {
-            .top-nav {
-                max-width: 100%;
-                border-radius: 12px;
-                margin-bottom: 6px;
-                padding: 6px 10px;
-            }
-            .pitch-wrapper { 
-                max-width: 100%;
-                max-height: 100%;
-            }
+        .sheet-btn {
+            flex: 1;
+            height: 44px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .swap-list {
+            max-height: 45dvh;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .swap-item {
+            padding: 12px 8px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="top-nav">
-        <button class="btn-paste" onclick="pasteAndSplitPool()" title="Paste & Split">📋</button>
-        <div class="kit-selectors-container">
-            <div class="color-group">
-                <label>Home</label>
-                <input type="color" id="homeColor" value="#ffeb3b" onchange="applyLiveKitColors()">
-                <input type="color" id="homeTrimColor" value="#11381b" onchange="applyLiveKitColors()">
-            </div>
-            <div class="color-group">
-                <label>Away</label>
-                <input type="color" id="awayColor" value="#2563eb" onchange="applyLiveKitColors()">
-                <input type="color" id="awayTrimColor" value="#ffffff" onchange="applyLiveKitColors()">
+    <div class="pitch-container">
+        <div class="pitch" id="pitch">
+            <div class="halfway-line"></div>
+            <div class="center-circle"></div>
+            <div class="penalty-box-top"></div>
+            <div class="penalty-box-bottom"></div>
+
+            <!-- Contextual action pill when a player is tapped -->
+            <div id="playerActionBar" class="player-action-bar">
+                <span id="selectedPlayerLabel" style="font-size: 0.8rem; font-weight: 700;">Player</span>
+                <button class="action-pill-btn" onclick="openSwapSheet()">⇄ Swap</button>
+                <button class="action-pill-btn" style="background:#374151;" onclick="clearSelection()">✕</button>
             </div>
         </div>
     </div>
 
-    <div id="pasteModal" class="modal-overlay">
-        <div class="modal-card" style="max-width: 400px;">
-            <h3 style="font-size: 1.1rem; text-align: center;">Team Rosters Entry</h3>
-            <textarea id="pasteTextArea" class="modal-textarea" placeholder="Paste or type player names here (one per line)..."></textarea>
-            <div class="modal-btn-row">
-                <button class="btn-modal-action btn-format" onclick="formatPasteInput()">Format Names</button>
-                <button class="btn-modal-action btn-confirm" onclick="confirmAndSplitPaste()">Confirm & Split</button>
+    <!-- Bottom Thumb Dock (Single Color Picker Per Team) -->
+    <div class="bottom-dock">
+        <div class="dock-actions">
+            <button class="dock-btn primary" onclick="openPasteSheet()">📋 Roster</button>
+            <button class="dock-btn" onclick="reshuffleCurrent()" title="Reshuffle">🎲</button>
+            <button class="dock-btn" onclick="shareOrSaveBoard()" title="Share Board">📤</button>
+        </div>
+
+        <div class="kit-controls">
+            <div class="kit-pill">
+                <span>A</span>
+                <input type="color" id="homeColor" value="#ffeb3b" oninput="updateColors()">
             </div>
-            <button class="modal-cancel" onclick="closePasteModal()">Cancel</button>
+            <div class="kit-pill">
+                <span>B</span>
+                <input type="color" id="awayColor" value="#2563eb" oninput="updateColors()">
+            </div>
         </div>
     </div>
 
-    <div id="replacementModal" class="modal-overlay">
-        <div class="modal-card">
-            <h3 style="font-size: 1.1rem; text-align: center;" id="modalTitle">Select Replacement</h3>
-            <div id="modalListContainer" class="modal-list"></div>
-            <button class="modal-cancel" onclick="closeModal()">Cancel Trade</button>
+    <!-- Roster Bottom Sheet -->
+    <div id="pasteSheet" class="sheet-overlay" onclick="if(event.target===this) closeSheets()">
+        <div class="sheet-card">
+            <div class="sheet-handle"></div>
+            <h3 style="text-align:center; font-size:1rem;">Paste WhatsApp Player List</h3>
+            <textarea id="pasteTextArea" class="modal-textarea" placeholder="Paste match message here..."></textarea>
+            <div class="sheet-row">
+                <button class="sheet-btn" style="background:#1f4b32;" onclick="cleanListInBox()">Clean List</button>
+                <button class="sheet-btn" style="background:var(--accent-dark);" onclick="splitFromBox()">Split Teams</button>
+            </div>
         </div>
     </div>
 
-    <div class="main-content">
-        <div class="pitch-wrapper">
-            <div class="pitch" id="pitch" onclick="clearFocus(event)">
-                <button class="download-pitch-btn" onclick="exportPitchToImage()">📸 Save Board</button>
-                <div class="halfway-line"></div>
-                <div class="center-circle"></div>
-                <div class="penalty-box-top"></div>
-                <div class="penalty-box-bottom"></div>
-            </div>
+    <!-- Swap Bottom Sheet -->
+    <div id="swapSheet" class="sheet-overlay" onclick="if(event.target===this) closeSheets()">
+        <div class="sheet-card">
+            <div class="sheet-handle"></div>
+            <h3 id="swapTitle" style="text-align:center; font-size:1rem;">Swap With</h3>
+            <div id="swapListContainer" class="swap-list"></div>
         </div>
     </div>
 
     <script>
-        let currentHomeSquad = [];
-        let currentAwaySquad = [];
-        let customPositions = {}; 
-        let pendingSwapTarget = null;
+        let players = [];
+        let selectedPlayerId = null;
 
-        async function pasteAndSplitPool() {
-            let clipboardText = "";
+        const pitch = document.getElementById('pitch');
+
+        pitch.addEventListener('pointerdown', (e) => {
+            if (e.target === pitch || e.target.classList.contains('halfway-line') || e.target.classList.contains('center-circle')) {
+                clearSelection();
+            }
+        });
+
+        // Automatically compute a sharp contrasting collar/trim color from jersey hex
+        function getContrastTrimColor(hex) {
+            const cleanHex = hex.replace('#', '');
+            const r = parseInt(cleanHex.substring(0, 2), 16);
+            const g = parseInt(cleanHex.substring(2, 4), 16);
+            const b = parseInt(cleanHex.substring(4, 6), 16);
+
+            // Relative luminance (perceptual brightness)
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+            // Light jersey (yellow, white, cyan) -> deep dark trim; Dark jersey (blue, red, black) -> crisp white trim
+            return luminance > 0.58 ? '#111827' : '#f8fafc';
+        }
+
+        function saveState() {
+            localStorage.setItem('tactics_board_v3', JSON.stringify({
+                players,
+                colors: {
+                    hc: document.getElementById('homeColor').value,
+                    ac: document.getElementById('awayColor').value
+                }
+            }));
+        }
+
+        function loadState() {
+            const raw = localStorage.getItem('tactics_board_v3');
+            if (!raw) return false;
             try {
-                clipboardText = await navigator.clipboard.readText();
-            } catch (err) {
-                clipboardText = "";
-            }
-            openPasteModal(clipboardText);
+                const data = JSON.parse(raw);
+                if (data.colors) {
+                    document.getElementById('homeColor').value = data.colors.hc;
+                    document.getElementById('awayColor').value = data.colors.ac;
+                }
+                if (data.players && data.players.length >= 2) {
+                    players = data.players;
+                    renderPitch();
+                    return true;
+                }
+            } catch (e) {}
+            return false;
         }
 
-        function openPasteModal(initialText) {
-            const modal = document.getElementById('pasteModal');
-            const textarea = document.getElementById('pasteTextArea');
-            textarea.value = initialText || "";
-            modal.classList.add('active');
+        function openPasteSheet() {
+            document.getElementById('pasteSheet').classList.add('active');
         }
 
-        function closePasteModal() {
-            document.getElementById('pasteModal').classList.remove('active');
+        function closeSheets() {
+            document.querySelectorAll('.sheet-overlay').forEach(el => el.classList.remove('active'));
         }
 
-        function formatPasteInput() {
-            const textarea = document.getElementById('pasteTextArea');
-            const lines = textarea.value.split('\n');
-            
-            // Filters lines to start only from any sequence of digits followed by a period (e.g. 1. or 14.)
-            const formattedLines = lines
+        function parseNames(raw) {
+            const lines = raw.split('\n');
+            const startIndex = lines.findIndex(line => /^\s*1\s*\./.test(line));
+            const targetLines = startIndex !== -1 ? lines.slice(startIndex) : lines;
+
+            return targetLines
                 .filter(line => /^\s*\d+\s*\./.test(line))
-                .map(line => {
-                    // Extract name content following the structural layout format
-                    let adjusted = line.replace(/^\s*\d+\s*\.\s*/, '');
-                    let cleaned = adjusted.replace(/[^a-zA-Z\s]/g, '').trim();
-                    return cleaned.replace(/\s+/g, ' ');
-                })
-                .filter(p => p.length > 0);
-
-            textarea.value = formattedLines.map((name, i) => `${i + 1}. ${name}`).join('\n');
+                .map(line =>
+                    line
+                        .replace(/^\s*\d+\s*\.\s*/, '')
+                        .replace(/\(.*?\)/g, '')
+                        .replace(/[^\p{L}\s]/gu, '')
+                        .trim()
+                        .replace(/\s+/g, ' ')
+                )
+                .filter(Boolean);
         }
 
-        function confirmAndSplitPaste() {
-            const textarea = document.getElementById('pasteTextArea');
-            if (!textarea.value.trim()) {
-                alert("Please insert player names before splitting!");
+        function cleanListInBox() {
+            const ta = document.getElementById('pasteTextArea');
+            const names = parseNames(ta.value);
+            ta.value = names.map((n, i) => `${i + 1}. ${n}`).join('\n');
+        }
+
+        function splitFromBox() {
+            const names = parseNames(document.getElementById('pasteTextArea').value);
+            if (names.length < 2) {
+                alert("Enter at least 2 numbered players (e.g., 1. Name).");
                 return;
             }
-            processPlayerInputAndSplit(textarea.value);
-            closePasteModal();
+            buildTeams(names);
+            closeSheets();
         }
 
-        function cleanPlayerNames(rawText) {
-            return rawText.split('\n')
-                .map(line => {
-                    let adjusted = line.replace(/^\s*\d+\s*\.\s*/, '');
-                    let cleaned = adjusted.replace(/[^a-zA-Z\s]/g, '').trim();
-                    return cleaned.replace(/\s+/g, ' ');
-                })
-                .filter(p => p.length > 0);
+        function reshuffleCurrent() {
+            if (players.length < 2) return;
+            buildTeams(players.map(p => p.name));
         }
 
-        function calculateAdaptiveLayout(teamSize) {
-            let layout = { gk: { y: 7 }, rows: [] };
-            if (teamSize <= 1) return { gk: { y: 25 }, rows: [] };
-            let outfieldCount = teamSize - 1;
-            let def = 0, mid = 0, fwd = 0;
-            for (let i = 0; i < outfieldCount; i++) {
-                if (i % 3 === 0) def++;
-                else if (i % 3 === 1) mid++;
-                else fwd++;
-            }
-            if (outfieldCount === 2 && def === 1 && mid === 1) { mid = 0; fwd = 1; }
-            if (def > 0) layout.rows.push({ y: 18, count: def });
-            if (mid > 0) layout.rows.push({ y: 32, count: mid });
-            if (fwd > 0) layout.rows.push({ y: 45, count: fwd });
-            return layout;
+        function buildTeams(nameList) {
+            const shuffled = [...nameList].sort(() => Math.random() - 0.5);
+            const half = Math.ceil(shuffled.length / 2);
+            const homeNames = shuffled.slice(0, half);
+            const awayNames = shuffled.slice(half);
+
+            players = [];
+            assignFormation(homeNames, 'home', 0);
+            assignFormation(awayNames, 'away', homeNames.length);
+            clearSelection();
+            saveState();
+            renderPitch();
         }
 
-        function processPlayerInputAndSplit(rawText) {
-            const players = cleanPlayerNames(rawText);
-            if (players.length < 2) {
-                alert("Please input at least 2 player names to split squads.");
-                return;
-            }
-
-            for (let i = players.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [players[i], players[j]] = [players[j], players[i]];
-            }
-
-            const half = Math.ceil(players.length / 2);
-            currentHomeSquad = players.slice(0, half);
-            currentAwaySquad = players.slice(half);
-            
-            customPositions = {}; 
-            renderAllPlayers(true);
-        }
-
-        function initiateSwap(playerName, currentTeam) {
-            pendingSwapTarget = { name: playerName, team: currentTeam };
-            const modal = document.getElementById('replacementModal');
-            const listContainer = document.getElementById('modalListContainer');
-            const title = document.getElementById('modalTitle');
-            
-            title.innerText = `Replace ${playerName} with:`;
-            listContainer.innerHTML = '';
-
-            const oppositions = currentTeam === 'home' ? currentAwaySquad : currentHomeSquad;
-
-            oppositions.forEach(oppPlayer => {
-                const item = document.createElement('div');
-                item.className = 'modal-item';
-                item.innerText = oppPlayer;
-                item.onclick = () => executeSwapTrade(oppPlayer);
-                listContainer.appendChild(item);
-            });
-
-            modal.classList.add('active');
-        }
-
-        function executeSwapTrade(chosenReplacement) {
-            const playerA = pendingSwapTarget.name;
-            const playerB = chosenReplacement;
-
-            if (pendingSwapTarget.team === 'home') {
-                currentHomeSquad = currentHomeSquad.map(p => p === playerA ? playerB : p);
-                currentAwaySquad = currentAwaySquad.map(p => p === playerB ? playerA : p);
+        function assignFormation(names, team, idOffset) {
+            const count = names.length;
+            const coords = [];
+            if (count === 1) {
+                coords.push({ x: 50, y: 25 });
             } else {
-                currentAwaySquad = currentAwaySquad.map(p => p === playerA ? playerB : p);
-                currentHomeSquad = currentHomeSquad.map(p => p === playerB ? playerA : p);
-            }
-
-            if (customPositions[playerA] && customPositions[playerB]) {
-                const tempPos = { ...customPositions[playerA] };
-                customPositions[playerA] = { ...customPositions[playerB] };
-                customPositions[playerB] = tempPos;
-            }
-
-            closeModal();
-            renderAllPlayers(false);
-        }
-
-        function closeModal() {
-            document.getElementById('replacementModal').classList.remove('active');
-            pendingSwapTarget = null;
-            clearAllPlayerFocus();
-        }
-
-        function clearFocus(e) {
-            if (e.target.classList.contains('pitch')) {
-                clearAllPlayerFocus();
-            }
-        }
-
-        function clearAllPlayerFocus() {
-            document.querySelectorAll('.player-wrapper').forEach(el => {
-                el.classList.remove('focused-player');
-            });
-        }
-
-        function applyLiveKitColors() {
-            renderAllPlayers(false);
-        }
-
-        function renderAllPlayers(resetFormations = false) {
-            document.querySelectorAll('.player-wrapper').forEach(el => el.remove());
-            
-            let homeLayout = calculateAdaptiveLayout(currentHomeSquad.length);
-            let awayLayout = calculateAdaptiveLayout(currentAwaySquad.length);
-
-            renderSquadHalf(currentHomeSquad, true, homeLayout, resetFormations);
-            renderSquadHalf(currentAwaySquad, false, awayLayout, resetFormations);
-        }
-
-        function renderSquadHalf(squad, isHomeDefault, formationLayout, resetFormations) {
-            const pitch = document.getElementById('pitch');
-            let coords = [];
-
-            if (formationLayout.gk) coords.push({ x: 50, y: formationLayout.gk.y });
-
-            formationLayout.rows.forEach(row => {
-                for (let i = 0; i < row.count; i++) {
-                    let segments = row.count + 1;
-                    coords.push({ x: (100 / segments) * (i + 1), y: row.y });
+                coords.push({ x: 50, y: 8 });
+                const outfield = count - 1;
+                let def = 0, mid = 0, fwd = 0;
+                for (let i = 0; i < outfield; i++) {
+                    if (i % 3 === 0) def++;
+                    else if (i % 3 === 1) mid++;
+                    else fwd++;
                 }
-            });
+                if (outfield === 2 && def === 1 && mid === 1) { mid = 0; fwd = 1; }
 
-            squad.forEach((name, index) => {
-                let x, y;
-                
-                if (customPositions[name] && !resetFormations) {
-                    x = customPositions[name].x;
-                    y = customPositions[name].y;
-                } else {
-                    if (index < coords.length) {
-                        x = coords[index].x;
-                        y = coords[index].y;
-                    } else {
-                        x = 20 + Math.random() * 60;
-                        y = 25 + Math.random() * 20;
+                const rows = [];
+                if (def) rows.push({ y: 19, n: def });
+                if (mid) rows.push({ y: 32, n: mid });
+                if (fwd) rows.push({ y: 44, n: fwd });
+
+                rows.forEach(r => {
+                    for (let i = 0; i < r.n; i++) {
+                        coords.push({ x: (100 / (r.n + 1)) * (i + 1), y: r.y });
                     }
-                    if (!isHomeDefault) y = 100 - y;
-                    customPositions[name] = { x: x, y: y };
-                }
+                });
+            }
 
-                const isCurrentlyOnTopHalf = y < 50;
-                const teamColor = isCurrentlyOnTopHalf ? document.getElementById('homeColor').value : document.getElementById('awayColor').value;
-                const trimColor = isCurrentlyOnTopHalf ? document.getElementById('homeTrimColor').value : document.getElementById('awayTrimColor').value;
+            names.forEach((name, idx) => {
+                const pos = coords[idx] || { x: 20 + Math.random() * 60, y: 25 };
+                players.push({
+                    id: `p_${idOffset + idx}_${Date.now()}`,
+                    name,
+                    team,
+                    x: pos.x,
+                    y: team === 'home' ? pos.y : 100 - pos.y
+                });
+            });
+        }
+
+        function updateColors() {
+            saveState();
+            renderPitch();
+        }
+
+        function selectPlayer(id) {
+            selectedPlayerId = id;
+            const p = players.find(item => item.id === id);
+            if (!p) return;
+            document.getElementById('selectedPlayerLabel').innerText = p.name;
+            document.getElementById('playerActionBar').classList.add('visible');
+            renderPitch();
+        }
+
+        function clearSelection() {
+            selectedPlayerId = null;
+            document.getElementById('playerActionBar').classList.remove('visible');
+            renderPitch();
+        }
+
+        function openSwapSheet() {
+            const current = players.find(p => p.id === selectedPlayerId);
+            if (!current) return;
+
+            document.getElementById('swapTitle').innerText = `Swap ${current.name} with:`;
+            const container = document.getElementById('swapListContainer');
+            container.innerHTML = '';
+
+            players.filter(p => p.team !== current.team).forEach(opp => {
+                const btn = document.createElement('div');
+                btn.className = 'swap-item';
+                btn.innerText = opp.name;
+                btn.onclick = () => {
+                    const tempTeam = current.team;
+                    const tempX = current.x;
+                    const tempY = current.y;
+
+                    current.team = opp.team;
+                    current.x = opp.x;
+                    current.y = opp.y;
+
+                    opp.team = tempTeam;
+                    opp.x = tempX;
+                    opp.y = tempY;
+
+                    closeSheets();
+                    clearSelection();
+                    saveState();
+                    renderPitch();
+                };
+                container.appendChild(btn);
+            });
+
+            document.getElementById('swapSheet').classList.add('active');
+        }
+
+        function renderPitch() {
+            pitch.querySelectorAll('.player-wrapper').forEach(el => el.remove());
+
+            const hc = document.getElementById('homeColor').value;
+            const ht = getContrastTrimColor(hc);
+            const ac = document.getElementById('awayColor').value;
+            const at = getContrastTrimColor(ac);
+
+            players.forEach(player => {
+                const isTop = player.team === 'home';
+                const kit = isTop ? hc : ac;
+                const trim = isTop ? ht : at;
 
                 const wrapper = document.createElement('div');
-                wrapper.className = `player-wrapper`;
-                wrapper.setAttribute('data-name', name);
-                wrapper.style.left = `${x}%`;
-                wrapper.style.top = `${y}%`;
+                wrapper.className = `player-wrapper ${player.id === selectedPlayerId ? 'selected' : ''}`;
+                wrapper.style.left = `${player.x}%`;
+                wrapper.style.top = `${player.y}%`;
 
-                wrapper.addEventListener('click', (e) => {
-                    e.stopPropagation(); 
-                    clearAllPlayerFocus();
-                    wrapper.classList.add('focused-player');
-                });
+                wrapper.innerHTML = `
+                    <div class="jersey-container">
+                        <div class="sleeve-left" style="background:${kit}; border-color:${trim}"></div>
+                        <div class="sleeve-right" style="background:${kit}; border-color:${trim}"></div>
+                        <div class="jersey-body" style="background:${kit}"></div>
+                        <div class="jersey-collar" style="background:${trim}"></div>
+                    </div>
+                    <div class="player-name">${player.name}</div>
+                `;
 
-                const inlineBtn = document.createElement('button');
-                inlineBtn.className = 'inline-swap-btn';
-                inlineBtn.innerHTML = '⇄';
-                inlineBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const assignedTeamSide = currentHomeSquad.includes(name) ? 'home' : 'away';
-                    initiateSwap(name, assignedTeamSide);
-                });
-                wrapper.appendChild(inlineBtn);
-
-                const jerseyContainer = document.createElement('div');
-                jerseyContainer.className = 'jersey-container';
-
-                const body = document.createElement('div');
-                body.className = 'jersey-body';
-                body.style.backgroundColor = teamColor;
-
-                const collar = document.createElement('div');
-                collar.className = 'jersey-collar';
-                collar.style.backgroundColor = trimColor;
-
-                const leftSleeve = document.createElement('div');
-                leftSleeve.className = 'sleeve-left';
-                leftSleeve.style.backgroundColor = teamColor;
-                leftSleeve.style.borderBottomColor = trimColor;
-
-                const rightSleeve = document.createElement('div');
-                rightSleeve.className = 'sleeve-right';
-                rightSleeve.style.backgroundColor = teamColor;
-                rightSleeve.style.borderBottomColor = trimColor;
-
-                const badge = document.createElement('div');
-                badge.className = 'jersey-badge';
-
-                jerseyContainer.appendChild(leftSleeve);
-                jerseyContainer.appendChild(rightSleeve);
-                jerseyContainer.appendChild(body);
-                jerseyContainer.appendChild(collar);
-                jerseyContainer.appendChild(badge);
-
-                const label = document.createElement('div');
-                label.className = 'player-name';
-                label.innerText = name;
-
-                wrapper.appendChild(jerseyContainer);
-                wrapper.appendChild(label);
-
-                enableDrag(wrapper, name);
+                attachPointerControls(wrapper, player);
                 pitch.appendChild(wrapper);
             });
         }
 
-        function enableDrag(el, playerName) {
-            let startX = 0, startY = 0;
-            let isDragging = false;
-            
-            el.addEventListener('mousedown', dragStart);
-            el.addEventListener('touchstart', dragStart, { passive: false });
+        function attachPointerControls(el, player) {
+            let startX = 0, startY = 0, moved = false;
 
-            function dragStart(e) {
-                if (e.type === 'touchstart') e.preventDefault();
-                isDragging = false;
-                
-                const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
-                const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
-                
-                startX = clientX - el.offsetLeft;
-                startY = clientY - el.offsetTop;
+            el.addEventListener('pointerdown', (e) => {
+                e.stopPropagation();
+                el.setPointerCapture(e.pointerId);
+                startX = e.clientX;
+                startY = e.clientY;
+                moved = false;
+                el.classList.add('dragging');
+            });
 
-                document.addEventListener('mousemove', dragging);
-                document.addEventListener('touchmove', dragging, { passive: false });
-                document.addEventListener('mouseup', dragEnd);
-                document.addEventListener('touchend', dragEnd);
-            }
-
-            function dragging(e) {
-                isDragging = true;
-                const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
-                const clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
-                
-                let newLeft = clientX - startX;
-                let newTop = clientY - startY;
-
-                const pitch = document.getElementById('pitch');
-                
-                if (newLeft < 0) newLeft = 0;
-                if (newLeft > pitch.clientWidth) newLeft = pitch.clientWidth;
-                if (newTop < 0) newTop = 0;
-                if (newTop > pitch.clientHeight) newTop = pitch.clientHeight;
-
-                let pctLeft = (newLeft / pitch.clientWidth) * 100;
-                let pctTop = (newTop / pitch.clientHeight) * 100;
-
-                el.style.left = `${pctLeft}%`;
-                el.style.top = `${pctTop}%`;
-
-                customPositions[playerName] = { x: pctLeft, y: pctTop };
-
-                const isCurrentlyOnTopHalf = pctTop < 50;
-                const targetColor = isCurrentlyOnTopHalf ? document.getElementById('homeColor').value : document.getElementById('awayColor').value;
-                const targetTrim = isCurrentlyOnTopHalf ? document.getElementById('homeTrimColor').value : document.getElementById('awayTrimColor').value;
-
-                el.querySelector('.jersey-body').style.backgroundColor = targetColor;
-                el.querySelector('.jersey-collar').style.backgroundColor = targetTrim;
-                el.querySelector('.sleeve-left').style.backgroundColor = targetColor;
-                el.querySelector('.sleeve-left').style.borderBottomColor = targetTrim;
-                el.querySelector('.sleeve-right').style.backgroundColor = targetColor;
-                el.querySelector('.sleeve-right').style.borderBottomColor = targetTrim;
-            }
-
-            function dragEnd(e) {
-                document.removeEventListener('mousemove', dragging);
-                document.removeEventListener('touchmove', dragging);
-                document.removeEventListener('mouseup', dragEnd);
-                document.removeEventListener('touchend', dragEnd);
-                
-                if (isDragging) {
-                    e.stopPropagation();
-                    const finalTopHalfCheck = customPositions[playerName].y < 50;
-                    if (finalTopHalfCheck && currentAwaySquad.includes(playerName)) {
-                        currentAwaySquad = currentAwaySquad.filter(p => p !== playerName);
-                        currentHomeSquad.push(playerName);
-                    } else if (!finalTopHalfCheck && currentHomeSquad.includes(playerName)) {
-                        currentHomeSquad = currentHomeSquad.filter(p => p !== playerName);
-                        currentAwaySquad = currentAwaySquad.filter(p => p !== playerName);
-                    }
+            el.addEventListener('pointermove', (e) => {
+                if (!el.hasPointerCapture(e.pointerId)) return;
+                if (Math.hypot(e.clientX - startX, e.clientY - startY) > 6) {
+                    moved = true;
                 }
-            }
-        }
+                if (!moved) return;
 
-        function exportPitchToImage() {
-            const pitchElement = document.getElementById('pitch');
-            const saveBtn = pitchElement.querySelector('.download-pitch-btn');
-            
-            if (saveBtn) saveBtn.style.visibility = 'hidden';
-            clearAllPlayerFocus();
+                const rect = pitch.getBoundingClientRect();
+                let pctX = ((e.clientX - rect.left) / rect.width) * 100;
+                let pctY = ((e.clientY - rect.top) / rect.height) * 100;
 
-            const desktopWidth = 600;
-            const desktopHeight = 750;
+                pctX = Math.max(6, Math.min(94, pctX));
+                pctY = Math.max(5, Math.min(95, pctY));
 
-            html2canvas(pitchElement, {
-                width: desktopWidth,
-                height: desktopHeight,
-                scale: 2, 
-                logging: false,
-                useCORS: true,
-                backgroundColor: null,
-                windowWidth: 1200, 
-                windowHeight: 1500,
-                onclone: (clDoc) => {
-                    const clonedPitch = clDoc.getElementById('pitch');
-                    clonedPitch.style.width = `${desktopWidth}px`;
-                    clonedPitch.style.height = `${desktopHeight}px`;
-                    clonedPitch.style.transform = 'none';
-                    clonedPitch.style.position = 'relative';
+                player.x = pctX;
+                player.y = pctY;
+                player.team = pctY < 50 ? 'home' : 'away';
 
-                    const players = clonedPitch.querySelectorAll('.player-wrapper');
-                    players.forEach(p => {
-                        const name = p.getAttribute('data-name');
-                        if (customPositions[name]) {
-                            p.style.left = `${(customPositions[name].x / 100) * desktopWidth}px`;
-                            p.style.top = `${(customPositions[name].y / 100) * desktopHeight}px`;
-                            p.style.width = '48px';
-                            p.style.height = '62px';
-                            p.style.transform = 'translate(-50%, -50%)';
+                el.style.left = `${pctX}%`;
+                el.style.top = `${pctY}%`;
 
-                            const jContainer = p.querySelector('.jersey-container');
-                            if (jContainer) { jContainer.style.width = '44px'; jContainer.style.height = '38px'; }
+                const kit = player.team === 'home' ? document.getElementById('homeColor').value : document.getElementById('awayColor').value;
+                const trim = getContrastTrimColor(kit);
 
-                            const jBody = p.querySelector('.jersey-body');
-                            if (jBody) { jBody.style.left = '10px'; jBody.style.top = '3px'; jBody.style.width = '24px'; jBody.style.height = '34px'; }
+                el.querySelector('.jersey-body').style.background = kit;
+                el.querySelector('.sleeve-left').style.background = kit;
+                el.querySelector('.sleeve-right').style.background = kit;
+                el.querySelector('.jersey-collar').style.background = trim;
+                el.querySelector('.sleeve-left').style.borderColor = trim;
+                el.querySelector('.sleeve-right').style.borderColor = trim;
+            });
 
-                            const jCollar = p.querySelector('.jersey-collar');
-                            if (jCollar) { jCollar.style.left = '17px'; jCollar.style.width = '10px'; jCollar.style.height = '6px'; }
+            el.addEventListener('pointerup', (e) => {
+                if (!el.hasPointerCapture(e.pointerId)) return;
+                el.releasePointerCapture(e.pointerId);
+                el.classList.remove('dragging');
 
-                            const sLeft = p.querySelector('.sleeve-left');
-                            if (sLeft) { sLeft.style.width = '12px'; sLeft.style.height = '14px'; }
-
-                            const sRight = p.querySelector('.sleeve-right');
-                            if (sRight) { sRight.style.width = '12px'; sRight.style.height = '14px'; }
-
-                            const pName = p.querySelector('.player-name');
-                            if (pName) { pName.style.fontSize = '9px'; pName.style.padding = '2px 6px'; pName.style.maxWidth = '68px'; }
-                        }
-                    });
+                if (!moved) {
+                    selectPlayer(player.id);
+                } else {
+                    saveState();
                 }
-            }).then(canvas => {
-                if (saveBtn) saveBtn.style.visibility = 'visible';
-                const link = document.createElement('a');
-                link.download = 'football_tactics_board.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            }).catch(err => {
-                if (saveBtn) saveBtn.style.visibility = 'visible';
-                alert("Error rendering image.");
             });
         }
 
-        processPlayerInputAndSplit("Cr7\nRonaldo\nCristiano\nSiuuuu!\nCristiano Ronaldo\nCr7\nRonaldo\nSiuuuu!");
+        async function shareOrSaveBoard() {
+            clearSelection();
+            const canvas = await html2canvas(pitch, {
+                scale: 3,
+                useCORS: true,
+                backgroundColor: null
+            });
+
+            canvas.toBlob(async (blob) => {
+                const file = new File([blob], 'lineup.png', { type: 'image/png' });
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({ files: [file], title: 'Match Lineup' });
+                        return;
+                    } catch (err) {}
+                }
+                const link = document.createElement('a');
+                link.download = 'lineup.png';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+            }, 'image/png');
+        }
+
+        if (!loadState()) {
+            buildTeams(["Player 1", "Player 2", "Player 3", "Player 4", "Player 5", "Player 6", "Player 7", "Player 8", "Player 9", "Player 10"]);
+        }
     </script>
 </body>
 </html>
