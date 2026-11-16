@@ -195,6 +195,7 @@
             transform: translateX(-50%);
             background: var(--panel-bg);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--accent);
             border-radius: 999px;
             padding: 6px 12px;
@@ -225,6 +226,7 @@
             margin: 0 auto;
             background: var(--panel-bg);
             backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 8px 10px;
@@ -264,21 +266,21 @@
         .kit-controls {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .kit-pill {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             background: var(--input-bg);
             border: 1px solid var(--border-color);
-            padding: 4px 6px;
-            border-radius: 10px;
+            padding: 5px 8px;
+            border-radius: 12px;
         }
 
         .kit-pill span {
-            font-size: 0.65rem;
+            font-size: 0.72rem;
             font-weight: 800;
             color: #a7f3d0;
         }
@@ -286,15 +288,16 @@
         input[type="color"] {
             -webkit-appearance: none;
             border: none;
-            width: 26px;
-            height: 26px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             background: none;
             padding: 0;
+            cursor: pointer;
         }
         input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
         input[type="color"]::-webkit-color-swatch {
-            border: 1.5px solid rgba(255,255,255,0.4);
+            border: 2px solid rgba(255,255,255,0.45);
             border-radius: 50%;
         }
 
@@ -304,6 +307,7 @@
             inset: 0;
             background: rgba(0, 0, 0, 0.65);
             backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             z-index: 200;
             display: none;
             align-items: flex-end;
@@ -345,7 +349,7 @@
             color: var(--text-main);
             padding: 12px;
             border-radius: 12px;
-            font-size: 16px; /* Prevents iOS auto-zoom on focus */
+            font-size: 16px;
             user-select: text;
             outline: none;
         }
@@ -402,7 +406,7 @@
         </div>
     </div>
 
-    <!-- Bottom Thumb Dock -->
+    <!-- Bottom Thumb Dock (Single Color Picker Per Team) -->
     <div class="bottom-dock">
         <div class="dock-actions">
             <button class="dock-btn primary" onclick="openPasteSheet()">📋 Roster</button>
@@ -413,13 +417,11 @@
         <div class="kit-controls">
             <div class="kit-pill">
                 <span>A</span>
-                <input type="color" id="homeColor" value="#ffeb3b" onchange="updateColors()">
-                <input type="color" id="homeTrimColor" value="#11381b" onchange="updateColors()">
+                <input type="color" id="homeColor" value="#ffeb3b" oninput="updateColors()">
             </div>
             <div class="kit-pill">
                 <span>B</span>
-                <input type="color" id="awayColor" value="#2563eb" onchange="updateColors()">
-                <input type="color" id="awayTrimColor" value="#ffffff" onchange="updateColors()">
+                <input type="color" id="awayColor" value="#2563eb" oninput="updateColors()">
             </div>
         </div>
     </div>
@@ -429,7 +431,7 @@
         <div class="sheet-card">
             <div class="sheet-handle"></div>
             <h3 style="text-align:center; font-size:1rem;">Paste WhatsApp Player List</h3>
-            <textarea id="pasteTextArea" class="modal-textarea" placeholder="1. Player One&#10;2. Player Two..."></textarea>
+            <textarea id="pasteTextArea" class="modal-textarea" placeholder="Paste match message here..."></textarea>
             <div class="sheet-row">
                 <button class="sheet-btn" style="background:#1f4b32;" onclick="cleanListInBox()">Clean List</button>
                 <button class="sheet-btn" style="background:var(--accent-dark);" onclick="splitFromBox()">Split Teams</button>
@@ -447,7 +449,7 @@
     </div>
 
     <script>
-        let players = []; // [{ id, name, team: 'home'|'away', x, y }]
+        let players = [];
         let selectedPlayerId = null;
 
         const pitch = document.getElementById('pitch');
@@ -458,28 +460,38 @@
             }
         });
 
+        // Automatically compute a sharp contrasting collar/trim color from jersey hex
+        function getContrastTrimColor(hex) {
+            const cleanHex = hex.replace('#', '');
+            const r = parseInt(cleanHex.substring(0, 2), 16);
+            const g = parseInt(cleanHex.substring(2, 4), 16);
+            const b = parseInt(cleanHex.substring(4, 6), 16);
+
+            // Relative luminance (perceptual brightness)
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+            // Light jersey (yellow, white, cyan) -> deep dark trim; Dark jersey (blue, red, black) -> crisp white trim
+            return luminance > 0.58 ? '#111827' : '#f8fafc';
+        }
+
         function saveState() {
-            localStorage.setItem('tactics_board_v2', JSON.stringify({
+            localStorage.setItem('tactics_board_v3', JSON.stringify({
                 players,
                 colors: {
                     hc: document.getElementById('homeColor').value,
-                    ht: document.getElementById('homeTrimColor').value,
-                    ac: document.getElementById('awayColor').value,
-                    at: document.getElementById('awayTrimColor').value
+                    ac: document.getElementById('awayColor').value
                 }
             }));
         }
 
         function loadState() {
-            const raw = localStorage.getItem('tactics_board_v2');
+            const raw = localStorage.getItem('tactics_board_v3');
             if (!raw) return false;
             try {
                 const data = JSON.parse(raw);
                 if (data.colors) {
                     document.getElementById('homeColor').value = data.colors.hc;
-                    document.getElementById('homeTrimColor').value = data.colors.ht;
                     document.getElementById('awayColor').value = data.colors.ac;
-                    document.getElementById('awayTrimColor').value = data.colors.at;
                 }
                 if (data.players && data.players.length >= 2) {
                     players = data.players;
@@ -499,8 +511,20 @@
         }
 
         function parseNames(raw) {
-            return raw.split('\n')
-                .map(line => line.replace(/^\s*\d+[\.\)\-\s]+/, '').replace(/[^\p{L}\s]/gu, '').trim().replace(/\s+/g, ' '))
+            const lines = raw.split('\n');
+            const startIndex = lines.findIndex(line => /^\s*1\s*\./.test(line));
+            const targetLines = startIndex !== -1 ? lines.slice(startIndex) : lines;
+
+            return targetLines
+                .filter(line => /^\s*\d+\s*\./.test(line))
+                .map(line =>
+                    line
+                        .replace(/^\s*\d+\s*\.\s*/, '')
+                        .replace(/\(.*?\)/g, '')
+                        .replace(/[^\p{L}\s]/gu, '')
+                        .trim()
+                        .replace(/\s+/g, ' ')
+                )
                 .filter(Boolean);
         }
 
@@ -513,7 +537,7 @@
         function splitFromBox() {
             const names = parseNames(document.getElementById('pasteTextArea').value);
             if (names.length < 2) {
-                alert("Enter at least 2 players.");
+                alert("Enter at least 2 numbered players (e.g., 1. Name).");
                 return;
             }
             buildTeams(names);
@@ -545,7 +569,7 @@
             if (count === 1) {
                 coords.push({ x: 50, y: 25 });
             } else {
-                coords.push({ x: 50, y: 8 }); // GK
+                coords.push({ x: 50, y: 8 });
                 const outfield = count - 1;
                 let def = 0, mid = 0, fwd = 0;
                 for (let i = 0; i < outfield; i++) {
@@ -612,7 +636,6 @@
                 btn.className = 'swap-item';
                 btn.innerText = opp.name;
                 btn.onclick = () => {
-                    // Swap teams and coordinates cleanly
                     const tempTeam = current.team;
                     const tempX = current.x;
                     const tempY = current.y;
@@ -640,9 +663,9 @@
             pitch.querySelectorAll('.player-wrapper').forEach(el => el.remove());
 
             const hc = document.getElementById('homeColor').value;
-            const ht = document.getElementById('homeTrimColor').value;
+            const ht = getContrastTrimColor(hc);
             const ac = document.getElementById('awayColor').value;
-            const at = document.getElementById('awayTrimColor').value;
+            const at = getContrastTrimColor(ac);
 
             players.forEach(player => {
                 const isTop = player.team === 'home';
@@ -703,7 +726,8 @@
                 el.style.top = `${pctY}%`;
 
                 const kit = player.team === 'home' ? document.getElementById('homeColor').value : document.getElementById('awayColor').value;
-                const trim = player.team === 'home' ? document.getElementById('homeTrimColor').value : document.getElementById('awayTrimColor').value;
+                const trim = getContrastTrimColor(kit);
+
                 el.querySelector('.jersey-body').style.background = kit;
                 el.querySelector('.sleeve-left').style.background = kit;
                 el.querySelector('.sleeve-right').style.background = kit;
